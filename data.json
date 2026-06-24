@@ -13,6 +13,26 @@
         }
       ],
       "total": 800
+    },
+    {
+      "date": "2026-06-24",
+      "invoiceNo": "",
+      "customer": "Karun",
+      "items": [
+        {
+          "id": 1782326257034,
+          "desc": "sd",
+          "qty": 1,
+          "price": 800
+        },
+        {
+          "id": 1782326260092,
+          "desc": "kj",
+          "qty": 1,
+          "price": 900
+        }
+      ],
+      "total": 1700
     }
   ],
   "journal": [
@@ -24,6 +44,15 @@
       "debitAmt": 800,
       "creditAcc": "Sales",
       "creditAmt": 800
+    },
+    {
+      "id": 1782326263257,
+      "date": "2026-06-24",
+      "desc": "POS Sale ",
+      "debitAcc": "Accounts Receivable",
+      "debitAmt": 1700,
+      "creditAcc": "Sales",
+      "creditAmt": 1700
     }
   ],
   "inventory": [
