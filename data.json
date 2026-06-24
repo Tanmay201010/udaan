@@ -1,5 +1,27 @@
 {
-  "bills": [],
+  "bills": [
+    {
+      "date": "2026-06-24",
+      "invoiceNo": "",
+      "customer": "Karun",
+      "items": [
+        {
+          "id": 1782329973485,
+          "desc": "key chain",
+          "qty": 1,
+          "price": 600
+        },
+        {
+          "id": 1782329982268,
+          "desc": "bag",
+          "qty": 1,
+          "price": 1100
+        }
+      ],
+      "total": 1700,
+      "paymentMethod": "Cash"
+    }
+  ],
   "journal": [
     {
       "id": 1782329948801,
@@ -18,6 +40,33 @@
       "debitAmt": 1000,
       "creditAcc": "Consignment A/c",
       "creditAmt": 1000
+    },
+    {
+      "id": 1782329990126,
+      "date": "2026-06-24",
+      "desc": "Sale to Karun - Invoice ",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 1700,
+      "creditAcc": "Sales A/c",
+      "creditAmt": 1700
+    },
+    {
+      "id": 1782329990127,
+      "date": "2026-06-24",
+      "desc": "Consignment sold - Invoice ",
+      "debitAcc": "Consignment A/c",
+      "debitAmt": 1300,
+      "creditAcc": "Cost of Goods Sold A/c",
+      "creditAmt": 1300
+    },
+    {
+      "id": 1782329990128,
+      "date": "2026-06-24",
+      "desc": "Commission earned - Invoice ",
+      "debitAcc": "Sales A/c",
+      "debitAmt": 400,
+      "creditAcc": "Commission Income A/c",
+      "creditAmt": 400
     }
   ],
   "inventory": [
