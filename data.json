@@ -9,6 +9,15 @@
       "debitAmt": 1000,
       "creditAcc": "Consignor A/c",
       "creditAmt": 1000
+    },
+    {
+      "id": 1782331434106,
+      "date": "2026-06-24",
+      "desc": "Consignment received - Bag (Qty: 10)",
+      "debitAcc": "Consignment A/c",
+      "debitAmt": 9000,
+      "creditAcc": "Consignor A/c",
+      "creditAmt": 9000
     }
   ],
   "inventory": [
@@ -17,6 +26,12 @@
       "name": "Key chain",
       "price": 1000,
       "qty": 1
+    },
+    {
+      "id": "1782331434105",
+      "name": "Bag",
+      "price": 900,
+      "qty": 10
     }
   ]
 }
