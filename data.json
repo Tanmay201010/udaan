@@ -1,0 +1,21 @@
+{
+  "bills": [],
+  "journal": [
+    {
+      "id": 1782329948801,
+      "date": "2026-06-24",
+      "desc": "Consignment received - key chain",
+      "debitAcc": "Inventory / Stock A/c",
+      "debitAmt": 300,
+      "creditAcc": "Consignment A/c",
+      "creditAmt": 300
+    }
+  ],
+  "inventory": [
+    {
+      "id": "1782329948800",
+      "name": "key chain",
+      "price": 300
+    }
+  ]
+}
