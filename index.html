@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AccoPro - Accounting Web App</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div id="app" class="app-container">
+    <nav class="sidebar">
+      <div class="logo">
+         <i data-lucide="wallet"></i>
+         <h2>AccoPro</h2>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#dashboard" class="nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+        <li><a href="#bill-book" class="nav-item" data-target="bill-book"><i data-lucide="file-text"></i> Bill Book</a></li>
+        <li><a href="#cash-book" class="nav-item" data-target="cash-book"><i data-lucide="coins"></i> Cash Book</a></li>
+        <li><a href="#journal" class="nav-item" data-target="journal"><i data-lucide="book-marked"></i> Journal</a></li>
+        <li><a href="#ledger" class="nav-item" data-target="ledger"><i data-lucide="book"></i> Ledger</a></li>
+        <li><a href="#trial-balance" class="nav-item" data-target="trial-balance"><i data-lucide="scale"></i> Trial Balance</a></li>
+        <li><a href="#financial-statements" class="nav-item" data-target="financial-statements"><i data-lucide="pie-chart"></i> Statements</a></li>
+        <li><a href="#settings" class="nav-item" data-target="settings"><i data-lucide="settings"></i> Settings</a></li>
+      </ul>
+      <div class="sidebar-footer">
+         <button id="force-sync-btn" class="btn btn-secondary btn-sm" style="width: 100%; display: flex; gap: 0.5rem; justify-content: center; align-items: center;">
+            <i data-lucide="refresh-cw"></i> Sync Data
+         </button>
+      </div>
+    </nav>
+    <main class="main-content">
+      <header class="topbar">
+        <h1 id="page-title">Dashboard</h1>
+        <div class="sync-status" id="sync-status">
+            <span class="status-indicator"></span>
+            <span id="sync-status-text">Not configured</span>
+        </div>
+      </header>
+      <div id="view-container" class="view-container">
+        <!-- Content gets injected here -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Hidden templates for views to keep index.html clean -->
+  <template id="tpl-dashboard">
+    <div class="dashboard-grid">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.2); color: var(--success);"><i data-lucide="trending-up"></i></div>
+        <div class="stat-info">
+           <h3>Total Cash Balance</h3>
+           <p id="dash-cash-balance">$ 0.00</p>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.2); color: var(--accent);"><i data-lucide="file-check-2"></i></div>
+        <div class="stat-info">
+           <h3>Total Bills Generated</h3>
+           <p id="dash-bills-count">0</p>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.2); color: var(--danger);"><i data-lucide="arrow-down-right"></i></div>
+        <div class="stat-info">
+           <h3>Total Expenses</h3>
+           <p id="dash-expenses">$ 0.00</p>
+        </div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background: rgba(168, 85, 247, 0.2); color: #a855f7;"><i data-lucide="book-open-check"></i></div>
+        <div class="stat-info">
+           <h3>Total Journal Entries</h3>
+           <p id="dash-journal-count">0</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="recent-section">
+      <div class="card">
+        <h2>Recent Transactions</h2>
+        <div class="table-container">
+          <table id="dash-recent-table" class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Account</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-settings">
+    <div class="card settings-card">
+      <h2>GitHub Repository Configuration</h2>
+      <p class="text-muted" style="margin-bottom: 1.5rem;">Configure your GitHub Personal Access Token to sync your data to your repository. This ensures your data is safe and versioned.</p>
+      
+      <div class="form-group">
+        <label>GitHub Personal Access Token (PAT) <span class="required">*</span></label>
+        <input type="password" id="gh-pat" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        <small>Needs 'repo' scope.</small>
+      </div>
+      
+      <div class="form-group">
+        <label>Repository Owner (Username)</label>
+        <input type="text" id="gh-owner" placeholder="e.g., torvalds">
+      </div>
+      
+      <div class="form-group">
+        <label>Repository Name</label>
+        <input type="text" id="gh-repo" placeholder="e.g., accounting-data">
+      </div>
+
+      <div class="form-group">
+        <label>File Path</label>
+        <input type="text" id="gh-path" placeholder="e.g., data.json" value="data.json">
+      </div>
+      
+      <div class="actions" style="margin-top: 2rem;">
+         <button id="save-settings-btn" class="btn btn-primary">Save Configuration & Test</button>
+      </div>
+
+      <div id="settings-msg" style="margin-top: 1rem;"></div>
+    </div>
+  </template>
+
+  <template id="tpl-bill-book">
+    <div class="bill-book-layout">
+        <div class="card form-panel">
+            <h2>Create New Bill</h2>
+            <div class="form-group">
+                <label>Invoice No</label>
+                <input type="text" id="bill-no" placeholder="#000001">
+            </div>
+            <div class="form-group">
+                <label>Issue Date</label>
+                <input type="date" id="bill-date">
+            </div>
+            <div class="form-group">
+                <label>Issued To</label>
+                <input type="text" id="bill-customer" placeholder="Customer Name">
+            </div>
+            
+            <h3>Items</h3>
+            <div id="bill-items-container">
+                <!-- Items injected here -->
+            </div>
+            <button id="add-bill-item-btn" class="btn btn-secondary btn-sm" style="margin-top: 0.5rem;"><i data-lucide="plus"></i> Add Item</button>
+            
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label>Note / Payment Method</label>
+                <input type="text" id="bill-note" placeholder="Cash / UPI" value="Cash / UPI">
+            </div>
+
+            <div class="actions" style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <button id="generate-bill-btn" class="btn btn-primary" style="width: 100%;">Generate & Save Bill</button>
+            </div>
+        </div>
+        
+        <div class="preview-panel">
+            <div class="card bill-preview" id="bill-preview-card">
+                <div class="bill-header">
+                    <div class="logos">
+                        <div class="logo-box placeholder-logo" style="width: 100px; height: 100px; background: #333; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; border-radius: 4px;">(Logo) DAAN</div>
+                        <div class="logo-box placeholder-logo" style="width: 250px; height: 60px; background: #444; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; border-radius: 4px; margin-left: 1rem;">DELHI PUBLIC SCHOOL NACHARAM</div>
+                    </div>
+                    <div class="bill-meta" style="text-align: right;">
+                        <p><strong>Date Issued:</strong> <br><span id="prev-date">10 January 2024</span></p>
+                    </div>
+                </div>
+                
+                <div class="bill-title-area" style="display: flex; justify-content: space-between; align-items: center; margin: 2rem 0;">
+                    <div>
+                        <p><strong>Invoice No:</strong></p>
+                        <p id="prev-invoice-no">#000001</p>
+                    </div>
+                    <h1 class="invoice-title" style="letter-spacing: 0.5em; font-size: 2.5rem; font-weight: 300;">IN VO IC E</h1>
+                    <div style="text-align: right;">
+                        <p><strong>Issued to:</strong></p>
+                        <p id="prev-customer">Claudia Alves</p>
+                    </div>
+                </div>
+
+                <table class="bill-table" id="prev-items-table" style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+                    <thead>
+                        <tr style="background: #f1f5f9; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1;">
+                            <th style="padding: 1rem; text-align: left;">NO</th>
+                            <th style="padding: 1rem; text-align: left;">DESCRIPTION</th>
+                            <th style="padding: 1rem; text-align: right;">QTY</th>
+                            <th style="padding: 1rem; text-align: right;">PRICE</th>
+                            <th style="padding: 1rem; text-align: right;">SUBTOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Items -->
+                    </tbody>
+                </table>
+                
+                <div class="bill-footer" style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #cbd5e1; padding-top: 1rem;">
+                    <div class="bill-note">
+                        <p><strong>Note:</strong></p>
+                        <p id="prev-note">Cash / UPI</p>
+                    </div>
+                    <div class="bill-total" style="text-align: right;">
+                        <span style="font-weight: bold; margin-right: 2rem;">GRAND TOTAL</span>
+                        <span id="prev-grand-total" style="font-weight: bold; font-size: 1.2rem;">$ 5000</span>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #cbd5e1; margin-top: 1rem;"></div>
+            </div>
+            <button id="print-bill-btn" class="btn btn-secondary" style="margin-top: 1rem;"><i data-lucide="printer"></i> Print / Save PDF</button>
+        </div>
+    </div>
+  </template>
+
+  <!-- More templates to be added as we go (Journal, Cash book, Ledger etc.) -->
+  <template id="tpl-journal">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2>Journal Entries</h2>
+            <button id="new-journal-btn" class="btn btn-primary"><i data-lucide="plus"></i> New Entry</button>
+        </div>
+        <div class="table-container">
+            <table class="data-table" id="journal-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Account</th>
+                        <th>Description</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+      </div>
+      <!-- Modal for new entry -->
+      <div id="journal-modal" class="modal" style="display: none;">
+          <div class="modal-content card" style="max-width: 600px; margin: 10% auto;">
+              <h3>New Journal Entry</h3>
+              <div class="form-group">
+                  <label>Date</label>
+                  <input type="date" id="j-date">
+              </div>
+              <div class="form-group">
+                  <label>Description (Narration)</label>
+                  <input type="text" id="j-desc">
+              </div>
+              <div class="j-split-layout" style="display: flex; gap: 1rem;">
+                  <div class="j-col" style="flex: 1;">
+                      <h4>Debit</h4>
+                      <div class="form-group">
+                          <label>Account</label>
+                          <input type="text" id="j-debit-acc" placeholder="e.g. Cash, Rent">
+                      </div>
+                      <div class="form-group">
+                          <label>Amount</label>
+                          <input type="number" id="j-debit-amt" min="0" step="0.01">
+                      </div>
+                  </div>
+                  <div class="j-col" style="flex: 1;">
+                      <h4>Credit</h4>
+                      <div class="form-group">
+                          <label>Account</label>
+                          <input type="text" id="j-credit-acc" placeholder="e.g. Sales, Capital">
+                      </div>
+                      <div class="form-group">
+                          <label>Amount</label>
+                          <input type="number" id="j-credit-amt" min="0" step="0.01">
+                      </div>
+                  </div>
+              </div>
+              <div class="actions" style="margin-top: 1rem; justify-content: flex-end; display: flex; gap: 1rem;">
+                  <button id="j-cancel-btn" class="btn btn-secondary">Cancel</button>
+                  <button id="j-save-btn" class="btn btn-primary">Save Entry</button>
+              </div>
+          </div>
+      </div>
+  </template>
+
+  <template id="tpl-ledger">
+    <div class="card">
+        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
+            <h2>Ledger Account:</h2>
+            <select id="ledger-acc-select" class="custom-select" style="max-width: 300px; padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-primary);">
+                <option value="">Select Account...</option>
+            </select>
+        </div>
+        <div class="table-container">
+            <table class="data-table" id="ledger-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Particulars</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+  </template>
+
+  <template id="tpl-trial-balance">
+    <div class="card" style="max-width: 800px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Trial Balance</h2>
+        <div class="table-container">
+            <table class="data-table" id="tb-table">
+                <thead>
+                    <tr>
+                        <th>Account Name</th>
+                        <th style="text-align: right;">Debit Balance</th>
+                        <th style="text-align: right;">Credit Balance</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr class="total-row" style="background: var(--bg-tertiary);">
+                        <td><strong>Total</strong></td>
+                        <td style="text-align: right;" id="tb-total-debit"><strong>0.00</strong></td>
+                        <td style="text-align: right;" id="tb-total-credit"><strong>0.00</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+  </template>
+
+  <template id="tpl-cash-book">
+      <div class="card">
+        <h2>Cash Book</h2>
+        <p class="text-muted" style="margin-bottom: 1.5rem;">All transactions affecting the 'Cash' account.</p>
+        <div class="table-container">
+            <table class="data-table" id="cash-book-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Particulars</th>
+                        <th>Receipts (In)</th>
+                        <th>Payments (Out)</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+      </div>
+  </template>
+
+  <template id="tpl-financial-statements">
+    <div class="fs-layout" style="display: flex; flex-direction: column; gap: 2rem;">
+        <div class="card">
+            <h2 style="text-align: center;">Income Statement (P&L)</h2>
+            <div class="table-container" style="margin-top: 1.5rem;">
+                <table class="data-table fs-table" id="is-table">
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="fs-result" id="is-result" style="margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md); text-align: center; font-weight: bold; font-size: 1.2rem; background: var(--bg-tertiary);">
+            </div>
+        </div>
+        <div class="card">
+            <h2 style="text-align: center;">Balance Sheet</h2>
+            <div class="table-container" style="margin-top: 1.5rem;">
+                <table class="data-table fs-table" id="bs-table">
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="fs-result" id="bs-result" style="margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md); text-align: center; font-weight: bold; font-size: 1.2rem; background: rgba(59, 130, 246, 0.1); color: var(--accent);">
+                Total Assets = Total Liabilities + Equity
+            </div>
+        </div>
+    </div>
+  </template>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
