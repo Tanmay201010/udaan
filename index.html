@@ -10,21 +10,53 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-  <div id="app" class="app-container">
+  <!-- Login Screen Overlay -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="card login-card">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <i data-lucide="wallet" style="width: 48px; height: 48px; color: var(--accent); margin-bottom: 1rem;"></i>
+            <h2>AccoPro Login</h2>
+            <p class="text-muted">Enter your team credentials</p>
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="login-user" placeholder="admin">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-pass" placeholder="sales or finance">
+        </div>
+        <button id="login-btn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
+        <p id="login-error" style="color: var(--danger); text-align: center; margin-top: 1rem; display: none;">Invalid credentials.</p>
+    </div>
+  </div>
+
+  <div id="app" class="app-container" style="display: none;">
     <nav class="sidebar">
       <div class="logo">
          <i data-lucide="wallet"></i>
          <h2>AccoPro</h2>
       </div>
+      <div style="margin-bottom: 1.5rem; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 4px; font-size: 0.8rem; text-align: center; color: var(--text-secondary);">
+         Logged in as: <strong id="logged-in-role" style="color: var(--accent);"></strong>
+         <br>
+         <a href="#" id="logout-btn" style="display: inline-block; margin-top: 0.5rem; font-size: 0.8rem; text-decoration: underline;">Logout</a>
+      </div>
       <ul class="nav-links">
-        <li><a href="#dashboard" class="nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
-        <li><a href="#bill-book" class="nav-item" data-target="bill-book"><i data-lucide="file-text"></i> Bill Book</a></li>
-        <li><a href="#cash-book" class="nav-item" data-target="cash-book"><i data-lucide="coins"></i> Cash Book</a></li>
-        <li><a href="#journal" class="nav-item" data-target="journal"><i data-lucide="book-marked"></i> Journal</a></li>
-        <li><a href="#ledger" class="nav-item" data-target="ledger"><i data-lucide="book"></i> Ledger</a></li>
-        <li><a href="#trial-balance" class="nav-item" data-target="trial-balance"><i data-lucide="scale"></i> Trial Balance</a></li>
-        <li><a href="#financial-statements" class="nav-item" data-target="financial-statements"><i data-lucide="pie-chart"></i> Statements</a></li>
-        <li><a href="#settings" class="nav-item" data-target="settings"><i data-lucide="settings"></i> Settings</a></li>
+        <li data-role="all"><a href="#dashboard" class="nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+        
+        <!-- Sales Team Links -->
+        <li data-role="sales"><a href="#inventory" class="nav-item" data-target="inventory"><i data-lucide="package"></i> Inventory</a></li>
+        <li data-role="sales"><a href="#pos" class="nav-item" data-target="pos"><i data-lucide="monitor-speaker"></i> Billing / POS</a></li>
+        
+        <!-- Finance Team Links -->
+        <li data-role="finance"><a href="#cash-book" class="nav-item" data-target="cash-book"><i data-lucide="coins"></i> Cash Book</a></li>
+        <li data-role="finance"><a href="#journal" class="nav-item" data-target="journal"><i data-lucide="book-marked"></i> Journal</a></li>
+        <li data-role="finance"><a href="#ledger" class="nav-item" data-target="ledger"><i data-lucide="book"></i> Ledger</a></li>
+        <li data-role="finance"><a href="#trial-balance" class="nav-item" data-target="trial-balance"><i data-lucide="scale"></i> Trial Balance</a></li>
+        <li data-role="finance"><a href="#financial-statements" class="nav-item" data-target="financial-statements"><i data-lucide="pie-chart"></i> Statements</a></li>
+        
+        <li data-role="all"><a href="#settings" class="nav-item" data-target="settings"><i data-lucide="settings"></i> Settings</a></li>
       </ul>
       <div class="sidebar-footer">
          <button id="force-sync-btn" class="btn btn-secondary btn-sm" style="width: 100%; display: flex; gap: 0.5rem; justify-content: center; align-items: center;">
@@ -46,14 +78,14 @@
     </main>
   </div>
 
-  <!-- Hidden templates for views to keep index.html clean -->
+  <!-- Templates -->
   <template id="tpl-dashboard">
     <div class="dashboard-grid">
       <div class="card stat-card">
         <div class="stat-icon" style="background: rgba(16, 185, 129, 0.2); color: var(--success);"><i data-lucide="trending-up"></i></div>
         <div class="stat-info">
            <h3>Total Cash Balance</h3>
-           <p id="dash-cash-balance">$ 0.00</p>
+           <p id="dash-cash-balance">₹ 0.00</p>
         </div>
       </div>
       <div class="card stat-card">
@@ -67,7 +99,7 @@
         <div class="stat-icon" style="background: rgba(239, 68, 68, 0.2); color: var(--danger);"><i data-lucide="arrow-down-right"></i></div>
         <div class="stat-info">
            <h3>Total Expenses</h3>
-           <p id="dash-expenses">$ 0.00</p>
+           <p id="dash-expenses">₹ 0.00</p>
         </div>
       </div>
       <div class="card stat-card">
@@ -133,36 +165,87 @@
     </div>
   </template>
 
-  <template id="tpl-bill-book">
+  <template id="tpl-inventory">
+      <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2>Inventory Management</h2>
+            <button id="new-item-btn" class="btn btn-primary"><i data-lucide="plus"></i> Add Product</button>
+          </div>
+          <div class="table-container">
+              <table class="data-table" id="inventory-table">
+                  <thead>
+                      <tr>
+                          <th>Item ID</th>
+                          <th>Product Name</th>
+                          <th>Default Price (₹)</th>
+                          <th>Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody></tbody>
+              </table>
+          </div>
+      </div>
+      <!-- Add Item Modal -->
+      <div id="inventory-modal" class="modal" style="display: none;">
+          <div class="modal-content card" style="max-width: 400px; margin: 10% auto;">
+              <h3>Add New Product</h3>
+              <div class="form-group" style="margin-top: 1rem;">
+                  <label>Product Name</label>
+                  <input type="text" id="inv-name" placeholder="e.g., Premium Widget">
+              </div>
+              <div class="form-group">
+                  <label>Default Selling Price (₹)</label>
+                  <input type="number" id="inv-price" min="0" step="1" placeholder="e.g., 500">
+              </div>
+              <div class="actions" style="margin-top: 1.5rem; justify-content: flex-end; display: flex; gap: 1rem;">
+                  <button id="inv-cancel-btn" class="btn btn-secondary">Cancel</button>
+                  <button id="inv-save-btn" class="btn btn-primary">Save Product</button>
+              </div>
+          </div>
+      </div>
+  </template>
+
+  <template id="tpl-pos">
     <div class="bill-book-layout">
         <div class="card form-panel">
-            <h2>Create New Bill</h2>
-            <div class="form-group">
-                <label>Invoice No</label>
-                <input type="text" id="bill-no" placeholder="#000001">
-            </div>
-            <div class="form-group">
-                <label>Issue Date</label>
-                <input type="date" id="bill-date">
+            <h2>Billing Counter (POS)</h2>
+            <div style="display: flex; gap: 1rem;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Invoice No</label>
+                    <input type="text" id="pos-no" placeholder="#000001">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Issue Date</label>
+                    <input type="date" id="pos-date">
+                </div>
             </div>
             <div class="form-group">
                 <label>Issued To</label>
-                <input type="text" id="bill-customer" placeholder="Customer Name">
+                <input type="text" id="pos-customer" placeholder="Customer Name">
             </div>
             
-            <h3>Items</h3>
-            <div id="bill-items-container">
-                <!-- Items injected here -->
+            <h3 style="margin-top: 1rem; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Add Items</h3>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: flex-end;">
+                <div class="form-group" style="flex: 2; margin-bottom: 0;">
+                    <label>Select Product</label>
+                    <select id="pos-product-select" class="custom-select" style="padding: 0.5rem; width: 100%;">
+                        <option value="">Select an item...</option>
+                    </select>
+                </div>
+                <button id="pos-add-item-btn" class="btn btn-secondary"><i data-lucide="plus"></i> Add</button>
             </div>
-            <button id="add-bill-item-btn" class="btn btn-secondary btn-sm" style="margin-top: 0.5rem;"><i data-lucide="plus"></i> Add Item</button>
+
+            <div id="pos-items-container">
+                <!-- Selected Items List -->
+            </div>
             
             <div class="form-group" style="margin-top: 1.5rem;">
                 <label>Note / Payment Method</label>
-                <input type="text" id="bill-note" placeholder="Cash / UPI" value="Cash / UPI">
+                <input type="text" id="pos-note" placeholder="Cash / UPI" value="Cash / UPI">
             </div>
 
             <div class="actions" style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-                <button id="generate-bill-btn" class="btn btn-primary" style="width: 100%;">Generate & Save Bill</button>
+                <button id="generate-bill-btn" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 0.75rem;">Generate & Record Bill</button>
             </div>
         </div>
         
@@ -212,12 +295,12 @@
                     </div>
                     <div class="bill-total" style="text-align: right;">
                         <span style="font-weight: bold; margin-right: 2rem;">GRAND TOTAL</span>
-                        <span id="prev-grand-total" style="font-weight: bold; font-size: 1.2rem;">$ 5000</span>
+                        <span id="prev-grand-total" style="font-weight: bold; font-size: 1.2rem;">₹ 0.00</span>
                     </div>
                 </div>
                 <div style="border-bottom: 1px solid #cbd5e1; margin-top: 1rem;"></div>
             </div>
-            <button id="print-bill-btn" class="btn btn-secondary" style="margin-top: 1rem;"><i data-lucide="printer"></i> Print / Save PDF</button>
+            <button id="print-bill-btn" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;"><i data-lucide="printer"></i> Print / Save PDF</button>
         </div>
     </div>
   </template>
@@ -264,7 +347,7 @@
                           <input type="text" id="j-debit-acc" placeholder="e.g. Cash, Rent">
                       </div>
                       <div class="form-group">
-                          <label>Amount</label>
+                          <label>Amount (₹)</label>
                           <input type="number" id="j-debit-amt" min="0" step="0.01">
                       </div>
                   </div>
@@ -275,7 +358,7 @@
                           <input type="text" id="j-credit-acc" placeholder="e.g. Sales, Capital">
                       </div>
                       <div class="form-group">
-                          <label>Amount</label>
+                          <label>Amount (₹)</label>
                           <input type="number" id="j-credit-amt" min="0" step="0.01">
                       </div>
                   </div>
@@ -329,8 +412,8 @@
                 <tfoot>
                     <tr class="total-row" style="background: var(--bg-tertiary);">
                         <td><strong>Total</strong></td>
-                        <td style="text-align: right;" id="tb-total-debit"><strong>0.00</strong></td>
-                        <td style="text-align: right;" id="tb-total-credit"><strong>0.00</strong></td>
+                        <td style="text-align: right;" id="tb-total-debit"><strong>₹ 0.00</strong></td>
+                        <td style="text-align: right;" id="tb-total-credit"><strong>₹ 0.00</strong></td>
                     </tr>
                 </tfoot>
             </table>
