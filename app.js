@@ -271,6 +271,18 @@ function initInventory() {
         if (!name || !price) { alert("Fill all fields"); return; }
         
         appState.inventory.push({ id: Date.now().toString(), name, price });
+        
+        // Auto Journal: Record consignment received
+        appState.journal.push({
+            id: Date.now() + 1,
+            date: new Date().toISOString().split('T')[0],
+            desc: `Consignment received - ${name}`,
+            debitAcc: 'Inventory / Stock A/c',
+            debitAmt: price,
+            creditAcc: 'Consignment A/c',
+            creditAmt: price
+        });
+
         document.getElementById('inventory-modal').style.display = 'none';
         document.getElementById('inv-name').value = '';
         document.getElementById('inv-price').value = '';
@@ -338,28 +350,71 @@ function initPOS() {
     function saveBillData() {
         if(posItems.length === 0) { alert('Add items to bill'); return false; }
         const billDate = document.getElementById('pos-date').value;
-        const total = posItems.reduce((sum, item) => sum + (item.qty * item.price), 0);
         const invNo = document.getElementById('pos-no').value;
+        const customer = document.getElementById('pos-customer').value;
+        const paymentMethod = document.getElementById('pos-note').value;
         
+        let totalSaleValue = 0;
+        let totalConsignmentCost = 0;
+        let totalCommission = 0;
+
+        posItems.forEach(item => {
+            const invItem = appState.inventory.find(i => i.name === item.desc);
+            const consignmentCost = invItem ? (invItem.price * item.qty) : 0;
+            const saleValue = item.price * item.qty;
+            const commission = saleValue - consignmentCost;
+
+            totalSaleValue += saleValue;
+            totalConsignmentCost += consignmentCost;
+            totalCommission += commission;
+        });
+
         appState.bills.push({
             date: billDate,
             invoiceNo: invNo,
-            customer: document.getElementById('pos-customer').value,
+            customer: customer,
             items: [...posItems],
-            total: total
+            total: totalSaleValue,
+            paymentMethod: paymentMethod
         });
-        
-        // Auto Journal (POS Sale)
+
+        const ts = Date.now();
+
+        // Entry 1: Cash received for the sale
         appState.journal.push({
-            id: Date.now(),
+            id: ts,
             date: billDate,
-            desc: `POS Sale ${invNo}`,
-            debitAcc: 'Accounts Receivable',
-            debitAmt: total,
-            creditAcc: 'Sales',
-            creditAmt: total
+            desc: `Sale to ${customer} - Invoice ${invNo}`,
+            debitAcc: 'Cash A/c',
+            debitAmt: totalSaleValue,
+            creditAcc: 'Sales A/c',
+            creditAmt: totalSaleValue
         });
-        
+
+        // Entry 2: Reduce consignment liability (what is owed back)
+        appState.journal.push({
+            id: ts + 1,
+            date: billDate,
+            desc: `Consignment sold - Invoice ${invNo}`,
+            debitAcc: 'Consignment A/c',
+            debitAmt: totalConsignmentCost,
+            creditAcc: 'Cost of Goods Sold A/c',
+            creditAmt: totalConsignmentCost
+        });
+
+        // Entry 3: Record commission/profit (if any)
+        if (totalCommission > 0.001) {
+            appState.journal.push({
+                id: ts + 2,
+                date: billDate,
+                desc: `Commission earned - Invoice ${invNo}`,
+                debitAcc: 'Sales A/c',
+                debitAmt: totalCommission,
+                creditAcc: 'Commission Income A/c',
+                creditAmt: totalCommission
+            });
+        }
+
         saveData();
         return true;
     }
@@ -383,7 +438,7 @@ function initPOS() {
 
     document.getElementById('generate-bill-btn').addEventListener('click', () => {
         if(saveBillData()) {
-            window.print();
+            generateAndPrintBill();
             resetPOS();
         }
     });
@@ -429,6 +484,122 @@ window.removePOSItem = function(index) {
     updatePOSPreview();
 }
 
+function generateAndPrintBill() {
+    // Collect bill data from current state (last bill saved)
+    const bill = appState.bills[appState.bills.length - 1];
+    if (!bill) return;
+
+    let itemRows = '';
+    let grandTotal = 0;
+    bill.items.forEach((item, idx) => {
+        const invItem = appState.inventory.find(i => i.name === item.desc);
+        const consignmentPrice = invItem ? invItem.price : item.price;
+        const salePrice = item.price;
+        const subtotal = salePrice * item.qty;
+        const commission = (salePrice - consignmentPrice) * item.qty;
+        grandTotal += subtotal;
+        itemRows += `
+            <tr>
+                <td style="padding:0.7rem 1rem;border-bottom:1px solid #e2e8f0;">${idx + 1}</td>
+                <td style="padding:0.7rem 1rem;border-bottom:1px solid #e2e8f0;">${item.desc}</td>
+                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">${item.qty}</td>
+                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${consignmentPrice.toFixed(2)}</td>
+                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${salePrice.toFixed(2)}</td>
+                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${subtotal.toFixed(2)}</td>
+                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;color:#16a34a;">&#8377; ${commission.toFixed(2)}</td>
+            </tr>`;
+    });
+
+    const printWindow = window.open('', '_blank', 'width=900,height=700');
+    printWindow.document.write(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Invoice ${bill.invoiceNo}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; font-size:13px; color:#1e293b; background:#fff; padding:2rem; }
+  .bill-wrap { max-width:800px; margin:0 auto; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1e293b; padding-bottom:1.5rem; margin-bottom:1.5rem; }
+  .company-name { font-size:1.8rem; font-weight:700; color:#1e293b; letter-spacing:0.05em; }
+  .company-sub { font-size:0.8rem; color:#64748b; margin-top:0.25rem; }
+  .invoice-label { font-size:2rem; font-weight:300; letter-spacing:0.4em; color:#1e293b; text-align:right; }
+  .invoice-meta { font-size:0.85rem; text-align:right; margin-top:0.5rem; color:#475569; }
+  .bill-to { margin-bottom:1.5rem; }
+  .bill-to h4 { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; margin-bottom:0.3rem; }
+  .bill-to p { font-size:0.95rem; font-weight:600; }
+  table { width:100%; border-collapse:collapse; margin-bottom:1.5rem; }
+  thead tr { background:#f1f5f9; }
+  th { padding:0.75rem 1rem; text-align:left; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:#64748b; border-top:1px solid #cbd5e1; border-bottom:1px solid #cbd5e1; }
+  th.right, td.right { text-align:right; }
+  .total-row { display:flex; justify-content:flex-end; margin-top:1rem; }
+  .total-box { background:#1e293b; color:white; padding:1rem 1.5rem; border-radius:6px; text-align:right; }
+  .total-box .label { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; }
+  .total-box .amount { font-size:1.5rem; font-weight:700; margin-top:0.3rem; }
+  .footer { margin-top:2rem; border-top:1px solid #e2e8f0; padding-top:1rem; display:flex; justify-content:space-between; font-size:0.8rem; color:#64748b; }
+  .payment-badge { display:inline-block; background:#dcfce7; color:#16a34a; padding:0.3rem 0.8rem; border-radius:999px; font-size:0.75rem; font-weight:600; }
+  @media print { body { padding:0; } @page { margin:1.5cm; } }
+</style>
+</head>
+<body>
+<div class="bill-wrap">
+  <div class="header">
+    <div>
+      <div class="company-name">UdaanPro</div>
+      <div class="company-sub">Smart Retail &amp; Accounting</div>
+    </div>
+    <div>
+      <div class="invoice-label">INVOICE</div>
+      <div class="invoice-meta">
+        <strong>Invoice No:</strong> ${bill.invoiceNo}<br>
+        <strong>Date:</strong> ${bill.date}
+      </div>
+    </div>
+  </div>
+
+  <div class="bill-to">
+    <h4>Billed To</h4>
+    <p>${bill.customer || 'Customer'}</p>
+    <span class="payment-badge">${bill.paymentMethod || 'Cash'}</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Description</th>
+        <th class="right">Qty</th>
+        <th class="right">Consignment Price</th>
+        <th class="right">Sale Price</th>
+        <th class="right">Subtotal</th>
+        <th class="right">Commission</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${itemRows}
+    </tbody>
+  </table>
+
+  <div class="total-row">
+    <div class="total-box">
+      <div class="label">Grand Total</div>
+      <div class="amount">&#8377; ${grandTotal.toFixed(2)}</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>Thank you for your business!</div>
+    <div>Generated by UdaanPro</div>
+  </div>
+</div>
+<script>window.onload = function(){ window.print(); window.close(); }</scr` + `ipt>
+</body>
+</html>`);
+    printWindow.document.close();
+}
+
 function updatePOSPreview() {
     const date = document.getElementById('pos-date')?.value || new Date().toISOString().split('T')[0];
     const invoiceNo = document.getElementById('pos-no')?.value || '#000001';
@@ -450,8 +621,8 @@ function updatePOSPreview() {
                     <td style="padding: 1rem;">${idx + 1}</td>
                     <td style="padding: 1rem;">${item.desc}</td>
                     <td style="padding: 1rem; text-align: right;">${item.qty}</td>
-                    <td style="padding: 1rem; text-align: right;">₹ ${item.price.toFixed(2)}</td>
-                    <td style="padding: 1rem; text-align: right;">₹ ${subtotal.toFixed(2)}</td>
+                    <td style="padding: 1rem; text-align: right;">&#8377; ${item.price.toFixed(2)}</td>
+                    <td style="padding: 1rem; text-align: right;">&#8377; ${subtotal.toFixed(2)}</td>
                 </tr>
             `;
         });
