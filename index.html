@@ -183,6 +183,7 @@
                       <tr>
                           <th>Item ID</th>
                           <th>Product Name</th>
+                          <th>Quantity</th>
                           <th>Default Price (₹)</th>
                           <th>Actions</th>
                       </tr>
@@ -198,6 +199,10 @@
               <div class="form-group" style="margin-top: 1rem;">
                   <label>Product Name</label>
                   <input type="text" id="inv-name" placeholder="e.g., Premium Widget">
+              </div>
+              <div class="form-group">
+                  <label>Quantity</label>
+                  <input type="number" id="inv-qty" min="1" step="1" value="1">
               </div>
               <div class="form-group">
                   <label>Default Selling Price (₹)</label>
@@ -218,11 +223,11 @@
             <div class="split-layout">
                 <div class="form-group">
                     <label>Invoice No</label>
-                    <input type="text" id="pos-no" placeholder="#000001">
+                    <input type="text" id="pos-no" placeholder="#000001" readonly style="background-color: var(--bg-tertiary); cursor: not-allowed;">
                 </div>
                 <div class="form-group">
                     <label>Issue Date</label>
-                    <input type="date" id="pos-date">
+                    <input type="date" id="pos-date" readonly style="background-color: var(--bg-tertiary); cursor: not-allowed;">
                 </div>
             </div>
             <div class="form-group">
@@ -237,6 +242,10 @@
                     <select id="pos-product-select" class="custom-select" style="padding: 0.5rem; width: 100%;">
                         <option value="">Select an item...</option>
                     </select>
+                </div>
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <label>Sale Price</label>
+                    <input type="number" id="pos-sale-price" placeholder="e.g. 600" style="padding: 0.5rem; width: 100%;">
                 </div>
                 <button id="pos-add-item-btn" class="btn btn-secondary"><i data-lucide="plus"></i> Add</button>
             </div>

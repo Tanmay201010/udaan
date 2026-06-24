@@ -268,24 +268,28 @@ function initInventory() {
     document.getElementById('inv-save-btn').addEventListener('click', () => {
         const name = document.getElementById('inv-name').value.trim();
         const price = Number(document.getElementById('inv-price').value);
+        const qty = Number(document.getElementById('inv-qty').value) || 1;
         if (!name || !price) { alert("Fill all fields"); return; }
         
-        appState.inventory.push({ id: Date.now().toString(), name, price });
+        appState.inventory.push({ id: Date.now().toString(), name, price, qty });
         
+        const totalValue = price * qty;
+
         // Auto Journal: Record consignment received
         appState.journal.push({
             id: Date.now() + 1,
             date: new Date().toISOString().split('T')[0],
-            desc: `Consignment received - ${name}`,
+            desc: `Consignment received - ${name} (Qty: ${qty})`,
             debitAcc: 'Inventory / Stock A/c',
-            debitAmt: price,
+            debitAmt: totalValue,
             creditAcc: 'Consignment A/c',
-            creditAmt: price
+            creditAmt: totalValue
         });
 
         document.getElementById('inventory-modal').style.display = 'none';
         document.getElementById('inv-name').value = '';
         document.getElementById('inv-price').value = '';
+        document.getElementById('inv-qty').value = '1';
         renderInventoryTable();
         saveData();
     });
@@ -297,10 +301,12 @@ function renderInventoryTable() {
     tbody.innerHTML = '';
     
     appState.inventory.forEach(item => {
+        const displayQty = item.qty || 1;
         tbody.innerHTML += `
             <tr>
                 <td>${item.id}</td>
                 <td><strong>${item.name}</strong></td>
+                <td>${displayQty}</td>
                 <td>₹ ${item.price.toFixed(2)}</td>
                 <td><button class="btn btn-secondary btn-sm" onclick="deleteInventoryItem('${item.id}')"><i data-lucide="trash"></i></button></td>
             </tr>
@@ -325,11 +331,13 @@ function initPOS() {
     // Populate dropdown
     const select = document.getElementById('pos-product-select');
     appState.inventory.forEach(item => {
-        select.innerHTML += `<option value="${item.id}">${item.name} - ₹${item.price}</option>`;
+        select.innerHTML += `<option value="${item.id}">${item.name} - Cost: ₹${item.price}</option>`;
     });
 
-    // Date default
+    // Date and Invoice default
     document.getElementById('pos-date').value = new Date().toISOString().split('T')[0];
+    const nextInvNo = (appState.bills.length + 1).toString().padStart(6, '0');
+    document.getElementById('pos-no').value = `#${nextInvNo}`;
 
     // Listeners for preview
     ['pos-date', 'pos-no', 'pos-customer', 'pos-note'].forEach(id => {
@@ -339,10 +347,14 @@ function initPOS() {
 
     document.getElementById('pos-add-item-btn').addEventListener('click', () => {
         const selId = select.value;
-        if (!selId) return;
+        const salePrice = Number(document.getElementById('pos-sale-price').value);
+        if (!selId) { alert("Please select a product"); return; }
+        if (!salePrice || salePrice <= 0) { alert("Please enter a valid Sale Price"); return; }
+        
         const invItem = appState.inventory.find(i => i.id === selId);
         
-        posItems.push({ id: Date.now(), desc: invItem.name, qty: 1, price: invItem.price });
+        posItems.push({ id: Date.now(), desc: invItem.name, qty: 1, price: salePrice });
+        document.getElementById('pos-sale-price').value = ''; // clear price input
         renderPOSItems();
         updatePOSPreview();
     });
@@ -380,40 +392,16 @@ function initPOS() {
 
         const ts = Date.now();
 
-        // Entry 1: Cash received for the sale
+        // Entry 1: Cash received — Consignment A/c credited (full sale proceeds)
         appState.journal.push({
             id: ts,
             date: billDate,
             desc: `Sale to ${customer} - Invoice ${invNo}`,
             debitAcc: 'Cash A/c',
             debitAmt: totalSaleValue,
-            creditAcc: 'Sales A/c',
+            creditAcc: 'Consignment A/c',
             creditAmt: totalSaleValue
         });
-
-        // Entry 2: Reduce consignment liability (what is owed back)
-        appState.journal.push({
-            id: ts + 1,
-            date: billDate,
-            desc: `Consignment sold - Invoice ${invNo}`,
-            debitAcc: 'Consignment A/c',
-            debitAmt: totalConsignmentCost,
-            creditAcc: 'Cost of Goods Sold A/c',
-            creditAmt: totalConsignmentCost
-        });
-
-        // Entry 3: Record commission/profit (if any)
-        if (totalCommission > 0.001) {
-            appState.journal.push({
-                id: ts + 2,
-                date: billDate,
-                desc: `Commission earned - Invoice ${invNo}`,
-                debitAcc: 'Sales A/c',
-                debitAmt: totalCommission,
-                creditAcc: 'Commission Income A/c',
-                creditAmt: totalCommission
-            });
-        }
 
         saveData();
         return true;
