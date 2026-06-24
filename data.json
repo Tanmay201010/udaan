@@ -55,11 +55,5 @@
       "creditAmt": 1700
     }
   ],
-  "inventory": [
-    {
-      "id": "1782326248907",
-      "name": "kj",
-      "price": 900
-    }
-  ]
+  "inventory": []
 }
