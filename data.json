@@ -67,6 +67,27 @@
         }
       ],
       "total": 500
+    },
+    {
+      "date": "2026-06-24",
+      "invoiceNo": "",
+      "customer": "",
+      "items": [
+        {
+          "id": 1782328717846,
+          "desc": "key chain",
+          "qty": 1,
+          "price": 500
+        },
+        {
+          "id": 1782328719553,
+          "desc": "Bag",
+          "qty": 1,
+          "price": 1000
+        }
+      ],
+      "total": 1500,
+      "paymentMethod": "Cash"
     }
   ],
   "journal": [
@@ -105,6 +126,24 @@
       "debitAmt": 500,
       "creditAcc": "Sales",
       "creditAmt": 500
+    },
+    {
+      "id": 1782328722579,
+      "date": "2026-06-24",
+      "desc": "Sale to  - Invoice ",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 1500,
+      "creditAcc": "Sales A/c",
+      "creditAmt": 1500
+    },
+    {
+      "id": 1782328722580,
+      "date": "2026-06-24",
+      "desc": "Consignment sold - Invoice ",
+      "debitAcc": "Consignment A/c",
+      "debitAmt": 1500,
+      "creditAcc": "Cost of Goods Sold A/c",
+      "creditAmt": 1500
     }
   ],
   "inventory": [
