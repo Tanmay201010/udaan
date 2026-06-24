@@ -118,7 +118,10 @@ async function fetchData() {
             return;
         }
 
-        if (!res.ok) throw new Error('Failed to fetch data');
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.message || 'Failed to fetch data');
+        }
 
         const data = await res.json();
         currentSha = data.sha;
@@ -132,8 +135,9 @@ async function fetchData() {
         updateSyncStatus('Synced', 'synced');
         refreshCurrentView();
     } catch (e) {
-        console.error(e);
+        console.error("Fetch Data Error:", e);
         updateSyncStatus('Sync Error', 'error');
+        alert(`GitHub Fetch Error: ${e.message}\n\nPlease check your configuration in the Settings tab.`);
     }
 }
 
@@ -153,14 +157,18 @@ async function saveData() {
             body: JSON.stringify(body)
         });
 
-        if (!res.ok) throw new Error('Failed to save data');
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.message || 'Failed to save data');
+        }
         const data = await res.json();
         currentSha = data.content.sha;
         updateSyncStatus('Synced', 'synced');
         refreshCurrentView();
     } catch (e) {
-        console.error(e);
+        console.error("Save Data Error:", e);
         updateSyncStatus('Save Error', 'error');
+        alert(`GitHub Sync Error: ${e.message}\n\nPlease check your Settings:\n1. Your PAT is valid and has 'repo' or 'contents: write' permissions.\n2. The Repository Owner and Name are correct.\n3. The repository is not completely empty (it must have at least one branch/commit, e.g. initialize it with a README).`);
     }
 }
 
