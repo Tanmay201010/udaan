@@ -7,7 +7,7 @@ let appState = {
 
 // Local settings & auth
 let settings = JSON.parse(localStorage.getItem('accopro_settings') || '{"pat":"","owner":"","repo":"","path":"data.json"}');
-let currentRole = localStorage.getItem('accopro_role') || null; // 'sales' or 'finance'
+let currentRole = null; // Removed localStorage persistence so it asks for login on every refresh
 let currentSha = null;
 
 // Initialize App
@@ -43,7 +43,7 @@ function initLogin() {
 }
 
 function finishLogin() {
-    localStorage.setItem('accopro_role', currentRole);
+    // No longer saving to localStorage
     document.getElementById('login-overlay').style.display = 'none';
     startApp();
 }
@@ -291,6 +291,7 @@ function initPOS() {
     // Listeners for preview
     ['pos-date', 'pos-no', 'pos-customer', 'pos-note'].forEach(id => {
         document.getElementById(id).addEventListener('input', updatePOSPreview);
+        document.getElementById(id).addEventListener('change', updatePOSPreview);
     });
 
     document.getElementById('pos-add-item-btn').addEventListener('click', () => {
@@ -329,10 +330,9 @@ function initPOS() {
         });
         
         saveData();
-        alert('Bill generated and Journal entries recorded!');
+        window.print();
     });
 
-    document.getElementById('print-bill-btn').addEventListener('click', () => window.print());
     updatePOSPreview();
 }
 
