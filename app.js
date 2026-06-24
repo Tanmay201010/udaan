@@ -280,9 +280,9 @@ function initInventory() {
             id: Date.now() + 1,
             date: new Date().toISOString().split('T')[0],
             desc: `Consignment received - ${name} (Qty: ${qty})`,
-            debitAcc: 'Inventory / Stock A/c',
+            debitAcc: 'Consignment A/c',
             debitAmt: totalValue,
-            creditAcc: 'Consignment A/c',
+            creditAcc: 'Consignor A/c',
             creditAmt: totalValue
         });
 
@@ -402,6 +402,32 @@ function initPOS() {
             creditAcc: 'Consignment A/c',
             creditAmt: totalSaleValue
         });
+
+        // Entry 2a: Record commission/profit (Credit Commission Income A/c)
+        if (totalCommission > 0.001) {
+            appState.journal.push({
+                id: ts + 1,
+                date: billDate,
+                desc: `Commission earned - Invoice ${invNo}`,
+                debitAcc: 'Consignor A/c',
+                debitAmt: totalCommission,
+                creditAcc: 'Commission Income A/c',
+                creditAmt: totalCommission
+            });
+        }
+
+        // Entry 2b: Pay Consignor for the inventory cost (Credit Cash A/c)
+        if (totalConsignmentCost > 0.001) {
+            appState.journal.push({
+                id: ts + 2,
+                date: billDate,
+                desc: `Payment to Consignor - Invoice ${invNo}`,
+                debitAcc: 'Consignor A/c',
+                debitAmt: totalConsignmentCost,
+                creditAcc: 'Cash A/c',
+                creditAmt: totalConsignmentCost
+            });
+        }
 
         saveData();
         return true;
