@@ -1,6 +1,31 @@
 {
-  "bills": [],
-  "journal": [],
+  "bills": [
+    {
+      "date": "2026-06-24",
+      "invoiceNo": "",
+      "customer": "Karun",
+      "items": [
+        {
+          "id": 1782326227758,
+          "desc": "sd",
+          "qty": 1,
+          "price": 800
+        }
+      ],
+      "total": 800
+    }
+  ],
+  "journal": [
+    {
+      "id": 1782326229109,
+      "date": "2026-06-24",
+      "desc": "POS Sale ",
+      "debitAcc": "Accounts Receivable",
+      "debitAmt": 800,
+      "creditAcc": "Sales",
+      "creditAmt": 800
+    }
+  ],
   "inventory": [
     {
       "id": "1782326211013",
