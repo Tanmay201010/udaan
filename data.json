@@ -55,5 +55,11 @@
       "creditAmt": 1700
     }
   ],
-  "inventory": []
+  "inventory": [
+    {
+      "id": "1782326893923",
+      "name": "key chain",
+      "price": 500
+    }
+  ]
 }
