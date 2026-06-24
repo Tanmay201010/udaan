@@ -69,11 +69,5 @@
       "creditAmt": 400
     }
   ],
-  "inventory": [
-    {
-      "id": "1782329959657",
-      "name": "bag",
-      "price": 1000
-    }
-  ]
+  "inventory": []
 }
