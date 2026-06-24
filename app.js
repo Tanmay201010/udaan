@@ -327,8 +327,8 @@ function initPOS() {
         updatePOSPreview();
     });
 
-    document.getElementById('generate-bill-btn').addEventListener('click', () => {
-        if(posItems.length === 0) { alert('Add items to bill'); return; }
+    function saveBillData() {
+        if(posItems.length === 0) { alert('Add items to bill'); return false; }
         const billDate = document.getElementById('pos-date').value;
         const total = posItems.reduce((sum, item) => sum + (item.qty * item.price), 0);
         const invNo = document.getElementById('pos-no').value;
@@ -353,8 +353,42 @@ function initPOS() {
         });
         
         saveData();
-        window.print();
+        return true;
+    }
+
+    function resetPOS() {
+        posItems = [];
+        document.getElementById('pos-customer').value = '';
+        
+        // Increment invoice number slightly intelligently
+        let currentInv = document.getElementById('pos-no').value;
+        let numMatch = currentInv.match(/\d+$/);
+        if (numMatch) {
+            let nextNum = parseInt(numMatch[0]) + 1;
+            let nextNumStr = nextNum.toString().padStart(numMatch[0].length, '0');
+            document.getElementById('pos-no').value = currentInv.replace(/\d+$/, nextNumStr);
+        }
+        
+        renderPOSItems();
+        updatePOSPreview();
+    }
+
+    document.getElementById('generate-bill-btn').addEventListener('click', () => {
+        if(saveBillData()) {
+            window.print();
+            resetPOS();
+        }
     });
+
+    const historyBtn = document.getElementById('save-history-btn');
+    if (historyBtn) {
+        historyBtn.addEventListener('click', () => {
+            if(saveBillData()) {
+                alert('Bill saved to history and journal recorded!');
+                resetPOS();
+            }
+        });
+    }
 
     updatePOSPreview();
 }
