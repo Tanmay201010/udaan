@@ -88,6 +88,27 @@
       ],
       "total": 1500,
       "paymentMethod": "Cash"
+    },
+    {
+      "date": "2026-06-24",
+      "invoiceNo": "",
+      "customer": "Karun",
+      "items": [
+        {
+          "id": 1782328732136,
+          "desc": "key chain",
+          "qty": 1,
+          "price": 500
+        },
+        {
+          "id": 1782328734011,
+          "desc": "Bag",
+          "qty": 1,
+          "price": 1000
+        }
+      ],
+      "total": 1500,
+      "paymentMethod": "UPI"
     }
   ],
   "journal": [
@@ -138,6 +159,24 @@
     },
     {
       "id": 1782328722580,
+      "date": "2026-06-24",
+      "desc": "Consignment sold - Invoice ",
+      "debitAcc": "Consignment A/c",
+      "debitAmt": 1500,
+      "creditAcc": "Cost of Goods Sold A/c",
+      "creditAmt": 1500
+    },
+    {
+      "id": 1782328735079,
+      "date": "2026-06-24",
+      "desc": "Sale to Karun - Invoice ",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 1500,
+      "creditAcc": "Sales A/c",
+      "creditAmt": 1500
+    },
+    {
+      "id": 1782328735080,
       "date": "2026-06-24",
       "desc": "Consignment sold - Invoice ",
       "debitAcc": "Consignment A/c",
