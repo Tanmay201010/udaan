@@ -59,7 +59,7 @@ a {
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
-  z-index: 10;
+  z-index: 100;
 }
 
 .logo {
@@ -414,4 +414,77 @@ a {
   color: var(--text-primary);
   font-family: inherit;
   font-size: 0.95rem;
+}
+
+/* Responsive Styles */
+.split-layout, .j-split-layout {
+  display: flex;
+  gap: 1rem;
+}
+.split-layout > *, .j-split-layout > * {
+  flex: 1;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 90;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    height: 100vh;
+    transition: left 0.3s ease;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .sidebar-overlay.open {
+    display: block;
+  }
+  
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  
+  .split-layout, .j-split-layout {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .view-container {
+    padding: 1rem;
+  }
+  
+  .card {
+    padding: 1rem;
+  }
+
+  .login-card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+  
+  .fs-layout {
+    gap: 1rem;
+  }
 }

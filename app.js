@@ -79,6 +79,29 @@ function startApp() {
     document.getElementById('force-sync-btn').addEventListener('click', () => {
         if (settings.pat) fetchData();
     });
+
+    // Mobile Sidebar Toggle
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+
+    menuBtn.addEventListener('click', () => {
+        sidebar.classList.add('open');
+        overlay.classList.add('open');
+    });
+
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+    });
+
+    // Close sidebar on navigation click
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        });
+    });
 }
 
 // --- GitHub Sync Logic ---

@@ -32,6 +32,7 @@
   </div>
 
   <div id="app" class="app-container" style="display: none;">
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
     <nav class="sidebar">
       <div class="logo">
          <i data-lucide="wallet"></i>
@@ -66,7 +67,12 @@
     </nav>
     <main class="main-content">
       <header class="topbar">
-        <h1 id="page-title">Dashboard</h1>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button id="mobile-menu-btn" class="mobile-menu-btn" style="background: transparent; border: none; color: var(--text-primary); cursor: pointer; display: none;">
+                <i data-lucide="menu"></i>
+            </button>
+            <h1 id="page-title">Dashboard</h1>
+        </div>
         <div class="sync-status" id="sync-status">
             <span class="status-indicator"></span>
             <span id="sync-status-text">Not configured</span>
@@ -209,12 +215,12 @@
     <div class="bill-book-layout">
         <div class="card form-panel">
             <h2>Billing Counter (POS)</h2>
-            <div style="display: flex; gap: 1rem;">
-                <div class="form-group" style="flex: 1;">
+            <div class="split-layout">
+                <div class="form-group">
                     <label>Invoice No</label>
                     <input type="text" id="pos-no" placeholder="#000001">
                 </div>
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group">
                     <label>Issue Date</label>
                     <input type="date" id="pos-date">
                 </div>
@@ -341,8 +347,8 @@
                   <label>Description (Narration)</label>
                   <input type="text" id="j-desc">
               </div>
-              <div class="j-split-layout" style="display: flex; gap: 1rem;">
-                  <div class="j-col" style="flex: 1;">
+              <div class="j-split-layout">
+                  <div class="j-col">
                       <h4>Debit</h4>
                       <div class="form-group">
                           <label>Account</label>
@@ -353,7 +359,7 @@
                           <input type="number" id="j-debit-amt" min="0" step="0.01">
                       </div>
                   </div>
-                  <div class="j-col" style="flex: 1;">
+                  <div class="j-col">
                       <h4>Credit</h4>
                       <div class="form-group">
                           <label>Account</label>
