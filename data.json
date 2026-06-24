@@ -1,5 +1,21 @@
 {
-  "bills": [],
+  "bills": [
+    {
+      "date": "2026-06-24",
+      "invoiceNo": "#000001",
+      "customer": "Karun",
+      "items": [
+        {
+          "id": 1782331443468,
+          "desc": "Key chain",
+          "qty": 1,
+          "price": 1300
+        }
+      ],
+      "total": 1300,
+      "paymentMethod": "Cash"
+    }
+  ],
   "journal": [
     {
       "id": 1782331422463,
@@ -18,6 +34,33 @@
       "debitAmt": 9000,
       "creditAcc": "Consignor A/c",
       "creditAmt": 9000
+    },
+    {
+      "id": 1782331444543,
+      "date": "2026-06-24",
+      "desc": "Sale to Karun - Invoice #000001",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 1300,
+      "creditAcc": "Consignment A/c",
+      "creditAmt": 1300
+    },
+    {
+      "id": 1782331444544,
+      "date": "2026-06-24",
+      "desc": "Commission earned - Invoice #000001",
+      "debitAcc": "Consignor A/c",
+      "debitAmt": 300,
+      "creditAcc": "Commission Income A/c",
+      "creditAmt": 300
+    },
+    {
+      "id": 1782331444545,
+      "date": "2026-06-24",
+      "desc": "Payment to Consignor - Invoice #000001",
+      "debitAcc": "Consignor A/c",
+      "debitAmt": 1000,
+      "creditAcc": "Cash A/c",
+      "creditAmt": 1000
     }
   ],
   "inventory": [
