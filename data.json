@@ -14,6 +14,21 @@
       ],
       "total": 1300,
       "paymentMethod": "Cash"
+    },
+    {
+      "date": "2026-06-24",
+      "invoiceNo": "#000002",
+      "customer": "pankaj",
+      "items": [
+        {
+          "id": 1782331474697,
+          "desc": "Bag",
+          "qty": 1,
+          "price": 900
+        }
+      ],
+      "total": 900,
+      "paymentMethod": "Cash"
     }
   ],
   "journal": [
@@ -61,6 +76,24 @@
       "debitAmt": 1000,
       "creditAcc": "Cash A/c",
       "creditAmt": 1000
+    },
+    {
+      "id": 1782331476189,
+      "date": "2026-06-24",
+      "desc": "Sale to pankaj - Invoice #000002",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 900,
+      "creditAcc": "Consignment A/c",
+      "creditAmt": 900
+    },
+    {
+      "id": 1782331476191,
+      "date": "2026-06-24",
+      "desc": "Payment to Consignor - Invoice #000002",
+      "debitAcc": "Consignor A/c",
+      "debitAmt": 900,
+      "creditAcc": "Cash A/c",
+      "creditAmt": 900
     }
   ],
   "inventory": [
