@@ -63,12 +63,5 @@
       "creditAmt": 1000
     }
   ],
-  "inventory": [
-    {
-      "id": "1782397721483",
-      "name": "key",
-      "price": 200,
-      "qty": 1
-    }
-  ]
+  "inventory": []
 }
