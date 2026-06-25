@@ -1,6 +1,50 @@
 {
-  "bills": [],
-  "journal": [],
+  "bills": [
+    {
+      "date": "2026-06-25",
+      "invoiceNo": "#000001",
+      "customer": "Karun",
+      "items": [
+        {
+          "id": 1782404579812,
+          "desc": "key chain",
+          "qty": 1,
+          "price": 200
+        }
+      ],
+      "total": 200,
+      "paymentMethod": "Cash"
+    }
+  ],
+  "journal": [
+    {
+      "id": 1782404580548,
+      "date": "2026-06-25",
+      "desc": "Sale to Karun - Invoice #000001",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 200,
+      "creditAcc": "Ravi traders A/c",
+      "creditAmt": 200
+    },
+    {
+      "id": 1782404580549,
+      "date": "2026-06-25",
+      "desc": "Commission earned - Invoice #000001",
+      "debitAcc": "Ravi traders A/c",
+      "debitAmt": 50,
+      "creditAcc": "Commission Income A/c",
+      "creditAmt": 50
+    },
+    {
+      "id": 1782404580550,
+      "date": "2026-06-25",
+      "desc": "Payment to Consignor - Invoice #000001",
+      "debitAcc": "Ravi traders A/c",
+      "debitAmt": 150,
+      "creditAcc": "Cash A/c",
+      "creditAmt": 150
+    }
+  ],
   "inventory": [
     {
       "id": "1782404538653",
