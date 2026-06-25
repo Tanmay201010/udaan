@@ -6,7 +6,7 @@ let appState = {
 };
 
 // Local settings & auth
-let settings = JSON.parse(localStorage.getItem('accopro_settings') || '{"pat":"","owner":"","repo":"","path":"data.json"}');
+let settings = JSON.parse(localStorage.getItem('accopro_settings') || '{"pat":"","owner":"Tanmay201010","repo":"udaan","path":"data.json"}');
 let currentRole = null; // Removed localStorage persistence so it asks for login on every refresh
 let currentSha = null;
 
@@ -267,27 +267,18 @@ function initInventory() {
     
     document.getElementById('inv-save-btn').addEventListener('click', () => {
         const name = document.getElementById('inv-name').value.trim();
+        const consignor = document.getElementById('inv-consignor').value.trim();
         const price = Number(document.getElementById('inv-price').value);
         const qty = Number(document.getElementById('inv-qty').value) || 1;
-        if (!name || !price) { alert("Fill all fields"); return; }
+        if (!name || !price || !consignor) { alert("Fill all fields including Consignor Name"); return; }
         
-        appState.inventory.push({ id: Date.now().toString(), name, price, qty });
-        
-        const totalValue = price * qty;
+        appState.inventory.push({ id: Date.now().toString(), name, consignor, price, qty });
 
-        // Auto Journal: Record consignment received
-        appState.journal.push({
-            id: Date.now() + 1,
-            date: new Date().toISOString().split('T')[0],
-            desc: `Consignment received - ${name} (Qty: ${qty})`,
-            debitAcc: 'Consignment A/c',
-            debitAmt: totalValue,
-            creditAcc: 'Consignor A/c',
-            creditAmt: totalValue
-        });
+        // NO journal entry when adding to inventory
 
         document.getElementById('inventory-modal').style.display = 'none';
         document.getElementById('inv-name').value = '';
+        document.getElementById('inv-consignor').value = '';
         document.getElementById('inv-price').value = '';
         document.getElementById('inv-qty').value = '1';
         renderInventoryTable();
@@ -304,8 +295,8 @@ function renderInventoryTable() {
         const displayQty = item.qty || 1;
         tbody.innerHTML += `
             <tr>
-                <td>${item.id}</td>
                 <td><strong>${item.name}</strong></td>
+                <td>${item.consignor || '-'}</td>
                 <td>${displayQty}</td>
                 <td>₹ ${item.price.toFixed(2)}</td>
                 <td><button class="btn btn-secondary btn-sm" onclick="deleteInventoryItem('${item.id}')"><i data-lucide="trash"></i></button></td>
@@ -369,16 +360,25 @@ function initPOS() {
         let totalSaleValue = 0;
         let totalConsignmentCost = 0;
         let totalCommission = 0;
+        // Group entries by consignor for proper accounting
+        const byConsignor = {};
 
         posItems.forEach(item => {
             const invItem = appState.inventory.find(i => i.name === item.desc);
-            const consignmentCost = invItem ? (invItem.price * item.qty) : 0;
+            const consignorName = (invItem && invItem.consignor) ? invItem.consignor + ' A/c' : 'Consignor A/c';
+            const inventoryPrice = invItem ? invItem.price : item.price;
             const saleValue = item.price * item.qty;
-            const commission = saleValue - consignmentCost;
+            const inventoryCost = inventoryPrice * item.qty;
+            const commission = saleValue - inventoryCost;
 
             totalSaleValue += saleValue;
-            totalConsignmentCost += consignmentCost;
+            totalConsignmentCost += inventoryCost;
             totalCommission += commission;
+
+            if (!byConsignor[consignorName]) byConsignor[consignorName] = { saleValue: 0, cost: 0, commission: 0 };
+            byConsignor[consignorName].saleValue += saleValue;
+            byConsignor[consignorName].cost += inventoryCost;
+            byConsignor[consignorName].commission += commission;
         });
 
         appState.bills.push({
@@ -390,44 +390,46 @@ function initPOS() {
             paymentMethod: paymentMethod
         });
 
-        const ts = Date.now();
+        let ts = Date.now();
 
-        // Entry 1: Cash received — Consignment A/c credited (full sale proceeds)
-        appState.journal.push({
-            id: ts,
-            date: billDate,
-            desc: `Sale to ${customer} - Invoice ${invNo}`,
-            debitAcc: 'Cash A/c',
-            debitAmt: totalSaleValue,
-            creditAcc: 'Consignment A/c',
-            creditAmt: totalSaleValue
+        Object.entries(byConsignor).forEach(([consignorAcc, vals]) => {
+            // Entry 1: Cash A/c Dr, Consignor A/c Cr (full sale value)
+            appState.journal.push({
+                id: ts++,
+                date: billDate,
+                desc: `Sale to ${customer} - Invoice ${invNo}`,
+                debitAcc: 'Cash A/c',
+                debitAmt: vals.saleValue,
+                creditAcc: consignorAcc,
+                creditAmt: vals.saleValue
+            });
+
+            // Entry 2: Commission - Consignor A/c Dr, Commission Income A/c Cr
+            if (vals.commission > 0.001) {
+                appState.journal.push({
+                    id: ts++,
+                    date: billDate,
+                    desc: `Commission earned - Invoice ${invNo}`,
+                    debitAcc: consignorAcc,
+                    debitAmt: vals.commission,
+                    creditAcc: 'Commission Income A/c',
+                    creditAmt: vals.commission
+                });
+            }
+
+            // Entry 3: Payment to Consignor - Consignor A/c Dr, Cash A/c Cr (inventory cost)
+            if (vals.cost > 0.001) {
+                appState.journal.push({
+                    id: ts++,
+                    date: billDate,
+                    desc: `Payment to Consignor - Invoice ${invNo}`,
+                    debitAcc: consignorAcc,
+                    debitAmt: vals.cost,
+                    creditAcc: 'Cash A/c',
+                    creditAmt: vals.cost
+                });
+            }
         });
-
-        // Entry 2a: Record commission/profit (Credit Commission Income A/c)
-        if (totalCommission > 0.001) {
-            appState.journal.push({
-                id: ts + 1,
-                date: billDate,
-                desc: `Commission earned - Invoice ${invNo}`,
-                debitAcc: 'Consignor A/c',
-                debitAmt: totalCommission,
-                creditAcc: 'Commission Income A/c',
-                creditAmt: totalCommission
-            });
-        }
-
-        // Entry 2b: Pay Consignor for the inventory cost (Credit Cash A/c)
-        if (totalConsignmentCost > 0.001) {
-            appState.journal.push({
-                id: ts + 2,
-                date: billDate,
-                desc: `Payment to Consignor - Invoice ${invNo}`,
-                debitAcc: 'Consignor A/c',
-                debitAmt: totalConsignmentCost,
-                creditAcc: 'Cash A/c',
-                creditAmt: totalConsignmentCost
-            });
-        }
 
         saveData();
         return true;
@@ -524,9 +526,9 @@ function generateAndPrintBill() {
             </tr>`;
     });
 
-    const printWindow = window.open('', '_blank', 'width=900,height=700');
-    printWindow.document.write(`
-<!DOCTYPE html>
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+    const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -608,11 +610,30 @@ function generateAndPrintBill() {
     <div>Generated by UdaanPro</div>
   </div>
 </div>
-<script>window.onload = function(){ window.print(); window.close(); }</scr` + `ipt>
+${isMobile ? '' : `<script>window.onload = function(){ window.print(); window.close(); }</scr` + `ipt>`}
 </body>
-</html>`);
-    printWindow.document.close();
+</html>`;
+
+    if (isMobile) {
+        // On mobile: download as HTML file directly
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Invoice_${bill.invoiceNo.replace('#', '')}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    } else {
+        const printWindow = window.open('', '_blank', 'width=900,height=700');
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
+    }
 }
+    });
+
+
 
 function updatePOSPreview() {
     const date = document.getElementById('pos-date')?.value || new Date().toISOString().split('T')[0];
@@ -692,12 +713,47 @@ function initJournal() {
         if (e.target.closest('#new-journal-btn')) {
             document.getElementById('journal-modal').style.display = 'block';
             document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('journal-modal-title').innerText = 'New Journal Entry';
+            document.getElementById('j-edit-id').value = '';
+            document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('j-desc').value = '';
+            document.getElementById('j-debit-acc').value = '';
+            document.getElementById('j-debit-amt').value = '';
+            document.getElementById('j-credit-acc').value = '';
+            document.getElementById('j-credit-amt').value = '';
         }
         if (e.target.closest('#j-cancel-btn')) {
             document.getElementById('journal-modal').style.display = 'none';
         }
         if (e.target.closest('#j-save-btn')) {
             saveJournalEntry();
+        }
+        if (e.target.closest('#export-journal-btn')) {
+            exportJournalToExcel();
+        }
+        // Edit button in table
+        if (e.target.closest('.j-edit-btn')) {
+            const id = Number(e.target.closest('.j-edit-btn').dataset.id);
+            const entry = appState.journal.find(j => j.id === id);
+            if (!entry) return;
+            document.getElementById('j-edit-id').value = id;
+            document.getElementById('j-date').value = entry.date;
+            document.getElementById('j-desc').value = entry.desc;
+            document.getElementById('j-debit-acc').value = entry.debitAcc;
+            document.getElementById('j-debit-amt').value = entry.debitAmt;
+            document.getElementById('j-credit-acc').value = entry.creditAcc;
+            document.getElementById('j-credit-amt').value = entry.creditAmt;
+            document.getElementById('journal-modal-title').innerText = 'Edit Journal Entry';
+            document.getElementById('journal-modal').style.display = 'block';
+        }
+        // Delete button in table
+        if (e.target.closest('.j-delete-btn')) {
+            const id = Number(e.target.closest('.j-delete-btn').dataset.id);
+            if (confirm('Delete this journal entry?')) {
+                appState.journal = appState.journal.filter(j => j.id !== id);
+                renderJournalTable();
+                saveData();
+            }
         }
     });
     renderJournalTable();
@@ -718,6 +774,12 @@ function renderJournalTable() {
                 <td>${entry.desc}</td>
                 <td>₹ ${entry.debitAmt.toFixed(2)}</td>
                 <td></td>
+                <td rowspan="2" style="vertical-align:middle;">
+                    <div style="display:flex;gap:4px;">
+                        <button class="btn btn-secondary btn-sm j-edit-btn" data-id="${entry.id}" title="Edit"><i data-lucide="pencil"></i></button>
+                        <button class="btn btn-secondary btn-sm j-delete-btn" data-id="${entry.id}" title="Delete" style="color:var(--danger);"><i data-lucide="trash"></i></button>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td style="padding-left: 2rem;"><em>To ${entry.creditAcc}</em></td>
@@ -727,6 +789,7 @@ function renderJournalTable() {
             </tr>
         `;
     });
+    lucide.createIcons();
 }
 
 function saveJournalEntry() {
@@ -736,6 +799,7 @@ function saveJournalEntry() {
     const debitAmt = Number(document.getElementById('j-debit-amt').value);
     const creditAcc = document.getElementById('j-credit-acc').value.trim();
     const creditAmt = Number(document.getElementById('j-credit-amt').value);
+    const editId = document.getElementById('j-edit-id').value;
 
     if (!date || !debitAcc || !creditAcc || !debitAmt || !creditAmt) {
         alert("Please fill all fields"); return;
@@ -744,10 +808,37 @@ function saveJournalEntry() {
         alert("Debit and Credit amounts must be equal."); return;
     }
 
-    appState.journal.push({ id: Date.now(), date, desc, debitAcc, debitAmt, creditAcc, creditAmt });
+    if (editId) {
+        // Edit existing
+        const idx = appState.journal.findIndex(j => j.id === Number(editId));
+        if (idx !== -1) {
+            appState.journal[idx] = { id: Number(editId), date, desc, debitAcc, debitAmt, creditAcc, creditAmt };
+        }
+    } else {
+        appState.journal.push({ id: Date.now(), date, desc, debitAcc, debitAmt, creditAcc, creditAmt });
+    }
+
     document.getElementById('journal-modal').style.display = 'none';
     renderJournalTable();
     saveData();
+}
+
+function exportJournalToExcel() {
+    const sorted = [...appState.journal].sort((a,b) => new Date(a.date) - new Date(b.date));
+    let csvRows = ['Date,Description,Debit Account,Debit Amount,Credit Account,Credit Amount'];
+    sorted.forEach(e => {
+        csvRows.push(`${e.date},"${e.desc}","${e.debitAcc}",${e.debitAmt.toFixed(2)},"${e.creditAcc}",${e.creditAmt.toFixed(2)}`);
+    });
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'journal_entries.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 }
 
 function getUniqueAccounts() {
@@ -846,9 +937,11 @@ function renderCashBook() {
     let balance = 0;
     [...appState.journal].sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(entry => {
         let isCash = false, receipt = 0, payment = 0, particular = '';
-        if (entry.debitAcc.toLowerCase() === 'cash') {
+        const debitLower = entry.debitAcc.toLowerCase().trim();
+        const creditLower = entry.creditAcc.toLowerCase().trim();
+        if (debitLower === 'cash a/c' || debitLower === 'cash') {
             isCash = true; receipt = entry.debitAmt; particular = `To ${entry.creditAcc}`; balance += receipt;
-        } else if (entry.creditAcc.toLowerCase() === 'cash') {
+        } else if (creditLower === 'cash a/c' || creditLower === 'cash') {
             isCash = true; payment = entry.creditAmt; particular = `By ${entry.debitAcc}`; balance -= payment;
         }
         if (isCash) {

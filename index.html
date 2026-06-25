@@ -150,12 +150,12 @@
       
       <div class="form-group">
         <label>Repository Owner (Username)</label>
-        <input type="text" id="gh-owner" placeholder="e.g., torvalds">
+        <input type="text" id="gh-owner" placeholder="Tanmay201010">
       </div>
       
       <div class="form-group">
         <label>Repository Name</label>
-        <input type="text" id="gh-repo" placeholder="e.g., accounting-data">
+        <input type="text" id="gh-repo" placeholder="udaan">
       </div>
 
       <div class="form-group">
@@ -180,13 +180,13 @@
           <div class="table-container">
               <table class="data-table" id="inventory-table">
                   <thead>
-                      <tr>
-                          <th>Item ID</th>
-                          <th>Product Name</th>
-                          <th>Quantity</th>
-                          <th>Default Price (₹)</th>
-                          <th>Actions</th>
-                      </tr>
+                       <tr>
+                           <th>Product Name</th>
+                           <th>Consignor</th>
+                           <th>Quantity</th>
+                           <th>Price (₹)</th>
+                           <th>Actions</th>
+                       </tr>
                   </thead>
                   <tbody></tbody>
               </table>
@@ -201,11 +201,15 @@
                   <input type="text" id="inv-name" placeholder="e.g., Premium Widget">
               </div>
               <div class="form-group">
+                  <label>Consignor Name</label>
+                  <input type="text" id="inv-consignor" placeholder="e.g., Ravi Traders">
+              </div>
+              <div class="form-group">
                   <label>Quantity</label>
                   <input type="number" id="inv-qty" min="1" step="1" value="1">
               </div>
               <div class="form-group">
-                  <label>Default Selling Price (₹)</label>
+                  <label>Selling Price (₹) — Inventory/Cost Price</label>
                   <input type="number" id="inv-price" min="0" step="1" placeholder="e.g., 500">
               </div>
               <div class="actions" style="margin-top: 1.5rem; justify-content: flex-end; display: flex; gap: 1rem;">
@@ -326,9 +330,12 @@
   <!-- More templates to be added as we go (Journal, Cash book, Ledger etc.) -->
   <template id="tpl-journal">
       <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
             <h2>Journal Entries</h2>
-            <button id="new-journal-btn" class="btn btn-primary"><i data-lucide="plus"></i> New Entry</button>
+            <div style="display: flex; gap: 0.5rem;">
+                <button id="export-journal-btn" class="btn btn-secondary"><i data-lucide="download"></i> Export Excel</button>
+                <button id="new-journal-btn" class="btn btn-primary"><i data-lucide="plus"></i> New Entry</button>
+            </div>
         </div>
         <div class="table-container">
             <table class="data-table" id="journal-table">
@@ -339,6 +346,7 @@
                         <th>Description</th>
                         <th>Debit</th>
                         <th>Credit</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -347,8 +355,9 @@
       </div>
       <!-- Modal for new entry -->
       <div id="journal-modal" class="modal" style="display: none;">
-          <div class="modal-content card" style="max-width: 600px; margin: 10% auto;">
-              <h3>New Journal Entry</h3>
+              <div class="modal-content card" style="max-width: 600px; margin: 10% auto;">
+              <h3 id="journal-modal-title">New Journal Entry</h3>
+              <input type="hidden" id="j-edit-id" value="">
               <div class="form-group">
                   <label>Date</label>
                   <input type="date" id="j-date">
