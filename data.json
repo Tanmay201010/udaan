@@ -52,6 +52,15 @@
       "debitAmt": 200,
       "creditAcc": "Cash A/c",
       "creditAmt": 200
+    },
+    {
+      "id": 1782398294953,
+      "date": "2026-06-25",
+      "desc": "",
+      "debitAcc": "Consignor",
+      "debitAmt": 1000,
+      "creditAcc": "Cash",
+      "creditAmt": 1000
     }
   ],
   "inventory": [
