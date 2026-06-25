@@ -1,0 +1,13 @@
+{
+  "bills": [],
+  "journal": [],
+  "inventory": [
+    {
+      "id": "1782403665429",
+      "name": "Keychain",
+      "consignor": "Tanmay",
+      "price": 500,
+      "qty": 10
+    }
+  ]
+}
