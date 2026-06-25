@@ -6,11 +6,19 @@ let appState = {
 };
 
 // Local settings & auth
-let settings = JSON.parse(localStorage.getItem('accopro_settings') || '{"pat":"","owner":"Tanmay201010","repo":"udaan","path":"data.json"}');
+let settings = {};
+try {
+    settings = JSON.parse(localStorage.getItem('accopro_settings') || '{}');
+} catch (e) {
+    console.warn("Invalid settings in localStorage, resetting.");
+}
 if (!settings.owner) settings.owner = 'Tanmay201010';
 if (!settings.repo) settings.repo = 'udaan';
+if (!settings.path) settings.path = 'data.json';
+if (!settings.pat) settings.pat = '';
 
 let currentRole = localStorage.getItem('accopro_role') || null;
+if (currentRole === 'null') currentRole = null; // Clean up 'null' string if present
 let currentSha = null;
 
 // Initialize App
