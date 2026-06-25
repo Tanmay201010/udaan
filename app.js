@@ -538,10 +538,8 @@ function generateAndPrintBill() {
                 <td style="padding:0.7rem 1rem;border-bottom:1px solid #e2e8f0;">${idx + 1}</td>
                 <td style="padding:0.7rem 1rem;border-bottom:1px solid #e2e8f0;">${item.desc}</td>
                 <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">${item.qty}</td>
-                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${consignmentPrice.toFixed(2)}</td>
                 <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${salePrice.toFixed(2)}</td>
                 <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${subtotal.toFixed(2)}</td>
-                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;color:#16a34a;">&#8377; ${commission.toFixed(2)}</td>
             </tr>`;
     });
 
@@ -606,10 +604,8 @@ function generateAndPrintBill() {
         <th>#</th>
         <th>Description</th>
         <th class="right">Qty</th>
-        <th class="right">Consignment Price</th>
-        <th class="right">Sale Price</th>
+        <th class="right">Price</th>
         <th class="right">Subtotal</th>
-        <th class="right">Commission</th>
       </tr>
     </thead>
     <tbody>
