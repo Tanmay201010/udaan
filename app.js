@@ -20,9 +20,10 @@ if (!settings.pat) settings.pat = '';
 let currentRole = localStorage.getItem('accopro_role') || null;
 if (currentRole === 'null') currentRole = null; // Clean up 'null' string if present
 let currentSha = null;
+let journalListenersAttached = false;
 
 // Initialize App
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
     lucide.createIcons();
     
     // Auth Check
@@ -33,7 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('login-overlay').style.display = 'none';
         startApp();
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
 
 function initLogin() {
     const btn = document.getElementById('login-btn');
@@ -249,10 +256,10 @@ function initSettingsView() {
 
     document.getElementById('save-settings-btn').addEventListener('click', () => {
         settings = {
-            pat: document.getElementById('gh-pat').value,
-            owner: document.getElementById('gh-owner').value,
-            repo: document.getElementById('gh-repo').value,
-            path: document.getElementById('gh-path').value || 'data.json'
+            pat: document.getElementById('gh-pat').value.trim(),
+            owner: document.getElementById('gh-owner').value.trim() || 'Tanmay201010',
+            repo: document.getElementById('gh-repo').value.trim() || 'udaan',
+            path: document.getElementById('gh-path').value.trim() || 'data.json'
         };
         localStorage.setItem('accopro_settings', JSON.stringify(settings));
         
@@ -643,7 +650,6 @@ ${isMobile ? '' : `<script>window.onload = function(){ window.print(); window.cl
         printWindow.document.close();
     }
 }
-    });
 
 
 
@@ -721,53 +727,56 @@ function renderDashboard() {
 
 // --- View: Journal ---
 function initJournal() {
-    document.addEventListener('click', e => {
-        if (e.target.closest('#new-journal-btn')) {
-            document.getElementById('journal-modal').style.display = 'block';
-            document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
-            document.getElementById('journal-modal-title').innerText = 'New Journal Entry';
-            document.getElementById('j-edit-id').value = '';
-            document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
-            document.getElementById('j-desc').value = '';
-            document.getElementById('j-debit-acc').value = '';
-            document.getElementById('j-debit-amt').value = '';
-            document.getElementById('j-credit-acc').value = '';
-            document.getElementById('j-credit-amt').value = '';
-        }
-        if (e.target.closest('#j-cancel-btn')) {
-            document.getElementById('journal-modal').style.display = 'none';
-        }
-        if (e.target.closest('#j-save-btn')) {
-            saveJournalEntry();
-        }
-        if (e.target.closest('#export-journal-btn')) {
-            exportJournalToExcel();
-        }
-        // Edit button in table
-        if (e.target.closest('.j-edit-btn')) {
-            const id = Number(e.target.closest('.j-edit-btn').dataset.id);
-            const entry = appState.journal.find(j => j.id === id);
-            if (!entry) return;
-            document.getElementById('j-edit-id').value = id;
-            document.getElementById('j-date').value = entry.date;
-            document.getElementById('j-desc').value = entry.desc;
-            document.getElementById('j-debit-acc').value = entry.debitAcc;
-            document.getElementById('j-debit-amt').value = entry.debitAmt;
-            document.getElementById('j-credit-acc').value = entry.creditAcc;
-            document.getElementById('j-credit-amt').value = entry.creditAmt;
-            document.getElementById('journal-modal-title').innerText = 'Edit Journal Entry';
-            document.getElementById('journal-modal').style.display = 'block';
-        }
-        // Delete button in table
-        if (e.target.closest('.j-delete-btn')) {
-            const id = Number(e.target.closest('.j-delete-btn').dataset.id);
-            if (confirm('Delete this journal entry?')) {
-                appState.journal = appState.journal.filter(j => j.id !== id);
-                renderJournalTable();
-                saveData();
+    if (!journalListenersAttached) {
+        document.addEventListener('click', e => {
+            if (e.target.closest('#new-journal-btn')) {
+                document.getElementById('journal-modal').style.display = 'block';
+                document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('journal-modal-title').innerText = 'New Journal Entry';
+                document.getElementById('j-edit-id').value = '';
+                document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('j-desc').value = '';
+                document.getElementById('j-debit-acc').value = '';
+                document.getElementById('j-debit-amt').value = '';
+                document.getElementById('j-credit-acc').value = '';
+                document.getElementById('j-credit-amt').value = '';
             }
-        }
-    });
+            if (e.target.closest('#j-cancel-btn')) {
+                document.getElementById('journal-modal').style.display = 'none';
+            }
+            if (e.target.closest('#j-save-btn')) {
+                saveJournalEntry();
+            }
+            if (e.target.closest('#export-journal-btn')) {
+                exportJournalToExcel();
+            }
+            // Edit button in table
+            if (e.target.closest('.j-edit-btn')) {
+                const id = Number(e.target.closest('.j-edit-btn').dataset.id);
+                const entry = appState.journal.find(j => j.id === id);
+                if (!entry) return;
+                document.getElementById('j-edit-id').value = id;
+                document.getElementById('j-date').value = entry.date;
+                document.getElementById('j-desc').value = entry.desc;
+                document.getElementById('j-debit-acc').value = entry.debitAcc;
+                document.getElementById('j-debit-amt').value = entry.debitAmt;
+                document.getElementById('j-credit-acc').value = entry.creditAcc;
+                document.getElementById('j-credit-amt').value = entry.creditAmt;
+                document.getElementById('journal-modal-title').innerText = 'Edit Journal Entry';
+                document.getElementById('journal-modal').style.display = 'block';
+            }
+            // Delete button in table
+            if (e.target.closest('.j-delete-btn')) {
+                const id = Number(e.target.closest('.j-delete-btn').dataset.id);
+                if (confirm('Delete this journal entry?')) {
+                    appState.journal = appState.journal.filter(j => j.id !== id);
+                    renderJournalTable();
+                    saveData();
+                }
+            }
+        });
+        journalListenersAttached = true;
+    }
     renderJournalTable();
 }
 
