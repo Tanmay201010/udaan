@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('login-overlay').style.display = 'flex';
         initLogin();
     } else {
+        document.getElementById('login-overlay').style.display = 'none';
         startApp();
     }
 });
