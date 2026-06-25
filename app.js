@@ -7,7 +7,10 @@ let appState = {
 
 // Local settings & auth
 let settings = JSON.parse(localStorage.getItem('accopro_settings') || '{"pat":"","owner":"Tanmay201010","repo":"udaan","path":"data.json"}');
-let currentRole = null; // Removed localStorage persistence so it asks for login on every refresh
+if (!settings.owner) settings.owner = 'Tanmay201010';
+if (!settings.repo) settings.repo = 'udaan';
+
+let currentRole = localStorage.getItem('accopro_role') || null;
 let currentSha = null;
 
 // Initialize App
@@ -43,7 +46,7 @@ function initLogin() {
 }
 
 function finishLogin() {
-    // No longer saving to localStorage
+    localStorage.setItem('accopro_role', currentRole);
     document.getElementById('login-overlay').style.display = 'none';
     startApp();
 }
