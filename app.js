@@ -1,3 +1,4 @@
+
 // Core State
 let appState = {
     bills: [],
@@ -1033,3 +1034,5 @@ function renderFinancialStatements() {
         </div>
     `;
 }
+
+
