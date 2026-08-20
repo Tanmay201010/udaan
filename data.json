@@ -14,6 +14,27 @@
       ],
       "total": 200,
       "paymentMethod": "Cash"
+    },
+    {
+      "date": "2026-08-20",
+      "invoiceNo": "#000002",
+      "customer": "Ramesh",
+      "items": [
+        {
+          "id": 1787243507021,
+          "desc": "key chain",
+          "qty": 1,
+          "price": 200
+        },
+        {
+          "id": 1787243518105,
+          "desc": "Doll",
+          "qty": 1,
+          "price": 250
+        }
+      ],
+      "total": 450,
+      "paymentMethod": "UPI"
     }
   ],
   "journal": [
@@ -43,6 +64,33 @@
       "debitAmt": 150,
       "creditAcc": "Cash A/c",
       "creditAmt": 150
+    },
+    {
+      "id": 1787243522787,
+      "date": "2026-08-20",
+      "desc": "Sale to Ramesh - Invoice #000002",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 450,
+      "creditAcc": "Ravi traders A/c",
+      "creditAmt": 450
+    },
+    {
+      "id": 1787243522788,
+      "date": "2026-08-20",
+      "desc": "Commission earned - Invoice #000002",
+      "debitAcc": "Ravi traders A/c",
+      "debitAmt": 150,
+      "creditAcc": "Commission Income A/c",
+      "creditAmt": 150
+    },
+    {
+      "id": 1787243522789,
+      "date": "2026-08-20",
+      "desc": "Payment to Consignor - Invoice #000002",
+      "debitAcc": "Ravi traders A/c",
+      "debitAmt": 300,
+      "creditAcc": "Cash A/c",
+      "creditAmt": 300
     }
   ],
   "inventory": [
