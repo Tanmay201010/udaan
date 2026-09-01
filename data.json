@@ -35,6 +35,21 @@
       ],
       "total": 450,
       "paymentMethod": "UPI"
+    },
+    {
+      "date": "2026-09-01",
+      "invoiceNo": "#000003",
+      "customer": "Karun",
+      "items": [
+        {
+          "id": 1788280543484,
+          "desc": "key chain",
+          "qty": 1,
+          "price": 200
+        }
+      ],
+      "total": 200,
+      "paymentMethod": "Cash"
     }
   ],
   "journal": [
@@ -91,6 +106,33 @@
       "debitAmt": 300,
       "creditAcc": "Cash A/c",
       "creditAmt": 300
+    },
+    {
+      "id": 1788280549041,
+      "date": "2026-09-01",
+      "desc": "Sale to Karun - Invoice #000003",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 200,
+      "creditAcc": "Ravi traders A/c",
+      "creditAmt": 200
+    },
+    {
+      "id": 1788280549042,
+      "date": "2026-09-01",
+      "desc": "Commission earned - Invoice #000003",
+      "debitAcc": "Ravi traders A/c",
+      "debitAmt": 50,
+      "creditAcc": "Commission Income A/c",
+      "creditAmt": 50
+    },
+    {
+      "id": 1788280549043,
+      "date": "2026-09-01",
+      "desc": "Payment to Consignor - Invoice #000003",
+      "debitAcc": "Ravi traders A/c",
+      "debitAmt": 150,
+      "creditAcc": "Cash A/c",
+      "creditAmt": 150
     }
   ],
   "inventory": [
