@@ -285,6 +285,8 @@ function initInventory() {
 
     document.getElementById('new-item-btn').addEventListener('click', () => {
         document.getElementById('inventory-modal').style.display = 'block';
+        document.getElementById('inv-modal-title').textContent = 'Add New Product';
+        document.getElementById('inv-edit-id').value = '';
         document.getElementById('inv-name').value = '';
         document.getElementById('inv-consignor').value = '';
         document.getElementById('inv-qty').value = '1';
@@ -296,6 +298,7 @@ function initInventory() {
     });
 
     document.getElementById('inv-save-btn').addEventListener('click', () => {
+        const editId = document.getElementById('inv-edit-id').value;
         const name = document.getElementById('inv-name').value.trim();
         const consignor = document.getElementById('inv-consignor').value.trim();
         const qty = parseInt(document.getElementById('inv-qty').value) || 0;
@@ -306,7 +309,15 @@ function initInventory() {
             return;
         }
 
-        appData.inventory.push({ id: uid(), name, consignor, qty, price });
+        if (editId) {
+            const idx = appData.inventory.findIndex(i => String(i.id) === String(editId));
+            if (idx >= 0) {
+                appData.inventory[idx] = { id: editId, name, consignor, qty, price };
+            }
+        } else {
+            appData.inventory.push({ id: uid(), name, consignor, qty, price });
+        }
+
         saveLocal();
         syncData();
         document.getElementById('inventory-modal').style.display = 'none';
@@ -327,16 +338,33 @@ function renderInventoryTable() {
             <td>${item.consignor || '—'}</td>
             <td>${item.qty}</td>
             <td>${fmt(item.price)}</td>
-            <td>
-                <button class="btn btn-sm btn-secondary inv-del-btn" data-id="${item.id}">Delete</button>
+            <td style="display:flex;gap:0.5rem;">
+                <button class="btn btn-sm btn-secondary inv-edit-btn" data-id="${item.id}">Edit</button>
+                <button class="btn btn-sm btn-secondary inv-del-btn" data-id="${item.id}" style="color:var(--danger);">Delete</button>
             </td>
         </tr>
     `).join('');
 
+    tbody.querySelectorAll('.inv-edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const item = appData.inventory.find(i => String(i.id) === String(id));
+            if (!item) return;
+            document.getElementById('inventory-modal').style.display = 'block';
+            document.getElementById('inv-modal-title').textContent = 'Edit Product';
+            document.getElementById('inv-edit-id').value = item.id;
+            document.getElementById('inv-name').value = item.name || '';
+            document.getElementById('inv-consignor').value = item.consignor || '';
+            document.getElementById('inv-qty').value = item.qty || 1;
+            document.getElementById('inv-price').value = item.price || '';
+        });
+    });
+
     tbody.querySelectorAll('.inv-del-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.getAttribute('data-id');
-            appData.inventory = appData.inventory.filter(i => i.id !== id);
+            if (!confirm('Are you sure you want to delete this product?')) return;
+            appData.inventory = appData.inventory.filter(i => String(i.id) !== String(id));
             saveLocal();
             syncData();
             renderInventoryTable();
@@ -355,19 +383,55 @@ function initPOS() {
     document.getElementById('pos-no').value = invoiceNo;
     document.getElementById('pos-date').value = today();
 
-    // Populate product select
+    // Populate product select with optional live search
     populatePosProductSelect();
 
-    function populatePosProductSelect() {
+    function populatePosProductSelect(filterQuery = '') {
         const sel = document.getElementById('pos-product-select');
         if (!sel) return;
+        const q = filterQuery.trim().toLowerCase();
         sel.innerHTML = '<option value="">Select an item...</option>';
-        appData.inventory.forEach(item => {
-            if (item.qty > 0) {
-                const opt = document.createElement('option');
-                opt.value = item.id;
-                opt.textContent = `${item.name} (Stock: ${item.qty}) — Cost: ${fmt(item.price)}`;
-                sel.appendChild(opt);
+        
+        const matched = appData.inventory.filter(item => {
+            if (item.qty <= 0) return false;
+            if (!q) return true;
+            return (item.name || '').toLowerCase().includes(q) || (item.consignor || '').toLowerCase().includes(q);
+        });
+
+        matched.forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.id;
+            opt.textContent = `${item.name} (${item.consignor ? item.consignor + ' - ' : ''}Stock: ${item.qty}) — Price: ${fmt(item.price)}`;
+            sel.appendChild(opt);
+        });
+
+        // If filtered down to 1 match, auto-select it and pre-fill price
+        if (q && matched.length === 1) {
+            sel.value = matched[0].id;
+            const priceInput = document.getElementById('pos-sale-price');
+            if (priceInput && (!priceInput.value || priceInput.value == 0)) {
+                priceInput.value = matched[0].price || '';
+            }
+        }
+    }
+
+    // Live search input handler
+    const prodSearch = document.getElementById('pos-product-search');
+    if (prodSearch) {
+        prodSearch.addEventListener('input', (e) => {
+            populatePosProductSelect(e.target.value);
+        });
+    }
+
+    // Auto-fill price when an item is selected from dropdown
+    const prodSelect = document.getElementById('pos-product-select');
+    if (prodSelect) {
+        prodSelect.addEventListener('change', () => {
+            const selectedId = prodSelect.value;
+            const inv = appData.inventory.find(i => String(i.id) === String(selectedId));
+            const priceInput = document.getElementById('pos-sale-price');
+            if (inv && priceInput) {
+                priceInput.value = inv.price || '';
             }
         });
     }
@@ -420,14 +484,18 @@ function initPOS() {
         const salePrice = parseFloat(document.getElementById('pos-sale-price').value);
         if (!itemId) { alert('Please select a product.'); return; }
         if (!salePrice || salePrice <= 0) { alert('Please enter a valid sale price.'); return; }
-        const inv = appData.inventory.find(i => i.id === itemId);
+        const inv = appData.inventory.find(i => String(i.id) === String(itemId));
         if (!inv) return;
-        const existing = posItems.find(i => i.id === itemId);
+        const existing = posItems.find(i => String(i.id) === String(itemId));
         if (existing) {
             existing.qty += 1;
         } else {
             posItems.push({ id: itemId, name: inv.name, consignor: inv.consignor, costPrice: inv.price, salePrice: salePrice, qty: 1 });
         }
+        // Reset item add inputs
+        document.getElementById('pos-sale-price').value = '';
+        if (prodSearch) prodSearch.value = '';
+        populatePosProductSelect();
         renderPosItems();
     });
 
