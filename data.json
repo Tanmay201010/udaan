@@ -3,15 +3,6 @@
   "pos": [],
   "journal": [
     {
-      "id": 1782404580548,
-      "date": "2026-06-25",
-      "desc": "Sale to Karun - Invoice #000001",
-      "debitAcc": "Cash A/c",
-      "debitAmt": 200,
-      "creditAcc": "Ravi traders A/c",
-      "creditAmt": 200
-    },
-    {
       "id": 1788677657031,
       "date": "2026-09-06",
       "desc": "Capital",
