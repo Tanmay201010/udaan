@@ -75,15 +75,6 @@
       "creditAmt": 50
     },
     {
-      "id": 1788280549043,
-      "date": "2026-09-01",
-      "desc": "Payment to Consignor - Invoice #000003",
-      "debitAcc": "Ravi traders A/c",
-      "debitAmt": 150,
-      "creditAcc": "Cash A/c",
-      "creditAmt": 150
-    },
-    {
       "id": 1788677657031,
       "date": "2026-09-06",
       "desc": "Capital",
