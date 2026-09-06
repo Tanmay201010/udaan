@@ -62,6 +62,13 @@
       "consignor": "",
       "qty": 1,
       "price": 900
+    },
+    {
+      "id": "mtq178hsqa31k",
+      "name": "Glitter bracelet",
+      "consignor": "",
+      "qty": 1,
+      "price": 200
     }
   ],
   "pos": [],
