@@ -1,57 +1,21 @@
 {
-  "bills": [
+  "inventory": [
     {
-      "date": "2026-06-25",
-      "invoiceNo": "#000001",
-      "customer": "Karun",
-      "items": [
-        {
-          "id": 1782404579812,
-          "desc": "key chain",
-          "qty": 1,
-          "price": 200
-        }
-      ],
-      "total": 200,
-      "paymentMethod": "Cash"
+      "id": "1782404538653",
+      "name": "key chain",
+      "consignor": "Ravi traders",
+      "price": 150,
+      "qty": 10
     },
     {
-      "date": "2026-08-20",
-      "invoiceNo": "#000002",
-      "customer": "Ramesh",
-      "items": [
-        {
-          "id": 1787243507021,
-          "desc": "key chain",
-          "qty": 1,
-          "price": 200
-        },
-        {
-          "id": 1787243518105,
-          "desc": "Doll",
-          "qty": 1,
-          "price": 250
-        }
-      ],
-      "total": 450,
-      "paymentMethod": "UPI"
-    },
-    {
-      "date": "2026-09-01",
-      "invoiceNo": "#000003",
-      "customer": "Karun",
-      "items": [
-        {
-          "id": 1788280543484,
-          "desc": "key chain",
-          "qty": 1,
-          "price": 200
-        }
-      ],
-      "total": 200,
-      "paymentMethod": "Cash"
+      "id": "1782404561857",
+      "name": "Doll",
+      "consignor": "Ravi traders",
+      "price": 150,
+      "qty": 10
     }
   ],
+  "pos": [],
   "journal": [
     {
       "id": 1782404580548,
@@ -153,20 +117,5 @@
       "creditAmt": 2500
     }
   ],
-  "inventory": [
-    {
-      "id": "1782404538653",
-      "name": "key chain",
-      "consignor": "Ravi traders",
-      "price": 150,
-      "qty": 10
-    },
-    {
-      "id": "1782404561857",
-      "name": "Doll",
-      "consignor": "Ravi traders",
-      "price": 150,
-      "qty": 10
-    }
-  ]
+  "nextInvoice": 1
 }
