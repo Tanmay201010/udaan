@@ -76,6 +76,13 @@
       "consignor": "",
       "qty": 1,
       "price": 25
+    },
+    {
+      "id": "mtq17hw4p6qor",
+      "name": "Glitter keychain",
+      "consignor": "",
+      "qty": 1,
+      "price": 200
     }
   ],
   "pos": [],
