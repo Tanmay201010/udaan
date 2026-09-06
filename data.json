@@ -149,7 +149,7 @@
       "desc": "Banners made",
       "debitAcc": "Banner expenses A/c",
       "debitAmt": 2500,
-      "creditAcc": "Cash",
+      "creditAcc": "Cash A/c",
       "creditAmt": 2500
     }
   ],
