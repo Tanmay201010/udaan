@@ -52,6 +52,7 @@
         <!-- Sales Team Links -->
         <li data-role="sales"><a href="#inventory" class="nav-item" data-target="inventory"><i data-lucide="package"></i> Inventory</a></li>
         <li data-role="sales"><a href="#pos" class="nav-item" data-target="pos"><i data-lucide="monitor-speaker"></i> Billing / POS</a></li>
+        <li data-role="sales"><a href="#bill-history" class="nav-item" data-target="bill-history"><i data-lucide="receipt"></i> Bill History</a></li>
         
         <!-- Finance Team Links -->
         <li data-role="finance"><a href="#cash-book" class="nav-item" data-target="cash-book"><i data-lucide="coins"></i> Cash Book</a></li>
@@ -330,6 +331,36 @@
     </div>
   </template>
 
+  <!-- Bill History Template -->
+  <template id="tpl-bill-history">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+        <h2>Bill History</h2>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+          <input type="text" id="bill-search" placeholder="Search customer / invoice…" style="padding:0.5rem 0.75rem; background:var(--bg-primary); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text-primary); font-family:inherit; font-size:14px; min-width:200px;">
+          <button id="export-bills-btn" class="btn btn-secondary"><i data-lucide="download"></i> Export CSV</button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table" id="bill-history-table">
+          <thead>
+            <tr>
+              <th>Invoice No</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Payment</th>
+              <th style="text-align:right;">Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="bill-history-empty" style="text-align:center; color:var(--text-secondary); padding:2rem; display:none;">No bills found.</p>
+    </div>
+  </template>
+
   <!-- More templates to be added as we go (Journal, Cash book, Ledger etc.) -->
   <template id="tpl-journal">
       <div class="card">
@@ -498,7 +529,7 @@
     </div>
   </template>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=6"></script>
 </body>
 </html>
 

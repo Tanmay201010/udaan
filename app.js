@@ -1,1038 +1,1247 @@
+// =============================================
+// UdaanPro - Accounting Web App
+// =============================================
 
-// Core State
-let appState = {
-    bills: [],
-    journal: [],
-    inventory: [] // Added for Sales Team
-};
-
-// Local settings & auth
-let settings = {};
-try {
-    settings = JSON.parse(localStorage.getItem('accopro_settings') || '{}');
-} catch (e) {
-    console.warn("Invalid settings in localStorage, resetting.");
-}
-if (!settings.owner) settings.owner = 'Tanmay201010';
-if (!settings.repo) settings.repo = 'udaan';
-if (!settings.path) settings.path = 'data.json';
-if (!settings.pat) settings.pat = '';
-
-let currentRole = localStorage.getItem('accopro_role') || null;
-if (currentRole === 'null') currentRole = null; // Clean up 'null' string if present
+// --- State ---
+let currentRole = localStorage.getItem('udaanRole') || null;
+let settings = JSON.parse(localStorage.getItem('udaanSettings') || '{}');
+let appData = { inventory: [], pos: [], journal: [], nextInvoice: 1 };
 let currentSha = null;
 let journalListenersAttached = false;
 
-// Initialize App
+// --- Utility ---
+function fmt(n) {
+    return '₹ ' + (parseFloat(n) || 0).toFixed(2);
+}
+
+function today() {
+    return new Date().toISOString().split('T')[0];
+}
+
+function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function saveLocal() {
+    localStorage.setItem('udaanData', JSON.stringify(appData));
+}
+
+function loadLocal() {
+    const d = localStorage.getItem('udaanData');
+    if (d) {
+        try { appData = JSON.parse(d); } catch(e) {}
+    }
+    if (!appData.inventory) appData.inventory = [];
+    if (!appData.pos) appData.pos = [];
+    if (!appData.journal) appData.journal = [];
+    if (!appData.nextInvoice) appData.nextInvoice = 1;
+}
+
+// =============================================
+// INIT APP
+// =============================================
 function initApp() {
+    loadLocal();
     lucide.createIcons();
-    
-    // Auth Check
+
     if (!currentRole) {
         document.getElementById('login-overlay').style.display = 'flex';
-        initLogin();
+        document.getElementById('app').style.display = 'none';
     } else {
-        document.getElementById('login-overlay').style.display = 'none';
         startApp();
     }
-}
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
-} else {
-    initApp();
-}
-
-function initLogin() {
-    const btn = document.getElementById('login-btn');
-    const err = document.getElementById('login-error');
-    btn.addEventListener('click', () => {
-        const user = document.getElementById('login-user').value.trim();
-        const pass = document.getElementById('login-pass').value.trim();
-        
-        if (user === 'admin' && pass === 'sales') {
-            currentRole = 'sales';
-            finishLogin();
-        } else if (user === 'admin' && pass === 'finance') {
-            currentRole = 'finance';
-            finishLogin();
-        } else {
-            err.style.display = 'block';
-        }
+    // Login button
+    document.getElementById('login-btn').addEventListener('click', handleLogin);
+    document.getElementById('login-user').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('login-pass').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleLogin();
     });
 }
 
-function finishLogin() {
-    localStorage.setItem('accopro_role', currentRole);
-    document.getElementById('login-overlay').style.display = 'none';
-    startApp();
+function handleLogin() {
+    const user = document.getElementById('login-user').value.trim().toLowerCase();
+    const pass = document.getElementById('login-pass').value.trim().toLowerCase();
+    const errEl = document.getElementById('login-error');
+
+    // Credentials: username=admin, password=sales or finance
+    if (user === 'admin' && (pass === 'sales' || pass === 'finance')) {
+        currentRole = pass; // 'sales' or 'finance'
+        localStorage.setItem('udaanRole', currentRole);
+        document.getElementById('login-overlay').style.display = 'none';
+        errEl.style.display = 'none';
+        startApp();
+    } else {
+        errEl.style.display = 'block';
+    }
 }
 
 function startApp() {
-    document.getElementById('app').style.display = 'flex';
-    document.getElementById('logged-in-role').innerText = currentRole.toUpperCase();
-    
-    // Setup Sidebar based on role
-    document.querySelectorAll('.nav-links li').forEach(li => {
+    const appEl = document.getElementById('app');
+    appEl.style.display = 'flex';
+    document.getElementById('logged-in-role').textContent = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
+
+    // Show/hide nav links based on role
+    document.querySelectorAll('#app li[data-role]').forEach(li => {
         const role = li.getAttribute('data-role');
-        if (role === 'all' || role === currentRole) {
-            li.style.display = 'block';
+        if (role === 'all') {
+            li.style.display = '';
+        } else if (role === currentRole) {
+            li.style.display = '';
         } else {
             li.style.display = 'none';
         }
     });
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        localStorage.removeItem('accopro_role');
-        window.location.reload();
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault();
+        localStorage.removeItem('udaanRole');
+        currentRole = null;
+        location.reload();
     });
 
-    initRouter();
-    
-    if (settings.pat && settings.owner && settings.repo) {
-        fetchData();
-    } else {
-        updateSyncStatus('Not configured', 'error');
-        window.location.hash = '#settings';
-    }
-
-    document.getElementById('force-sync-btn').addEventListener('click', () => {
-        if (settings.pat) fetchData();
-    });
-
-    // Mobile Sidebar Toggle
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
     const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    const menuBtn = document.getElementById('mobile-menu-btn');
-
-    menuBtn.addEventListener('click', () => {
-        sidebar.classList.add('open');
-        overlay.classList.add('open');
-    });
-
-    overlay.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('open');
-    });
-
-    // Close sidebar on navigation click
-    document.querySelectorAll('.nav-links a').forEach(a => {
-        a.addEventListener('click', () => {
+    if (mobileMenuBtn) {
+        mobileMenuBtn.style.display = '';
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+        });
+        sidebarOverlay.addEventListener('click', () => {
             sidebar.classList.remove('open');
-            overlay.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
         });
+    }
+
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const target = link.getAttribute('data-target');
+            navigateTo(target);
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        });
+    });
+
+    // Force sync button
+    document.getElementById('force-sync-btn').addEventListener('click', () => {
+        syncData();
+    });
+
+    // Load from GitHub if configured
+    if (settings.pat && settings.owner && settings.repo) {
+        fetchFromGitHub();
+    } else {
+        updateSyncStatus('Not configured', 'warning');
+    }
+
+    // Route to default
+    const hash = location.hash.replace('#', '') || 'dashboard';
+    navigateTo(hash);
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', () => {
+        const h = location.hash.replace('#', '') || 'dashboard';
+        navigateTo(h, false);
     });
 }
 
-// --- GitHub Sync Logic ---
-async function fetchData() {
-    updateSyncStatus('Syncing...', 'syncing');
-    try {
-        const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${settings.path}`;
-        const res = await fetch(url, {
-            headers: { 'Authorization': `token ${settings.pat}`, 'Accept': 'application/vnd.github.v3+json' }
-        });
-        
-        if (res.status === 404) {
-            updateSyncStatus('New Repository (No data yet)', 'synced');
-            return;
-        }
-
-        if (!res.ok) {
-            const errorData = await res.json().catch(() => ({}));
-            throw new Error(errorData.message || 'Failed to fetch data');
-        }
-
-        const data = await res.json();
-        currentSha = data.sha;
-        
-        const content = decodeURIComponent(escape(atob(data.content)));
-        const loadedState = JSON.parse(content);
-        // Merge state to handle missing arrays (e.g. inventory)
-        appState = { ...appState, ...loadedState };
-        if(!appState.inventory) appState.inventory = [];
-        
-        updateSyncStatus('Synced', 'synced');
-        refreshCurrentView();
-    } catch (e) {
-        console.error("Fetch Data Error:", e);
-        updateSyncStatus('Sync Error', 'error');
-        alert(`GitHub Fetch Error: ${e.message}\n\nPlease check your configuration in the Settings tab.`);
-    }
-}
-
-async function saveData() {
-    if (!settings.pat) return;
-    updateSyncStatus('Saving...', 'syncing');
-    try {
-        const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${settings.path}`;
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(appState, null, 2))));
-        
-        const body = { message: `Update accounting data`, content: content };
-        if (currentSha) body.sha = currentSha;
-
-        const res = await fetch(url, {
-            method: 'PUT',
-            headers: { 'Authorization': `token ${settings.pat}`, 'Accept': 'application/vnd.github.v3+json' },
-            body: JSON.stringify(body)
-        });
-
-        if (!res.ok) {
-            const errorData = await res.json().catch(() => ({}));
-            throw new Error(errorData.message || 'Failed to save data');
-        }
-        const data = await res.json();
-        currentSha = data.content.sha;
-        updateSyncStatus('Synced', 'synced');
-        refreshCurrentView();
-    } catch (e) {
-        console.error("Save Data Error:", e);
-        updateSyncStatus('Save Error', 'error');
-        alert(`GitHub Sync Error: ${e.message}\n\nPlease check your Settings:\n1. Your PAT is valid and has 'repo' or 'contents: write' permissions.\n2. The Repository Owner and Name are correct.\n3. The repository is not completely empty (it must have at least one branch/commit, e.g. initialize it with a README).`);
-    }
-}
-
-function updateSyncStatus(text, state) {
-    const textEl = document.getElementById('sync-status-text');
-    if(textEl) textEl.innerText = text;
-    const indicator = document.querySelector('.status-indicator');
-    if(indicator) {
-        indicator.className = 'status-indicator';
-        if (state === 'synced') indicator.classList.add('synced');
-        if (state === 'syncing') indicator.classList.add('syncing');
-    }
-}
-
-// --- Router Logic ---
-function initRouter() {
-    window.addEventListener('hashchange', handleRoute);
-    handleRoute(); 
-}
-
-function handleRoute() {
-    const hash = window.location.hash || '#dashboard';
-    const target = hash.substring(1);
-    
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    const activeLink = document.querySelector(`.nav-item[data-target="${target}"]`);
-    if (activeLink) {
-        activeLink.classList.add('active');
-        document.getElementById('page-title').innerText = activeLink.innerText;
-    }
-    
+// =============================================
+// NAVIGATION / ROUTING
+// =============================================
+function navigateTo(target, pushState = true) {
     const container = document.getElementById('view-container');
-    const tpl = document.getElementById(`tpl-${target}`);
-    
-    if (tpl) {
-        container.innerHTML = '';
-        container.appendChild(tpl.content.cloneNode(true));
-        
-        if (target === 'settings') initSettingsView();
-        if (target === 'dashboard') renderDashboard();
-        if (target === 'inventory') initInventory();
-        if (target === 'pos') initPOS();
-        if (target === 'journal') initJournal();
-        if (target === 'ledger') renderLedger();
-        if (target === 'trial-balance') renderTrialBalance();
-        if (target === 'cash-book') renderCashBook();
-        if (target === 'financial-statements') renderFinancialStatements();
-        
-        lucide.createIcons();
+    const tpl = document.getElementById('tpl-' + target);
+    if (!tpl) return;
+
+    container.innerHTML = '';
+    const clone = tpl.content.cloneNode(true);
+    container.appendChild(clone);
+    lucide.createIcons();
+
+    document.getElementById('page-title').textContent = pageTitles[target] || target;
+
+    document.querySelectorAll('.nav-item').forEach(l => {
+        l.classList.toggle('active', l.getAttribute('data-target') === target);
+    });
+
+    if (pushState) {
+        history.pushState({ target }, '', '#' + target);
+    }
+
+    // Initialize the view
+    switch (target) {
+        case 'dashboard':       initDashboard(); break;
+        case 'inventory':       initInventory(); break;
+        case 'pos':             initPOS(); break;
+        case 'bill-history':    initBillHistory(); break;
+        case 'journal':         initJournal(); break;
+        case 'ledger':          initLedger(); break;
+        case 'trial-balance':   initTrialBalance(); break;
+        case 'cash-book':       initCashBook(); break;
+        case 'financial-statements': initFinancialStatements(); break;
+        case 'settings':        initSettingsView(); break;
     }
 }
 
-function refreshCurrentView() {
-    handleRoute(); 
-}
+const pageTitles = {
+    'dashboard': 'Dashboard',
+    'inventory': 'Inventory',
+    'pos': 'Billing / POS',
+    'bill-history': 'Bill History',
+    'journal': 'Journal',
+    'ledger': 'Ledger',
+    'trial-balance': 'Trial Balance',
+    'cash-book': 'Cash Book',
+    'financial-statements': 'Financial Statements',
+    'settings': 'Settings'
+};
 
-// --- View: Settings ---
-function initSettingsView() {
-    const patInput = document.getElementById('gh-pat');
-    if (!patInput) return;
-    
-    patInput.value = settings.pat;
-    document.getElementById('gh-owner').value = settings.owner;
-    document.getElementById('gh-repo').value = settings.repo;
-    document.getElementById('gh-path').value = settings.path;
-
-    document.getElementById('save-settings-btn').addEventListener('click', () => {
-        settings = {
-            pat: document.getElementById('gh-pat').value.trim(),
-            owner: document.getElementById('gh-owner').value.trim() || 'Tanmay201010',
-            repo: document.getElementById('gh-repo').value.trim() || 'udaan',
-            path: document.getElementById('gh-path').value.trim() || 'data.json'
-        };
-        localStorage.setItem('accopro_settings', JSON.stringify(settings));
-        
-        const msg = document.getElementById('settings-msg');
-        msg.innerHTML = '<span style="color:var(--success);">Settings saved! Testing connection...</span>';
-        
-        fetchData().then(() => {
-            msg.innerHTML = '<span style="color:var(--success);">Connected successfully!</span>';
-        });
+// =============================================
+// DASHBOARD
+// =============================================
+function initDashboard() {
+    // Cash balance from journal (Cash account)
+    let cashBalance = 0;
+    appData.journal.forEach(e => {
+        if ((e.debitAcc || '').toLowerCase() === 'cash') cashBalance += parseFloat(e.debitAmt) || 0;
+        if ((e.creditAcc || '').toLowerCase() === 'cash') cashBalance -= parseFloat(e.creditAmt) || 0;
     });
+    // Also include POS cash sales
+    appData.pos.forEach(bill => {
+        if ((bill.note || '').toLowerCase() === 'cash') {
+            cashBalance += parseFloat(bill.total) || 0;
+        }
+    });
+    const cashEl = document.getElementById('dash-cash-balance');
+    if (cashEl) cashEl.textContent = fmt(cashBalance);
+
+    const billsEl = document.getElementById('dash-bills-count');
+    if (billsEl) billsEl.textContent = appData.pos.length;
+
+    // Total expenses (credit entries for expense accounts)
+    let expenses = 0;
+    appData.journal.forEach(e => {
+        const acc = (e.debitAcc || '').toLowerCase();
+        if (acc === 'rent' || acc === 'salary' || acc === 'expense' || acc === 'wages' || acc === 'utilities' || acc === 'electricity') {
+            expenses += parseFloat(e.debitAmt) || 0;
+        }
+    });
+    const expEl = document.getElementById('dash-expenses');
+    if (expEl) expEl.textContent = fmt(expenses);
+
+    const jEl = document.getElementById('dash-journal-count');
+    if (jEl) jEl.textContent = appData.journal.length;
+
+    // Recent transactions table
+    const tbody = document.querySelector('#dash-recent-table tbody');
+    if (tbody) {
+        const recent = [...appData.journal].reverse().slice(0, 10);
+        if (recent.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">No transactions yet.</td></tr>';
+        } else {
+            tbody.innerHTML = recent.map(e => `
+                <tr>
+                    <td>${e.date || ''}</td>
+                    <td>${e.desc || ''}</td>
+                    <td>${e.debitAcc || ''} / ${e.creditAcc || ''}</td>
+                    <td>${fmt(e.debitAmt || e.creditAmt)}</td>
+                </tr>
+            `).join('');
+        }
+    }
 }
 
-// --- View: Inventory ---
+// =============================================
+// INVENTORY
+// =============================================
 function initInventory() {
     renderInventoryTable();
-    
+
     document.getElementById('new-item-btn').addEventListener('click', () => {
         document.getElementById('inventory-modal').style.display = 'block';
+        document.getElementById('inv-name').value = '';
+        document.getElementById('inv-consignor').value = '';
+        document.getElementById('inv-qty').value = '1';
+        document.getElementById('inv-price').value = '';
     });
-    
+
     document.getElementById('inv-cancel-btn').addEventListener('click', () => {
         document.getElementById('inventory-modal').style.display = 'none';
     });
-    
+
     document.getElementById('inv-save-btn').addEventListener('click', () => {
         const name = document.getElementById('inv-name').value.trim();
         const consignor = document.getElementById('inv-consignor').value.trim();
-        const price = Number(document.getElementById('inv-price').value);
-        const qty = Number(document.getElementById('inv-qty').value) || 1;
-        if (!name || !price || !consignor) { alert("Fill all fields including Consignor Name"); return; }
-        
-        appState.inventory.push({ id: Date.now().toString(), name, consignor, price, qty });
+        const qty = parseInt(document.getElementById('inv-qty').value) || 0;
+        const price = parseFloat(document.getElementById('inv-price').value) || 0;
 
-        // NO journal entry when adding to inventory
+        if (!name || qty <= 0 || price <= 0) {
+            alert('Please fill all required fields.');
+            return;
+        }
 
+        appData.inventory.push({ id: uid(), name, consignor, qty, price });
+        saveLocal();
         document.getElementById('inventory-modal').style.display = 'none';
-        document.getElementById('inv-name').value = '';
-        document.getElementById('inv-consignor').value = '';
-        document.getElementById('inv-price').value = '';
-        document.getElementById('inv-qty').value = '1';
         renderInventoryTable();
-        saveData();
     });
 }
 
 function renderInventoryTable() {
     const tbody = document.querySelector('#inventory-table tbody');
-    if(!tbody) return;
-    tbody.innerHTML = '';
-    
-    appState.inventory.forEach(item => {
-        const displayQty = item.qty || 1;
-        tbody.innerHTML += `
-            <tr>
-                <td><strong>${item.name}</strong></td>
-                <td>${item.consignor || '-'}</td>
-                <td>${displayQty}</td>
-                <td>₹ ${item.price.toFixed(2)}</td>
-                <td><button class="btn btn-secondary btn-sm" onclick="deleteInventoryItem('${item.id}')"><i data-lucide="trash"></i></button></td>
-            </tr>
-        `;
-    });
-    lucide.createIcons();
-}
-
-window.deleteInventoryItem = function(id) {
-    if(confirm('Delete product?')) {
-        appState.inventory = appState.inventory.filter(i => i.id !== id);
-        renderInventoryTable();
-        saveData();
+    if (!tbody) return;
+    if (appData.inventory.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No products yet. Add a product to get started.</td></tr>';
+        return;
     }
+    tbody.innerHTML = appData.inventory.map(item => `
+        <tr>
+            <td>${item.name}</td>
+            <td>${item.consignor || '—'}</td>
+            <td>${item.qty}</td>
+            <td>${fmt(item.price)}</td>
+            <td>
+                <button class="btn btn-sm btn-secondary inv-del-btn" data-id="${item.id}">Delete</button>
+            </td>
+        </tr>
+    `).join('');
+
+    tbody.querySelectorAll('.inv-del-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            appData.inventory = appData.inventory.filter(i => i.id !== id);
+            saveLocal();
+            renderInventoryTable();
+        });
+    });
 }
 
-// --- View: POS / Billing Counter ---
-let posItems = [];
+// =============================================
+// POS / BILLING
+// =============================================
 function initPOS() {
-    posItems = [];
-    
-    // Populate dropdown
-    const select = document.getElementById('pos-product-select');
-    appState.inventory.forEach(item => {
-        select.innerHTML += `<option value="${item.id}">${item.name} - Cost: ₹${item.price}</option>`;
-    });
+    let posItems = [];
 
-    // Date and Invoice default
-    document.getElementById('pos-date').value = new Date().toISOString().split('T')[0];
-    const nextInvNo = (appState.bills.length + 1).toString().padStart(6, '0');
-    document.getElementById('pos-no').value = `#${nextInvNo}`;
+    // Set Invoice No and Date
+    const invoiceNo = '#' + String(appData.nextInvoice).padStart(6, '0');
+    document.getElementById('pos-no').value = invoiceNo;
+    document.getElementById('pos-date').value = today();
 
-    // Listeners for preview
-    ['pos-date', 'pos-no', 'pos-customer', 'pos-note'].forEach(id => {
-        document.getElementById(id).addEventListener('input', updatePOSPreview);
-        document.getElementById(id).addEventListener('change', updatePOSPreview);
-    });
+    // Populate product select
+    populatePosProductSelect();
+
+    function populatePosProductSelect() {
+        const sel = document.getElementById('pos-product-select');
+        if (!sel) return;
+        sel.innerHTML = '<option value="">Select an item...</option>';
+        appData.inventory.forEach(item => {
+            if (item.qty > 0) {
+                const opt = document.createElement('option');
+                opt.value = item.id;
+                opt.textContent = `${item.name} (Stock: ${item.qty}) — Cost: ${fmt(item.price)}`;
+                sel.appendChild(opt);
+            }
+        });
+    }
+
+    function renderPosItems() {
+        const container = document.getElementById('pos-items-container');
+        if (!container) return;
+        if (posItems.length === 0) {
+            container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;">No items added yet.</p>';
+            return;
+        }
+        let total = 0;
+        posItems.forEach(i => total += i.salePrice * i.qty);
+        container.innerHTML = `
+            <table class="data-table" style="margin-bottom:0.5rem;">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th style="text-align:right;">Qty</th>
+                        <th style="text-align:right;">Sale Price</th>
+                        <th style="text-align:right;">Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${posItems.map((item, idx) => `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td style="text-align:right;">${item.qty}</td>
+                            <td style="text-align:right;">${fmt(item.salePrice)}</td>
+                            <td style="text-align:right;">${fmt(item.salePrice * item.qty)}</td>
+                            <td><button class="btn btn-sm btn-secondary pos-rm-btn" data-idx="${idx}">✕</button></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <p style="text-align:right;font-weight:bold;margin-top:0.5rem;">Total: ${fmt(total)}</p>
+        `;
+        container.querySelectorAll('.pos-rm-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                posItems.splice(parseInt(btn.getAttribute('data-idx')), 1);
+                renderPosItems();
+            });
+        });
+    }
 
     document.getElementById('pos-add-item-btn').addEventListener('click', () => {
-        const selId = select.value;
-        const salePrice = Number(document.getElementById('pos-sale-price').value);
-        if (!selId) { alert("Please select a product"); return; }
-        if (!salePrice || salePrice <= 0) { alert("Please enter a valid Sale Price"); return; }
-        
-        const invItem = appState.inventory.find(i => i.id === selId);
-        
-        posItems.push({ id: Date.now(), desc: invItem.name, qty: 1, price: salePrice });
-        document.getElementById('pos-sale-price').value = ''; // clear price input
-        renderPOSItems();
-        updatePOSPreview();
+        const sel = document.getElementById('pos-product-select');
+        const itemId = sel.value;
+        const salePrice = parseFloat(document.getElementById('pos-sale-price').value);
+        if (!itemId) { alert('Please select a product.'); return; }
+        if (!salePrice || salePrice <= 0) { alert('Please enter a valid sale price.'); return; }
+        const inv = appData.inventory.find(i => i.id === itemId);
+        if (!inv) return;
+        const existing = posItems.find(i => i.id === itemId);
+        if (existing) {
+            existing.qty += 1;
+        } else {
+            posItems.push({ id: itemId, name: inv.name, consignor: inv.consignor, costPrice: inv.price, salePrice: salePrice, qty: 1 });
+        }
+        renderPosItems();
     });
 
-    function saveBillData() {
-        if(posItems.length === 0) { alert('Add items to bill'); return false; }
-        const billDate = document.getElementById('pos-date').value;
-        const invNo = document.getElementById('pos-no').value;
-        const customer = document.getElementById('pos-customer').value;
-        const paymentMethod = document.getElementById('pos-note').value;
-        
-        let totalSaleValue = 0;
-        let totalConsignmentCost = 0;
-        let totalCommission = 0;
-        // Group entries by consignor for proper accounting
-        const byConsignor = {};
-
-        posItems.forEach(item => {
-            const invItem = appState.inventory.find(i => i.name === item.desc);
-            const consignorName = (invItem && invItem.consignor) ? invItem.consignor + ' A/c' : 'Consignor A/c';
-            const inventoryPrice = invItem ? invItem.price : item.price;
-            const saleValue = item.price * item.qty;
-            const inventoryCost = inventoryPrice * item.qty;
-            const commission = saleValue - inventoryCost;
-
-            totalSaleValue += saleValue;
-            totalConsignmentCost += inventoryCost;
-            totalCommission += commission;
-
-            if (!byConsignor[consignorName]) byConsignor[consignorName] = { saleValue: 0, cost: 0, commission: 0 };
-            byConsignor[consignorName].saleValue += saleValue;
-            byConsignor[consignorName].cost += inventoryCost;
-            byConsignor[consignorName].commission += commission;
+    function saveBill(withPrint) {
+        const customer = document.getElementById('pos-customer').value.trim() || 'Walk-in Customer';
+        const note = document.getElementById('pos-note').value;
+        if (posItems.length === 0) { alert('Add at least one item.'); return; }
+        const total = posItems.reduce((s, i) => s + i.salePrice * i.qty, 0);
+        const bill = {
+            id: uid(),
+            invoiceNo: document.getElementById('pos-no').value,
+            date: document.getElementById('pos-date').value,
+            customer,
+            items: posItems.map(i => ({...i})),
+            total,
+            note
+        };
+        appData.pos.push(bill);
+        appData.nextInvoice = (appData.nextInvoice || 1) + 1;
+        // Deduct from inventory
+        posItems.forEach(pi => {
+            const inv = appData.inventory.find(i => i.id === pi.id);
+            if (inv) inv.qty -= pi.qty;
         });
-
-        appState.bills.push({
-            date: billDate,
-            invoiceNo: invNo,
-            customer: customer,
-            items: [...posItems],
-            total: totalSaleValue,
-            paymentMethod: paymentMethod
-        });
-
-        let ts = Date.now();
-
-        Object.entries(byConsignor).forEach(([consignorAcc, vals]) => {
-            // Entry 1: Cash A/c Dr, Consignor A/c Cr (full sale value)
-            appState.journal.push({
-                id: ts++,
-                date: billDate,
-                desc: `Sale to ${customer} - Invoice ${invNo}`,
-                debitAcc: 'Cash A/c',
-                debitAmt: vals.saleValue,
-                creditAcc: consignorAcc,
-                creditAmt: vals.saleValue
-            });
-
-            // Entry 2: Commission - Consignor A/c Dr, Commission Income A/c Cr
-            if (vals.commission > 0.001) {
-                appState.journal.push({
-                    id: ts++,
-                    date: billDate,
-                    desc: `Commission earned - Invoice ${invNo}`,
-                    debitAcc: consignorAcc,
-                    debitAmt: vals.commission,
-                    creditAcc: 'Commission Income A/c',
-                    creditAmt: vals.commission
-                });
-            }
-
-            // Entry 3: Payment to Consignor - Consignor A/c Dr, Cash A/c Cr (inventory cost)
-            if (vals.cost > 0.001) {
-                appState.journal.push({
-                    id: ts++,
-                    date: billDate,
-                    desc: `Payment to Consignor - Invoice ${invNo}`,
-                    debitAcc: consignorAcc,
-                    debitAmt: vals.cost,
-                    creditAcc: 'Cash A/c',
-                    creditAmt: vals.cost
-                });
-            }
-        });
-
-        saveData();
-        return true;
-    }
-
-    function resetPOS() {
+        // Auto journal entry for cash/UPI sale
+        const jEntry = {
+            id: uid(),
+            date: bill.date,
+            desc: `Sale - Invoice ${bill.invoiceNo} to ${customer}`,
+            debitAcc: 'Cash',
+            debitAmt: total,
+            creditAcc: 'Sales',
+            creditAmt: total
+        };
+        appData.journal.push(jEntry);
+        saveLocal();
+        if (withPrint) generateAndPrintBill(bill);
+        // Reset
         posItems = [];
         document.getElementById('pos-customer').value = '';
-        
-        // Increment invoice number slightly intelligently
-        let currentInv = document.getElementById('pos-no').value;
-        let numMatch = currentInv.match(/\d+$/);
-        if (numMatch) {
-            let nextNum = parseInt(numMatch[0]) + 1;
-            let nextNumStr = nextNum.toString().padStart(numMatch[0].length, '0');
-            document.getElementById('pos-no').value = currentInv.replace(/\d+$/, nextNumStr);
-        }
-        
-        renderPOSItems();
-        updatePOSPreview();
+        document.getElementById('pos-no').value = '#' + String(appData.nextInvoice).padStart(6, '0');
+        renderPosItems();
+        populatePosProductSelect();
     }
 
-    document.getElementById('generate-bill-btn').addEventListener('click', () => {
-        if(saveBillData()) {
-            generateAndPrintBill();
-            resetPOS();
-        }
-    });
-
-    const historyBtn = document.getElementById('save-history-btn');
-    if (historyBtn) {
-        historyBtn.addEventListener('click', () => {
-            if(saveBillData()) {
-                alert('Bill saved to history and journal recorded!');
-                resetPOS();
-            }
-        });
-    }
-
-    updatePOSPreview();
+    document.getElementById('generate-bill-btn').addEventListener('click', () => saveBill(true));
+    document.getElementById('save-history-btn').addEventListener('click', () => saveBill(false));
 }
 
-function renderPOSItems() {
-    const container = document.getElementById('pos-items-container');
-    container.innerHTML = '';
-    posItems.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.style.display = 'flex'; div.style.gap = '0.5rem'; div.style.marginBottom = '0.5rem';
-        div.innerHTML = `
-            <input type="text" value="${item.desc}" disabled style="flex: 2; padding: 0.5rem; background: var(--bg-tertiary);">
-            <input type="number" value="${item.qty}" min="1" onchange="updatePOSItem(${index}, 'qty', this.value)" style="flex: 1; padding: 0.5rem;">
-            <input type="number" value="${item.price}" onchange="updatePOSItem(${index}, 'price', this.value)" style="flex: 1; padding: 0.5rem;" title="Override Price">
-            <button class="btn btn-secondary btn-sm" onclick="removePOSItem(${index})"><i data-lucide="trash"></i></button>
-        `;
-        container.appendChild(div);
-    });
-    lucide.createIcons();
-}
+function generateAndPrintBill(bill) {
+    const itemsHTML = bill.items.map((item, idx) => `
+        <tr>
+            <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0;">${idx + 1}</td>
+            <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0;">${item.name}</td>
+            <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; text-align: right;">${item.qty}</td>
+            <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; text-align: right;">₹ ${parseFloat(item.salePrice).toFixed(2)}</td>
+            <td style="padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; text-align: right;">₹ ${(item.salePrice * item.qty).toFixed(2)}</td>
+        </tr>
+    `).join('');
 
-window.updatePOSItem = function(index, field, value) {
-    posItems[index][field] = Number(value);
-    updatePOSPreview();
-}
+    const dateStr = bill.date ? new Date(bill.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
-window.removePOSItem = function(index) {
-    posItems.splice(index, 1);
-    renderPOSItems();
-    updatePOSPreview();
-}
-
-function generateAndPrintBill() {
-    // Collect bill data from current state (last bill saved)
-    const bill = appState.bills[appState.bills.length - 1];
-    if (!bill) return;
-
-    let itemRows = '';
-    let grandTotal = 0;
-    bill.items.forEach((item, idx) => {
-        const invItem = appState.inventory.find(i => i.name === item.desc);
-        const consignmentPrice = invItem ? invItem.price : item.price;
-        const salePrice = item.price;
-        const subtotal = salePrice * item.qty;
-        const commission = (salePrice - consignmentPrice) * item.qty;
-        grandTotal += subtotal;
-        itemRows += `
-            <tr>
-                <td style="padding:0.7rem 1rem;border-bottom:1px solid #e2e8f0;">${idx + 1}</td>
-                <td style="padding:0.7rem 1rem;border-bottom:1px solid #e2e8f0;">${item.desc}</td>
-                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">${item.qty}</td>
-                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${salePrice.toFixed(2)}</td>
-                <td style="padding:0.7rem 1rem;text-align:right;border-bottom:1px solid #e2e8f0;">&#8377; ${subtotal.toFixed(2)}</td>
-            </tr>`;
-    });
-
-    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-
-    const htmlContent = `<!DOCTYPE html>
+    const printHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Invoice ${bill.invoiceNo}</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Inter',sans-serif; font-size:13px; color:#1e293b; background:#fff; padding:2rem; }
-  .bill-wrap { max-width:800px; margin:0 auto; }
-  .header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #1e293b; padding-bottom:1.5rem; margin-bottom:1.5rem; }
-  .company-name { font-size:1.8rem; font-weight:700; color:#1e293b; letter-spacing:0.05em; }
-  .company-sub { font-size:0.8rem; color:#64748b; margin-top:0.25rem; }
-  .invoice-label { font-size:2rem; font-weight:300; letter-spacing:0.4em; color:#1e293b; text-align:right; }
-  .invoice-meta { font-size:0.85rem; text-align:right; margin-top:0.5rem; color:#475569; }
-  .bill-to { margin-bottom:1.5rem; }
-  .bill-to h4 { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; margin-bottom:0.3rem; }
-  .bill-to p { font-size:0.95rem; font-weight:600; }
-  table { width:100%; border-collapse:collapse; margin-bottom:1.5rem; }
-  thead tr { background:#f1f5f9; }
-  th { padding:0.75rem 1rem; text-align:left; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:#64748b; border-top:1px solid #cbd5e1; border-bottom:1px solid #cbd5e1; }
-  th.right, td.right { text-align:right; }
-  .total-row { display:flex; justify-content:flex-end; margin-top:1rem; }
-  .total-box { background:#1e293b; color:white; padding:1rem 1.5rem; border-radius:6px; text-align:right; }
-  .total-box .label { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:#94a3b8; }
-  .total-box .amount { font-size:1.5rem; font-weight:700; margin-top:0.3rem; }
-  .footer { margin-top:2rem; border-top:1px solid #e2e8f0; padding-top:1rem; display:flex; justify-content:space-between; font-size:0.8rem; color:#64748b; }
-  .payment-badge { display:inline-block; background:#dcfce7; color:#16a34a; padding:0.3rem 0.8rem; border-radius:999px; font-size:0.75rem; font-weight:600; }
-  @media print { body { padding:0; } @page { margin:1.5cm; } }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; color: #1e293b; background: white; }
+    .bill-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0; }
+    .logo-section h2 { font-size: 1.5rem; font-weight: 700; color: #0f172a; }
+    .logo-section p { color: #64748b; font-size: 0.85rem; margin-top: 0.25rem; }
+    .meta-section { text-align: right; }
+    .meta-section p { font-size: 0.9rem; color: #475569; }
+    .title-area { display: flex; justify-content: space-between; align-items: center; margin: 2rem 0; }
+    .invoice-label { font-size: 2rem; font-weight: 300; letter-spacing: 0.5em; color: #64748b; }
+    .to-from { font-size: 0.9rem; }
+    .to-from strong { display: block; color: #0f172a; font-size: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    thead tr { background: #f1f5f9; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; }
+    thead th { padding: 0.75rem 1rem; text-align: left; font-size: 0.8rem; letter-spacing: 0.05em; color: #475569; text-transform: uppercase; }
+    thead th:last-child, thead th:nth-child(3), thead th:nth-child(4) { text-align: right; }
+    .footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 2px solid #e2e8f0; padding-top: 1rem; margin-top: 1rem; }
+    .grand-total { font-size: 1.1rem; font-weight: bold; }
+    .amount { font-size: 1.3rem; color: #0f172a; }
+    @media print { body { padding: 20px; } }
 </style>
 </head>
 <body>
-<div class="bill-wrap">
-  <div class="header">
-    <div>
-      <div class="company-name">UdaanPro</div>
-      <div class="company-sub">Smart Retail &amp; Accounting</div>
+    <div class="bill-header">
+        <div class="logo-section">
+            <h2>UdaanPro</h2>
+            <p>Delhi Public School Nacharam</p>
+        </div>
+        <div class="meta-section">
+            <p><strong>Date Issued:</strong></p>
+            <p>${dateStr}</p>
+        </div>
     </div>
-    <div>
-      <div class="invoice-label">INVOICE</div>
-      <div class="invoice-meta">
-        <strong>Invoice No:</strong> ${bill.invoiceNo}<br>
-        <strong>Date:</strong> ${bill.date}
-      </div>
+
+    <div class="title-area">
+        <div class="to-from">
+            <p style="color:#64748b;font-size:0.8rem;">INVOICE NO</p>
+            <strong>${bill.invoiceNo}</strong>
+        </div>
+        <div class="invoice-label">IN VO IC E</div>
+        <div class="to-from" style="text-align:right;">
+            <p style="color:#64748b;font-size:0.8rem;">ISSUED TO</p>
+            <strong>${bill.customer}</strong>
+        </div>
     </div>
-  </div>
 
-  <div class="bill-to">
-    <h4>Billed To</h4>
-    <p>${bill.customer || 'Customer'}</p>
-    <span class="payment-badge">${bill.paymentMethod || 'Cash'}</span>
-  </div>
+    <table>
+        <thead>
+            <tr>
+                <th>NO</th>
+                <th>DESCRIPTION</th>
+                <th style="text-align:right;">QTY</th>
+                <th style="text-align:right;">PRICE</th>
+                <th style="text-align:right;">SUBTOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${itemsHTML}
+        </tbody>
+    </table>
 
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Description</th>
-        <th class="right">Qty</th>
-        <th class="right">Price</th>
-        <th class="right">Subtotal</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${itemRows}
-    </tbody>
-  </table>
-
-  <div class="total-row">
-    <div class="total-box">
-      <div class="label">Grand Total</div>
-      <div class="amount">&#8377; ${grandTotal.toFixed(2)}</div>
+    <div class="footer">
+        <div>
+            <p style="color:#64748b;font-size:0.8rem;">PAYMENT METHOD</p>
+            <p style="font-weight:600;">${bill.note || 'Cash'}</p>
+        </div>
+        <div style="text-align:right;">
+            <p class="grand-total">GRAND TOTAL &nbsp; <span class="amount">₹ ${parseFloat(bill.total).toFixed(2)}</span></p>
+        </div>
     </div>
-  </div>
-
-  <div class="footer">
-    <div>Thank you for your business!</div>
-    <div>Generated by UdaanPro</div>
-  </div>
-</div>
-${isMobile ? '' : `<script>window.onload = function(){ window.print(); window.close(); }</scr` + `ipt>`}
 </body>
 </html>`;
 
-    if (isMobile) {
-        // On mobile: download as HTML file directly
-        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `Invoice_${bill.invoiceNo.replace('#', '')}.html`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    } else {
-        const printWindow = window.open('', '_blank', 'width=900,height=700');
-        printWindow.document.write(htmlContent);
+    const printWindow = window.open('', '_blank', 'width=800,height=900');
+    if (printWindow) {
+        printWindow.document.open();
+        printWindow.document.write(printHTML);
         printWindow.document.close();
+        printWindow.onload = () => {
+            printWindow.print();
+        };
     }
 }
 
+// =============================================
+// BILL HISTORY
+// =============================================
+function initBillHistory() {
+    let filtered = [...appData.pos].reverse(); // newest first
 
+    function render(list) {
+        const tbody = document.querySelector('#bill-history-table tbody');
+        const emptyMsg = document.getElementById('bill-history-empty');
+        if (!tbody) return;
 
-function updatePOSPreview() {
-    const date = document.getElementById('pos-date')?.value || new Date().toISOString().split('T')[0];
-    const invoiceNo = document.getElementById('pos-no')?.value || '#000001';
-    
-    document.getElementById('prev-date').innerText = date;
-    document.getElementById('prev-invoice-no').innerText = invoiceNo;
-    document.getElementById('prev-customer').innerText = document.getElementById('pos-customer')?.value || '';
-    document.getElementById('prev-note').innerText = document.getElementById('pos-note')?.value || '';
-
-    const tbody = document.querySelector('#prev-items-table tbody');
-    if(tbody) {
-        tbody.innerHTML = '';
-        let grandTotal = 0;
-        posItems.forEach((item, idx) => {
-            const subtotal = item.qty * item.price;
-            grandTotal += subtotal;
-            tbody.innerHTML += `
-                <tr>
-                    <td style="padding: 1rem;">${idx + 1}</td>
-                    <td style="padding: 1rem;">${item.desc}</td>
-                    <td style="padding: 1rem; text-align: right;">${item.qty}</td>
-                    <td style="padding: 1rem; text-align: right;">&#8377; ${item.price.toFixed(2)}</td>
-                    <td style="padding: 1rem; text-align: right;">&#8377; ${subtotal.toFixed(2)}</td>
-                </tr>
-            `;
-        });
-        document.getElementById('prev-grand-total').innerText = `₹ ${grandTotal.toFixed(2)}`;
-    }
-}
-
-// --- View: Dashboard ---
-function renderDashboard() {
-    let totalCash = 0;
-    let totalExpenses = 0;
-    
-    appState.journal.forEach(entry => {
-        if (entry.debitAcc.toLowerCase() === 'cash') totalCash += entry.debitAmt;
-        if (entry.creditAcc.toLowerCase() === 'cash') totalCash -= entry.creditAmt;
-        if (entry.debitAcc.toLowerCase().includes('expense') || entry.debitAcc.toLowerCase().includes('purchases')) {
-            totalExpenses += entry.debitAmt;
+        if (list.length === 0) {
+            tbody.innerHTML = '';
+            if (emptyMsg) emptyMsg.style.display = 'block';
+            return;
         }
-    });
+        if (emptyMsg) emptyMsg.style.display = 'none';
 
-    const elCash = document.getElementById('dash-cash-balance');
-    if(elCash) elCash.innerText = `₹ ${totalCash.toFixed(2)}`;
-    
-    const elBills = document.getElementById('dash-bills-count');
-    if(elBills) elBills.innerText = appState.bills.length;
-    
-    const elExp = document.getElementById('dash-expenses');
-    if(elExp) elExp.innerText = `₹ ${totalExpenses.toFixed(2)}`;
-    
-    const elJourn = document.getElementById('dash-journal-count');
-    if(elJourn) elJourn.innerText = appState.journal.length;
-
-    const tbody = document.querySelector('#dash-recent-table tbody');
-    if(tbody) {
-        tbody.innerHTML = '';
-        const recent = [...appState.journal].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
-        recent.forEach(entry => {
-            tbody.innerHTML += `
+        tbody.innerHTML = list.map(bill => {
+            const itemSummary = (bill.items || [])
+                .map(i => `${i.name} ×${i.qty}`)
+                .join(', ');
+            return `
                 <tr>
-                    <td>${entry.date}</td>
-                    <td>${entry.desc}</td>
-                    <td>${entry.debitAcc} / ${entry.creditAcc}</td>
-                    <td>₹ ${entry.debitAmt.toFixed(2)}</td>
+                    <td><strong>${bill.invoiceNo || '—'}</strong></td>
+                    <td>${bill.date || '—'}</td>
+                    <td>${bill.customer || 'Walk-in'}</td>
+                    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${itemSummary}">${itemSummary || '—'}</td>
+                    <td>${bill.note || 'Cash'}</td>
+                    <td style="text-align:right;font-weight:600;">${fmt(bill.total)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-secondary reprint-btn" data-id="${bill.id}">
+                            <i data-lucide="printer"></i> Reprint
+                        </button>
+                    </td>
                 </tr>
             `;
+        }).join('');
+
+        lucide.createIcons();
+
+        tbody.querySelectorAll('.reprint-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const bill = appData.pos.find(b => b.id === id);
+                if (bill) generateAndPrintBill(bill);
+            });
+        });
+    }
+
+    // Initial render
+    render(filtered);
+
+    // Search
+    const searchInput = document.getElementById('bill-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.trim().toLowerCase();
+            if (!q) {
+                render(filtered);
+                return;
+            }
+            render(filtered.filter(b =>
+                (b.customer || '').toLowerCase().includes(q) ||
+                (b.invoiceNo || '').toLowerCase().includes(q) ||
+                (b.date || '').includes(q)
+            ));
+        });
+    }
+
+    // Export CSV
+    const exportBtn = document.getElementById('export-bills-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+            if (appData.pos.length === 0) { alert('No bills to export.'); return; }
+            const header = 'Invoice No,Date,Customer,Items,Payment,Total\n';
+            const rows = [...appData.pos].reverse().map(b => {
+                const items = (b.items || []).map(i => `${i.name}x${i.qty}`).join(' | ');
+                return [b.invoiceNo, b.date, b.customer, `"${items}"`, b.note, b.total].join(',');
+            }).join('\n');
+            const blob = new Blob([header + rows], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'bill_history.csv';
+            a.click();
         });
     }
 }
 
-// --- View: Journal ---
+// =============================================
+// JOURNAL
+// =============================================
 function initJournal() {
+    renderJournalTable();
+
     if (!journalListenersAttached) {
+        journalListenersAttached = true;
+
         document.addEventListener('click', e => {
+            // New entry button
             if (e.target.closest('#new-journal-btn')) {
-                document.getElementById('journal-modal').style.display = 'block';
-                document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
-                document.getElementById('journal-modal-title').innerText = 'New Journal Entry';
+                const modal = document.getElementById('journal-modal');
+                if (!modal) return;
+                modal.style.display = 'block';
+                document.getElementById('journal-modal-title').textContent = 'New Journal Entry';
                 document.getElementById('j-edit-id').value = '';
-                document.getElementById('j-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('j-date').value = today();
                 document.getElementById('j-desc').value = '';
                 document.getElementById('j-debit-acc').value = '';
                 document.getElementById('j-debit-amt').value = '';
                 document.getElementById('j-credit-acc').value = '';
                 document.getElementById('j-credit-amt').value = '';
             }
+
+            // Cancel
             if (e.target.closest('#j-cancel-btn')) {
-                document.getElementById('journal-modal').style.display = 'none';
+                const modal = document.getElementById('journal-modal');
+                if (modal) modal.style.display = 'none';
             }
+
+            // Save
             if (e.target.closest('#j-save-btn')) {
-                saveJournalEntry();
-            }
-            if (e.target.closest('#export-journal-btn')) {
-                exportJournalToExcel();
-            }
-            // Edit button in table
-            if (e.target.closest('.j-edit-btn')) {
-                const id = Number(e.target.closest('.j-edit-btn').dataset.id);
-                const entry = appState.journal.find(j => j.id === id);
-                if (!entry) return;
-                document.getElementById('j-edit-id').value = id;
-                document.getElementById('j-date').value = entry.date;
-                document.getElementById('j-desc').value = entry.desc;
-                document.getElementById('j-debit-acc').value = entry.debitAcc;
-                document.getElementById('j-debit-amt').value = entry.debitAmt;
-                document.getElementById('j-credit-acc').value = entry.creditAcc;
-                document.getElementById('j-credit-amt').value = entry.creditAmt;
-                document.getElementById('journal-modal-title').innerText = 'Edit Journal Entry';
-                document.getElementById('journal-modal').style.display = 'block';
-            }
-            // Delete button in table
-            if (e.target.closest('.j-delete-btn')) {
-                const id = Number(e.target.closest('.j-delete-btn').dataset.id);
-                if (confirm('Delete this journal entry?')) {
-                    appState.journal = appState.journal.filter(j => j.id !== id);
-                    renderJournalTable();
-                    saveData();
+                const editId = document.getElementById('j-edit-id').value;
+                const entry = {
+                    id: editId || uid(),
+                    date: document.getElementById('j-date').value,
+                    desc: document.getElementById('j-desc').value.trim(),
+                    debitAcc: document.getElementById('j-debit-acc').value.trim(),
+                    debitAmt: parseFloat(document.getElementById('j-debit-amt').value) || 0,
+                    creditAcc: document.getElementById('j-credit-acc').value.trim(),
+                    creditAmt: parseFloat(document.getElementById('j-credit-amt').value) || 0,
+                };
+                if (!entry.desc || !entry.debitAcc || !entry.creditAcc) {
+                    alert('Please fill in description, debit account, and credit account.');
+                    return;
                 }
+                if (editId) {
+                    const idx = appData.journal.findIndex(j => j.id === editId);
+                    if (idx >= 0) appData.journal[idx] = entry;
+                } else {
+                    appData.journal.push(entry);
+                }
+                saveLocal();
+                syncData();
+                const modal = document.getElementById('journal-modal');
+                if (modal) modal.style.display = 'none';
+                renderJournalTable();
+            }
+
+            // Edit
+            if (e.target.closest('.j-edit-btn')) {
+                const id = e.target.closest('.j-edit-btn').getAttribute('data-id');
+                const entry = appData.journal.find(j => j.id === id);
+                if (!entry) return;
+                const modal = document.getElementById('journal-modal');
+                if (!modal) return;
+                modal.style.display = 'block';
+                document.getElementById('journal-modal-title').textContent = 'Edit Journal Entry';
+                document.getElementById('j-edit-id').value = entry.id;
+                document.getElementById('j-date').value = entry.date || '';
+                document.getElementById('j-desc').value = entry.desc || '';
+                document.getElementById('j-debit-acc').value = entry.debitAcc || '';
+                document.getElementById('j-debit-amt').value = entry.debitAmt || '';
+                document.getElementById('j-credit-acc').value = entry.creditAcc || '';
+                document.getElementById('j-credit-amt').value = entry.creditAmt || '';
+            }
+
+            // Delete
+            if (e.target.closest('.j-del-btn')) {
+                const id = e.target.closest('.j-del-btn').getAttribute('data-id');
+                if (!confirm('Delete this entry?')) return;
+                appData.journal = appData.journal.filter(j => j.id !== id);
+                saveLocal();
+                syncData();
+                renderJournalTable();
             }
         });
-        journalListenersAttached = true;
     }
-    renderJournalTable();
+
+    // Export button
+    const exportBtn = document.getElementById('export-journal-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', exportJournalCSV);
+    }
 }
 
 function renderJournalTable() {
     const tbody = document.querySelector('#journal-table tbody');
-    if(!tbody) return;
-    tbody.innerHTML = '';
-    
-    const sorted = [...appState.journal].sort((a,b) => new Date(a.date) - new Date(b.date));
-    
-    sorted.forEach(entry => {
-        tbody.innerHTML += `
+    if (!tbody) return;
+    if (appData.journal.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">No journal entries yet.</td></tr>';
+        return;
+    }
+    tbody.innerHTML = [...appData.journal].reverse().map(e => `
+        <tr>
+            <td>${e.date || ''}</td>
+            <td>${e.debitAcc || ''} / ${e.creditAcc || ''}</td>
+            <td>${e.desc || ''}</td>
+            <td>${e.debitAmt ? fmt(e.debitAmt) : '—'}</td>
+            <td>${e.creditAmt ? fmt(e.creditAmt) : '—'}</td>
+            <td style="display:flex;gap:0.5rem;">
+                <button class="btn btn-sm btn-secondary j-edit-btn" data-id="${e.id}">Edit</button>
+                <button class="btn btn-sm btn-secondary j-del-btn" data-id="${e.id}" style="color:var(--danger);">Del</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function exportJournalCSV() {
+    if (appData.journal.length === 0) { alert('No entries to export.'); return; }
+    const header = 'Date,Description,Debit Account,Debit Amount,Credit Account,Credit Amount\n';
+    const rows = appData.journal.map(e => [e.date, e.desc, e.debitAcc, e.debitAmt, e.creditAcc, e.creditAmt].join(',')).join('\n');
+    const blob = new Blob([header + rows], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'journal_export.csv';
+    a.click();
+}
+
+// =============================================
+// LEDGER
+// =============================================
+function initLedger() {
+    const select = document.getElementById('ledger-acc-select');
+    if (!select) return;
+
+    // Get all unique accounts from journal
+    const accounts = new Set();
+    appData.journal.forEach(e => {
+        if (e.debitAcc) accounts.add(e.debitAcc);
+        if (e.creditAcc) accounts.add(e.creditAcc);
+    });
+
+    select.innerHTML = '<option value="">Select Account...</option>';
+    [...accounts].sort().forEach(acc => {
+        const opt = document.createElement('option');
+        opt.value = acc;
+        opt.textContent = acc;
+        select.appendChild(opt);
+    });
+
+    select.addEventListener('change', () => {
+        renderLedger(select.value);
+    });
+}
+
+function renderLedger(account) {
+    const tbody = document.querySelector('#ledger-table tbody');
+    if (!tbody) return;
+
+    if (!account) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">Select an account to view its ledger.</td></tr>';
+        return;
+    }
+
+    const entries = appData.journal.filter(e => e.debitAcc === account || e.creditAcc === account);
+    entries.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+
+    if (entries.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No transactions for this account.</td></tr>';
+        return;
+    }
+
+    let balance = 0;
+    tbody.innerHTML = entries.map(e => {
+        let debit = 0, credit = 0, particulars = '';
+        if (e.debitAcc === account) {
+            debit = parseFloat(e.debitAmt) || 0;
+            particulars = `By ${e.creditAcc}`;
+        }
+        if (e.creditAcc === account) {
+            credit = parseFloat(e.creditAmt) || 0;
+            particulars = `To ${e.debitAcc}`;
+        }
+        balance += debit - credit;
+        const balStr = (balance >= 0 ? '' : '-') + '₹ ' + Math.abs(balance).toFixed(2) + (balance >= 0 ? ' Dr' : ' Cr');
+        return `
             <tr>
-                <td rowspan="2">${entry.date}</td>
-                <td><strong>${entry.debitAcc}</strong></td>
-                <td>${entry.desc}</td>
-                <td>₹ ${entry.debitAmt.toFixed(2)}</td>
-                <td></td>
-                <td rowspan="2" style="vertical-align:middle;">
-                    <div style="display:flex;gap:4px;">
-                        <button class="btn btn-secondary btn-sm j-edit-btn" data-id="${entry.id}" title="Edit"><i data-lucide="pencil"></i></button>
-                        <button class="btn btn-secondary btn-sm j-delete-btn" data-id="${entry.id}" title="Delete" style="color:var(--danger);"><i data-lucide="trash"></i></button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-left: 2rem;"><em>To ${entry.creditAcc}</em></td>
-                <td></td>
-                <td></td>
-                <td>₹ ${entry.creditAmt.toFixed(2)}</td>
+                <td>${e.date || ''}</td>
+                <td>${e.desc || ''}<br><small style="color:var(--text-secondary);">${particulars}</small></td>
+                <td>${debit ? fmt(debit) : '—'}</td>
+                <td>${credit ? fmt(credit) : '—'}</td>
+                <td>${balStr}</td>
             </tr>
         `;
-    });
-    lucide.createIcons();
+    }).join('');
 }
 
-function saveJournalEntry() {
-    const date = document.getElementById('j-date').value;
-    const desc = document.getElementById('j-desc').value;
-    const debitAcc = document.getElementById('j-debit-acc').value.trim();
-    const debitAmt = Number(document.getElementById('j-debit-amt').value);
-    const creditAcc = document.getElementById('j-credit-acc').value.trim();
-    const creditAmt = Number(document.getElementById('j-credit-amt').value);
-    const editId = document.getElementById('j-edit-id').value;
-
-    if (!date || !debitAcc || !creditAcc || !debitAmt || !creditAmt) {
-        alert("Please fill all fields"); return;
-    }
-    if (debitAmt !== creditAmt) {
-        alert("Debit and Credit amounts must be equal."); return;
-    }
-
-    if (editId) {
-        // Edit existing
-        const idx = appState.journal.findIndex(j => j.id === Number(editId));
-        if (idx !== -1) {
-            appState.journal[idx] = { id: Number(editId), date, desc, debitAcc, debitAmt, creditAcc, creditAmt };
+// =============================================
+// TRIAL BALANCE
+// =============================================
+function initTrialBalance() {
+    const accounts = {};
+    appData.journal.forEach(e => {
+        if (e.debitAcc) {
+            if (!accounts[e.debitAcc]) accounts[e.debitAcc] = { debit: 0, credit: 0 };
+            accounts[e.debitAcc].debit += parseFloat(e.debitAmt) || 0;
         }
-    } else {
-        appState.journal.push({ id: Date.now(), date, desc, debitAcc, debitAmt, creditAcc, creditAmt });
-    }
-
-    document.getElementById('journal-modal').style.display = 'none';
-    renderJournalTable();
-    saveData();
-}
-
-function exportJournalToExcel() {
-    const sorted = [...appState.journal].sort((a,b) => new Date(a.date) - new Date(b.date));
-    let csvRows = ['Date,Description,Debit Account,Debit Amount,Credit Account,Credit Amount'];
-    sorted.forEach(e => {
-        csvRows.push(`${e.date},"${e.desc}","${e.debitAcc}",${e.debitAmt.toFixed(2)},"${e.creditAcc}",${e.creditAmt.toFixed(2)}`);
-    });
-    const csvContent = csvRows.join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'journal_entries.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-}
-
-function getUniqueAccounts() {
-    const accounts = new Set();
-    appState.journal.forEach(e => { accounts.add(e.debitAcc); accounts.add(e.creditAcc); });
-    return Array.from(accounts).sort();
-}
-
-// --- View: Ledger ---
-function renderLedger() {
-    const select = document.getElementById('ledger-acc-select');
-    if(!select) return;
-    
-    const accounts = getUniqueAccounts();
-    const currentVal = select.value;
-    
-    select.innerHTML = '<option value="">Select Account...</option>';
-    accounts.forEach(acc => { select.innerHTML += `<option value="${acc}">${acc}</option>`; });
-    if (accounts.includes(currentVal)) select.value = currentVal;
-
-    select.addEventListener('change', () => renderLedgerTable(select.value));
-    if(select.value) renderLedgerTable(select.value);
-}
-
-function renderLedgerTable(accountName) {
-    const tbody = document.querySelector('#ledger-table tbody');
-    if(!tbody || !accountName) return;
-    tbody.innerHTML = '';
-    
-    let balance = 0;
-    const sorted = [...appState.journal].sort((a,b) => new Date(a.date) - new Date(b.date));
-    
-    sorted.forEach(entry => {
-        if (entry.debitAcc === accountName) {
-            balance += entry.debitAmt;
-            tbody.innerHTML += `
-                <tr>
-                    <td>${entry.date}</td>
-                    <td>To ${entry.creditAcc} <small>(${entry.desc})</small></td>
-                    <td>₹ ${entry.debitAmt.toFixed(2)}</td>
-                    <td></td>
-                    <td>₹ ${balance.toFixed(2)} (Dr)</td>
-                </tr>
-            `;
-        }
-        if (entry.creditAcc === accountName) {
-            balance -= entry.creditAmt;
-            const balStr = balance >= 0 ? `₹ ${Math.abs(balance).toFixed(2)} (Dr)` : `₹ ${Math.abs(balance).toFixed(2)} (Cr)`;
-            tbody.innerHTML += `
-                <tr>
-                    <td>${entry.date}</td>
-                    <td>By ${entry.debitAcc} <small>(${entry.desc})</small></td>
-                    <td></td>
-                    <td>₹ ${entry.creditAmt.toFixed(2)}</td>
-                    <td>${balStr}</td>
-                </tr>
-            `;
+        if (e.creditAcc) {
+            if (!accounts[e.creditAcc]) accounts[e.creditAcc] = { debit: 0, credit: 0 };
+            accounts[e.creditAcc].credit += parseFloat(e.creditAmt) || 0;
         }
     });
-}
 
-// --- View: Trial Balance & Cash Book & Statements ---
-function renderTrialBalance() {
     const tbody = document.querySelector('#tb-table tbody');
-    if(!tbody) return;
-    tbody.innerHTML = '';
-    
-    const balances = {};
-    appState.journal.forEach(e => {
-        balances[e.debitAcc] = (balances[e.debitAcc] || 0) + e.debitAmt;
-        balances[e.creditAcc] = (balances[e.creditAcc] || 0) - e.creditAmt;
+    if (!tbody) return;
+
+    const names = Object.keys(accounts).sort();
+    let totalDebit = 0, totalCredit = 0;
+
+    if (names.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-secondary);">No data available.</td></tr>';
+    } else {
+        tbody.innerHTML = names.map(acc => {
+            const { debit, credit } = accounts[acc];
+            // Net: show debit balance or credit balance
+            const netDebit = Math.max(0, debit - credit);
+            const netCredit = Math.max(0, credit - debit);
+            totalDebit += netDebit;
+            totalCredit += netCredit;
+            return `
+                <tr>
+                    <td>${acc}</td>
+                    <td style="text-align:right;">${netDebit > 0 ? fmt(netDebit) : '—'}</td>
+                    <td style="text-align:right;">${netCredit > 0 ? fmt(netCredit) : '—'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    const tdEl = document.getElementById('tb-total-debit');
+    const tcEl = document.getElementById('tb-total-credit');
+    if (tdEl) tdEl.innerHTML = `<strong>${fmt(totalDebit)}</strong>`;
+    if (tcEl) tcEl.innerHTML = `<strong>${fmt(totalCredit)}</strong>`;
+}
+
+// =============================================
+// CASH BOOK
+// =============================================
+function initCashBook() {
+    const cashEntries = [];
+    appData.journal.forEach(e => {
+        if ((e.debitAcc || '').toLowerCase() === 'cash') {
+            cashEntries.push({ date: e.date, particulars: e.desc + ` (from ${e.creditAcc})`, receipts: parseFloat(e.debitAmt) || 0, payments: 0 });
+        }
+        if ((e.creditAcc || '').toLowerCase() === 'cash') {
+            cashEntries.push({ date: e.date, particulars: e.desc + ` (to ${e.debitAcc})`, receipts: 0, payments: parseFloat(e.creditAmt) || 0 });
+        }
+    });
+    cashEntries.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+
+    const tbody = document.querySelector('#cash-book-table tbody');
+    if (!tbody) return;
+
+    if (cashEntries.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No cash transactions yet.</td></tr>';
+        return;
+    }
+
+    let balance = 0;
+    tbody.innerHTML = cashEntries.map(entry => {
+        balance += entry.receipts - entry.payments;
+        const balStr = (balance >= 0 ? '₹ ' : '-₹ ') + Math.abs(balance).toFixed(2);
+        return `
+            <tr>
+                <td>${entry.date || ''}</td>
+                <td>${entry.particulars}</td>
+                <td style="color:var(--success);">${entry.receipts ? fmt(entry.receipts) : '—'}</td>
+                <td style="color:var(--danger);">${entry.payments ? fmt(entry.payments) : '—'}</td>
+                <td>${balStr}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// =============================================
+// FINANCIAL STATEMENTS
+// =============================================
+function initFinancialStatements() {
+    // 1. Calculate trial balances for all accounts
+    const accounts = {};
+    appData.journal.forEach(e => {
+        if (e.debitAcc) {
+            if (!accounts[e.debitAcc]) accounts[e.debitAcc] = { debit: 0, credit: 0 };
+            accounts[e.debitAcc].debit += parseFloat(e.debitAmt) || 0;
+        }
+        if (e.creditAcc) {
+            if (!accounts[e.creditAcc]) accounts[e.creditAcc] = { debit: 0, credit: 0 };
+            accounts[e.creditAcc].credit += parseFloat(e.creditAmt) || 0;
+        }
     });
 
-    let totalDr = 0, totalCr = 0;
-    Object.keys(balances).sort().forEach(acc => {
-        const bal = balances[acc];
-        if (Math.abs(bal) > 0.001) {
-            if (bal > 0) {
-                totalDr += bal;
-                tbody.innerHTML += `<tr><td>${acc}</td><td style="text-align:right;">₹ ${bal.toFixed(2)}</td><td></td></tr>`;
-            } else {
-                totalCr += Math.abs(bal);
-                tbody.innerHTML += `<tr><td>${acc}</td><td></td><td style="text-align:right;">₹ ${Math.abs(bal).toFixed(2)}</td></tr>`;
+    // Account Keyword Dictionaries
+    const incomeKeywords = ['sales', 'revenue', 'income', 'gain', 'interest received', 'commission received', 'discount received'];
+    const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed'];
+    const equityKeywords = ['capital', 'equity', 'drawing', 'drawings', 'share capital', 'retained earnings'];
+    const liabilityKeywords = ['payable', 'creditor', 'creditors', 'loan', 'borrowing', 'overdraft', 'liability', 'liabilities', 'duty', 'duties', 'tax payable', 'outstanding', 'unearned'];
+    const assetKeywords = ['cash', 'bank', 'receivable', 'debtor', 'debtors', 'inventory', 'stock', 'equipment', 'machinery', 'building', 'land', 'furniture', 'fixtures', 'vehicle', 'asset', 'prepaid', 'investment'];
+
+    function classifyAccount(accName) {
+        const lower = accName.toLowerCase();
+        if (equityKeywords.some(k => lower.includes(k))) return 'equity';
+        if (incomeKeywords.some(k => lower.includes(k))) return 'income';
+        if (expenseKeywords.some(k => lower.includes(k))) return 'expense';
+        if (liabilityKeywords.some(k => lower.includes(k))) return 'liability';
+        if (assetKeywords.some(k => lower.includes(k))) return 'asset';
+        return 'unclassified';
+    }
+
+    let totalIncome = 0;
+    let totalExpenses = 0;
+    const isIncomeRows = [];
+    const isExpenseRows = [];
+
+    const bsAssetRows = [];
+    const bsLiabilityRows = [];
+    const bsEquityRows = [];
+    let totalAssets = 0;
+    let totalLiabilities = 0;
+    let totalEquity = 0;
+
+    Object.entries(accounts).forEach(([acc, { debit, credit }]) => {
+        const type = classifyAccount(acc);
+        const netDebit = debit - credit;
+        const netCredit = credit - debit;
+
+        if (type === 'income') {
+            const amt = netCredit > 0 ? netCredit : -netDebit;
+            totalIncome += amt;
+            isIncomeRows.push({ label: acc, amount: amt });
+        } else if (type === 'expense') {
+            const amt = netDebit > 0 ? netDebit : -netCredit;
+            totalExpenses += amt;
+            isExpenseRows.push({ label: acc, amount: amt });
+        } else if (type === 'equity') {
+            const isDrawing = acc.toLowerCase().includes('drawing');
+            const amt = isDrawing ? (netDebit > 0 ? -netDebit : netCredit) : (netCredit > 0 ? netCredit : -netDebit);
+            totalEquity += amt;
+            bsEquityRows.push({ label: acc, amount: amt });
+        } else if (type === 'liability') {
+            const amt = netCredit > 0 ? netCredit : -netDebit;
+            if (amt !== 0) {
+                totalLiabilities += amt;
+                bsLiabilityRows.push({ label: acc, amount: amt });
+            }
+        } else if (type === 'asset') {
+            const amt = netDebit > 0 ? netDebit : -netCredit;
+            if (amt !== 0) {
+                totalAssets += amt;
+                bsAssetRows.push({ label: acc, amount: amt });
+            }
+        } else {
+            // Unclassified: default based on normal balance
+            if (netDebit > 0) {
+                totalAssets += netDebit;
+                bsAssetRows.push({ label: acc, amount: netDebit });
+            } else if (netCredit > 0) {
+                totalLiabilities += netCredit;
+                bsLiabilityRows.push({ label: acc, amount: netCredit });
             }
         }
     });
-    document.getElementById('tb-total-debit').innerText = `₹ ${totalDr.toFixed(2)}`;
-    document.getElementById('tb-total-credit').innerText = `₹ ${totalCr.toFixed(2)}`;
+
+    // 2. Render Income Statement
+    const isTbody = document.querySelector('#is-table tbody');
+    if (isTbody) {
+        let isHtml = `
+            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Revenues / Income</strong></td></tr>
+        `;
+        if (isIncomeRows.length === 0) {
+            isHtml += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No revenue entries</td></tr>`;
+        } else {
+            isIncomeRows.forEach(r => {
+                isHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
+            });
+        }
+        isHtml += `<tr><td><strong>Total Revenue</strong></td><td style="text-align:right;"><strong>${fmt(totalIncome)}</strong></td></tr>`;
+
+        isHtml += `
+            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Operating Expenses</strong></td></tr>
+        `;
+        if (isExpenseRows.length === 0) {
+            isHtml += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No expense entries</td></tr>`;
+        } else {
+            isExpenseRows.forEach(r => {
+                isHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
+            });
+        }
+        isHtml += `<tr><td><strong>Total Expenses</strong></td><td style="text-align:right;"><strong>${fmt(totalExpenses)}</strong></td></tr>`;
+
+        isTbody.innerHTML = isHtml;
+    }
+
+    const netPL = totalIncome - totalExpenses;
+    const isResult = document.getElementById('is-result');
+    if (isResult) {
+        isResult.style.background = netPL >= 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)';
+        isResult.style.color = netPL >= 0 ? 'var(--success)' : 'var(--danger)';
+        isResult.textContent = `Net ${netPL >= 0 ? 'Profit' : 'Loss'}: ${fmt(Math.abs(netPL))}`;
+    }
+
+    // 3. Render Balance Sheet
+    const bsTbody = document.querySelector('#bs-table tbody');
+    if (bsTbody) {
+        let bsHtml = `
+            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>ASSETS</strong></td></tr>
+        `;
+        if (bsAssetRows.length === 0) {
+            bsHtml += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No asset entries</td></tr>`;
+        } else {
+            bsAssetRows.forEach(r => {
+                bsHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
+            });
+        }
+        bsHtml += `<tr style="border-top:1px solid var(--border);"><td><strong>Total Assets</strong></td><td style="text-align:right;color:var(--accent);"><strong>${fmt(totalAssets)}</strong></td></tr>`;
+
+        bsHtml += `
+            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>LIABILITIES</strong></td></tr>
+        `;
+        if (bsLiabilityRows.length === 0) {
+            bsHtml += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No liability entries</td></tr>`;
+        } else {
+            bsLiabilityRows.forEach(r => {
+                bsHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
+            });
+        }
+        bsHtml += `<tr style="border-top:1px solid var(--border);"><td><strong>Total Liabilities</strong></td><td style="text-align:right;"><strong>${fmt(totalLiabilities)}</strong></td></tr>`;
+
+        bsHtml += `
+            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>OWNER'S EQUITY</strong></td></tr>
+        `;
+        if (bsEquityRows.length === 0 && netPL === 0) {
+            bsHtml += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No equity entries</td></tr>`;
+        } else {
+            bsEquityRows.forEach(r => {
+                bsHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
+            });
+            bsHtml += `<tr><td style="padding-left:1.5rem;">Retained Earnings (Net Income)</td><td style="text-align:right;">${fmt(netPL)}</td></tr>`;
+        }
+        const totalEquityAndEarnings = totalEquity + netPL;
+        bsHtml += `<tr style="border-top:1px solid var(--border);"><td><strong>Total Equity</strong></td><td style="text-align:right;"><strong>${fmt(totalEquityAndEarnings)}</strong></td></tr>`;
+
+        const totalLiabAndEquity = totalLiabilities + totalEquityAndEarnings;
+        bsHtml += `
+            <tr style="background:rgba(59,130,246,0.15);border-top:2px solid var(--accent);font-weight:bold;">
+                <td><strong>TOTAL LIABILITIES & EQUITY</strong></td>
+                <td style="text-align:right;color:var(--accent);"><strong>${fmt(totalLiabAndEquity)}</strong></td>
+            </tr>
+        `;
+
+        bsTbody.innerHTML = bsHtml;
+    }
+
+    const totalLiabAndEquity = totalLiabilities + totalEquity + netPL;
+    const bsResult = document.getElementById('bs-result');
+    if (bsResult) {
+        const isBalanced = Math.abs(totalAssets - totalLiabAndEquity) < 0.01;
+        bsResult.style.display = 'flex';
+        bsResult.style.justifyContent = 'space-between';
+        bsResult.style.alignItems = 'center';
+        bsResult.style.background = isBalanced ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)';
+        bsResult.style.color = isBalanced ? 'var(--success)' : 'var(--danger)';
+        bsResult.innerHTML = `
+            <span>Total Assets: <strong>${fmt(totalAssets)}</strong></span>
+            <span>${isBalanced ? '✓ Balanced' : '⚠ Difference: ' + fmt(Math.abs(totalAssets - totalLiabAndEquity))}</span>
+            <span>Total Liab & Equity: <strong>${fmt(totalLiabAndEquity)}</strong></span>
+        `;
+    }
 }
 
-function renderCashBook() {
-    const tbody = document.querySelector('#cash-book-table tbody');
-    if(!tbody) return;
-    tbody.innerHTML = '';
-    
-    let balance = 0;
-    [...appState.journal].sort((a,b) => new Date(a.date) - new Date(b.date)).forEach(entry => {
-        let isCash = false, receipt = 0, payment = 0, particular = '';
-        const debitLower = entry.debitAcc.toLowerCase().trim();
-        const creditLower = entry.creditAcc.toLowerCase().trim();
-        if (debitLower === 'cash a/c' || debitLower === 'cash') {
-            isCash = true; receipt = entry.debitAmt; particular = `To ${entry.creditAcc}`; balance += receipt;
-        } else if (creditLower === 'cash a/c' || creditLower === 'cash') {
-            isCash = true; payment = entry.creditAmt; particular = `By ${entry.debitAcc}`; balance -= payment;
+// =============================================
+// SETTINGS
+// =============================================
+function initSettingsView() {
+    document.getElementById('gh-pat').value = settings.pat || '';
+    document.getElementById('gh-owner').value = settings.owner || '';
+    document.getElementById('gh-repo').value = settings.repo || '';
+    document.getElementById('gh-path').value = settings.path || 'data.json';
+
+    document.getElementById('save-settings-btn').addEventListener('click', () => {
+        settings = {
+            pat: document.getElementById('gh-pat').value.trim(),
+            owner: document.getElementById('gh-owner').value.trim() || 'Tanmay201010',
+            repo: document.getElementById('gh-repo').value.trim() || 'udaan',
+            path: document.getElementById('gh-path').value.trim() || 'data.json',
+        };
+        localStorage.setItem('udaanSettings', JSON.stringify(settings));
+        const msgEl = document.getElementById('settings-msg');
+        if (msgEl) {
+            msgEl.innerHTML = '<p style="color:var(--success);">Settings saved! Testing connection...</p>';
         }
-        if (isCash) {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${entry.date}</td>
-                    <td>${particular}</td>
-                    <td>${receipt ? '₹ '+receipt.toFixed(2) : ''}</td>
-                    <td>${payment ? '₹ '+payment.toFixed(2) : ''}</td>
-                    <td>₹ ${balance.toFixed(2)}</td>
-                </tr>
-            `;
-        }
+        testGitHubConnection();
     });
 }
 
-function renderFinancialStatements() {
-    const balances = {};
-    appState.journal.forEach(e => {
-        balances[e.debitAcc] = (balances[e.debitAcc] || 0) + e.debitAmt;
-        balances[e.creditAcc] = (balances[e.creditAcc] || 0) - e.creditAmt;
-    });
-
-    let totalIncome = 0, totalExpense = 0, totalAssets = 0, totalLiabEq = 0;
-    const isTable = document.querySelector('#is-table tbody');
-    const bsTable = document.querySelector('#bs-table tbody');
-    if(!isTable || !bsTable) return;
-    
-    isTable.innerHTML = `<tr><th colspan="2">Revenues</th></tr>`;
-    bsTable.innerHTML = `<tr><th colspan="2">Assets</th></tr>`;
-
-    Object.keys(balances).forEach(acc => {
-        const lower = acc.toLowerCase();
-        const val = balances[acc];
-        
-        if (lower.includes('sales') || lower.includes('revenue') || lower.includes('income')) {
-            totalIncome += Math.abs(val);
-            isTable.innerHTML += `<tr><td>${acc}</td><td style="text-align:right;">₹ ${Math.abs(val).toFixed(2)}</td></tr>`;
-        } else if (lower.includes('expense') || lower.includes('purchases') || lower.includes('rent') || lower.includes('salary')) {
-            totalExpense += val;
-            isTable.innerHTML += `<tr><td>${acc}</td><td style="text-align:right;">₹ ${val.toFixed(2)}</td></tr>`;
-        } else if (lower.includes('cash') || lower.includes('bank') || lower.includes('receivable') || lower.includes('equipment')) {
-            totalAssets += val;
-            bsTable.innerHTML += `<tr><td>${acc}</td><td style="text-align:right;">₹ ${val.toFixed(2)}</td></tr>`;
-        } else if (lower.includes('payable') || lower.includes('loan') || lower.includes('capital') || lower.includes('equity')) {
-            totalLiabEq += Math.abs(val);
-            bsTable.innerHTML += `<tr><td>${acc}</td><td style="text-align:right;">₹ ${Math.abs(val).toFixed(2)}</td></tr>`;
-        }
-    });
-
-    const netIncome = totalIncome - totalExpense;
-    const isRes = document.getElementById('is-result');
-    isRes.innerText = netIncome >= 0 ? `Net Profit: ₹ ${netIncome.toFixed(2)}` : `Net Loss: ₹ ${Math.abs(netIncome).toFixed(2)}`;
-    isRes.style.color = netIncome >= 0 ? 'var(--success)' : 'var(--danger)';
-
-    bsTable.innerHTML += `<tr><th colspan="2">Liabilities & Equity</th></tr>`;
-    Object.keys(balances).forEach(acc => {
-        const lower = acc.toLowerCase();
-        const val = balances[acc];
-        if (lower.includes('payable') || lower.includes('loan') || lower.includes('capital') || lower.includes('equity')) {
-            bsTable.innerHTML += `<tr><td>${acc}</td><td style="text-align:right;">₹ ${Math.abs(val).toFixed(2)}</td></tr>`;
-        }
-    });
-    
-    totalLiabEq += netIncome;
-    bsTable.innerHTML += `<tr><td>Retained Earnings (Net Income)</td><td style="text-align:right;">₹ ${netIncome.toFixed(2)}</td></tr>`;
-
-    document.getElementById('bs-result').innerHTML = `
-        <div style="display:flex; justify-content: space-between; padding: 0 1rem;">
-            <span>Total Assets: ₹ ${totalAssets.toFixed(2)}</span>
-            <span>Total Liab & Equity: ₹ ${totalLiabEq.toFixed(2)}</span>
-        </div>
-    `;
+// =============================================
+// GITHUB SYNC
+// =============================================
+function updateSyncStatus(msg, type) {
+    const text = document.getElementById('sync-status-text');
+    const indicator = document.querySelector('.sync-status .status-indicator');
+    if (text) text.textContent = msg;
+    if (indicator) {
+        indicator.className = 'status-indicator';
+        if (type === 'ok') indicator.style.background = 'var(--success)';
+        else if (type === 'warning') indicator.style.background = '#f59e0b';
+        else if (type === 'error') indicator.style.background = 'var(--danger)';
+        else indicator.style.background = 'var(--text-secondary)';
+    }
 }
 
+async function fetchFromGitHub() {
+    if (!settings.pat || !settings.owner || !settings.repo) return;
+    updateSyncStatus('Syncing...', 'warning');
+    try {
+        const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${settings.path || 'data.json'}`;
+        const res = await fetch(url, { headers: { Authorization: `token ${settings.pat}`, Accept: 'application/vnd.github.v3+json' } });
+        if (!res.ok) {
+            if (res.status === 404) {
+                updateSyncStatus('File not found on GitHub — will create on next save.', 'warning');
+                return;
+            }
+            throw new Error(`HTTP ${res.status}`);
+        }
+        const json = await res.json();
+        currentSha = json.sha;
+        const decoded = atob(json.content.replace(/\n/g, ''));
+        const data = JSON.parse(decoded);
+        appData = { inventory: data.inventory || [], pos: data.pos || [], journal: data.journal || [], nextInvoice: data.nextInvoice || 1 };
+        saveLocal();
+        updateSyncStatus('Synced from GitHub', 'ok');
+        // Refresh current view
+        const hash = location.hash.replace('#', '') || 'dashboard';
+        navigateTo(hash, false);
+    } catch (err) {
+        updateSyncStatus('Sync error: ' + err.message, 'error');
+    }
+}
 
+async function syncData() {
+    if (!settings.pat || !settings.owner || !settings.repo) {
+        updateSyncStatus('Not configured', 'warning');
+        return;
+    }
+    updateSyncStatus('Saving...', 'warning');
+    try {
+        const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${settings.path || 'data.json'}`;
+        const content = btoa(JSON.stringify(appData, null, 2));
+        const body = { message: 'UdaanPro data update', content };
+        if (currentSha) body.sha = currentSha;
+        const res = await fetch(url, {
+            method: 'PUT',
+            headers: { Authorization: `token ${settings.pat}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+            body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        currentSha = json.content.sha;
+        updateSyncStatus('Saved to GitHub ✓', 'ok');
+    } catch (err) {
+        updateSyncStatus('Save error: ' + err.message, 'error');
+    }
+}
+
+async function testGitHubConnection() {
+    await fetchFromGitHub();
+    const msgEl = document.getElementById('settings-msg');
+    if (msgEl) {
+        const statusText = document.getElementById('sync-status-text');
+        const msg = statusText ? statusText.textContent : '';
+        if (msg.includes('Synced') || msg.includes('not found')) {
+            msgEl.innerHTML = '<p style="color:var(--success);">✓ Connection successful! Settings saved.</p>';
+        } else {
+            msgEl.innerHTML = `<p style="color:var(--danger);">Connection issue: ${msg}</p>`;
+        }
+    }
+}
+
+// =============================================
+// BOOT
+// =============================================
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
