@@ -133,6 +133,15 @@
       "debitAmt": 150,
       "creditAcc": "Cash A/c",
       "creditAmt": 150
+    },
+    {
+      "id": 1788677657031,
+      "date": "2026-09-06",
+      "desc": "Capital",
+      "debitAcc": "Cash",
+      "debitAmt": 15000,
+      "creditAcc": "Capital",
+      "creditAmt": 15000
     }
   ],
   "inventory": [
