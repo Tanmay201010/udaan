@@ -1,5 +1,13 @@
 {
-  "inventory": [],
+  "inventory": [
+    {
+      "id": "mtq14pbpcdqmm",
+      "name": "Flower bells",
+      "consignor": "",
+      "qty": 2,
+      "price": 650
+    }
+  ],
   "pos": [],
   "journal": [
     {
