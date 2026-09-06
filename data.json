@@ -181,6 +181,13 @@
       "consignor": "",
       "qty": 60,
       "price": 20
+    },
+    {
+      "id": "mtq1a4u9oz9g4",
+      "name": "Milk Chocolates",
+      "consignor": "",
+      "qty": 45,
+      "price": 20
     }
   ],
   "pos": [],
