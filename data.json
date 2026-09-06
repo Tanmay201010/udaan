@@ -12,24 +12,6 @@
       "creditAmt": 200
     },
     {
-      "id": 1782404580549,
-      "date": "2026-06-25",
-      "desc": "Commission earned - Invoice #000001",
-      "debitAcc": "Ravi traders A/c",
-      "debitAmt": 50,
-      "creditAcc": "Commission Income A/c",
-      "creditAmt": 50
-    },
-    {
-      "id": 1782404580550,
-      "date": "2026-06-25",
-      "desc": "Payment to Consignor - Invoice #000001",
-      "debitAcc": "Ravi traders A/c",
-      "debitAmt": 150,
-      "creditAcc": "Cash A/c",
-      "creditAmt": 150
-    },
-    {
       "id": 1788677657031,
       "date": "2026-09-06",
       "desc": "Capital",
