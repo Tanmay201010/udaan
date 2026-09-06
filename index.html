@@ -241,23 +241,19 @@
             </div>
             <div class="form-group">
                 <label>Issued To</label>
-                <input type="text" id="pos-customer" placeholder="Customer Name">
+                <input type="text" id="pos-customer" placeholder="Customer Name" autocomplete="off">
             </div>
             
             <h3 style="margin-top: 1rem; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Add Items</h3>
-            <div class="form-group" style="margin-bottom: 0.75rem;">
-                <input type="text" id="pos-product-search" placeholder="🔍 Search product name or consignor..." style="padding: 0.6rem 0.75rem; width: 100%; border-radius: var(--radius-md);">
-            </div>
             <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: flex-end;">
                 <div class="form-group" style="flex: 2; margin-bottom: 0;">
-                    <label>Select Product</label>
-                    <select id="pos-product-select" class="custom-select" style="padding: 0.5rem; width: 100%;">
-                        <option value="">Select an item...</option>
-                    </select>
+                    <label>Select Product (Search or Pick)</label>
+                    <input type="text" id="pos-product-input" list="pos-product-datalist" placeholder="Click or type to search item..." class="custom-select" autocomplete="off" style="width: 100%;">
+                    <datalist id="pos-product-datalist"></datalist>
                 </div>
                 <div class="form-group" style="flex: 1; margin-bottom: 0;">
                     <label>Sale Price</label>
-                    <input type="number" id="pos-sale-price" placeholder="e.g. 600" style="padding: 0.5rem; width: 100%;">
+                    <input type="number" id="pos-sale-price" placeholder="e.g. 600" autocomplete="off" style="padding: 0.5rem; width: 100%;">
                 </div>
                 <button id="pos-add-item-btn" class="btn btn-secondary"><i data-lucide="plus"></i> Add</button>
             </div>
@@ -533,7 +529,7 @@
     </div>
   </template>
 
-  <script type="module" src="app.js?v=10"></script>
+  <script type="module" src="app.js?v=11"></script>
 </body>
 </html>
 

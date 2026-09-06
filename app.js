@@ -383,53 +383,56 @@ function initPOS() {
     document.getElementById('pos-no').value = invoiceNo;
     document.getElementById('pos-date').value = today();
 
-    // Populate product select with optional live search
-    populatePosProductSelect();
+    // Populate product datalist for integrated in-selection search
+    populatePosProductDatalist();
 
-    function populatePosProductSelect(filterQuery = '') {
-        const sel = document.getElementById('pos-product-select');
-        if (!sel) return;
-        const q = filterQuery.trim().toLowerCase();
-        sel.innerHTML = '<option value="">Select an item...</option>';
-        
-        const matched = appData.inventory.filter(item => {
-            if (item.qty <= 0) return false;
-            if (!q) return true;
-            return (item.name || '').toLowerCase().includes(q) || (item.consignor || '').toLowerCase().includes(q);
-        });
+    function populatePosProductDatalist() {
+        const datalist = document.getElementById('pos-product-datalist');
+        if (!datalist) return;
+        datalist.innerHTML = '';
 
-        matched.forEach(item => {
-            const opt = document.createElement('option');
-            opt.value = item.id;
-            opt.textContent = `${item.name} (${item.consignor ? item.consignor + ' - ' : ''}Stock: ${item.qty}) — Price: ${fmt(item.price)}`;
-            sel.appendChild(opt);
-        });
-
-        // If filtered down to 1 match, auto-select it and pre-fill price
-        if (q && matched.length === 1) {
-            sel.value = matched[0].id;
-            const priceInput = document.getElementById('pos-sale-price');
-            if (priceInput && (!priceInput.value || priceInput.value == 0)) {
-                priceInput.value = matched[0].price || '';
+        appData.inventory.forEach(item => {
+            if (item.qty > 0) {
+                const opt = document.createElement('option');
+                opt.value = `${item.name}${item.consignor ? ' (' + item.consignor + ')' : ''} [Stock: ${item.qty}] — ₹ ${item.price}`;
+                opt.setAttribute('data-id', item.id);
+                datalist.appendChild(opt);
             }
-        }
-    }
-
-    // Live search input handler
-    const prodSearch = document.getElementById('pos-product-search');
-    if (prodSearch) {
-        prodSearch.addEventListener('input', (e) => {
-            populatePosProductSelect(e.target.value);
         });
     }
 
-    // Auto-fill price when an item is selected from dropdown
-    const prodSelect = document.getElementById('pos-product-select');
-    if (prodSelect) {
-        prodSelect.addEventListener('change', () => {
-            const selectedId = prodSelect.value;
-            const inv = appData.inventory.find(i => String(i.id) === String(selectedId));
-            const priceInput = document.getElementById('pos-sale-price');
+    function getSelectedInventoryItem(val) {
+        if (!val) return null;
+        const v = val.trim().toLowerCase();
+        // 1. Check exact display match or name match
+        let found = appData.inventory.find(i => {
+            if (i.qty <= 0) return false;
+            const formatted = `${i.name}${i.consignor ? ' (' + i.consignor + ')' : ''} [stock: ${i.qty}] — ₹ ${i.price}`.toLowerCase();
+            return formatted === v || i.name.toLowerCase() === v;
+        });
+        if (found) return found;
+
+        // 2. Match startsWith
+        found = appData.inventory.find(i => i.qty > 0 && (v.startsWith(i.name.toLowerCase()) || i.name.toLowerCase().startsWith(v)));
+        if (found) return found;
+
+        // 3. Match includes
+        found = appData.inventory.find(i => i.qty > 0 && (i.name.toLowerCase().includes(v) || (i.consignor && i.consignor.toLowerCase().includes(v))));
+        return found || null;
+    }
+
+    const prodInput = document.getElementById('pos-product-input');
+    const priceInput = document.getElementById('pos-sale-price');
+
+    if (prodInput) {
+        prodInput.addEventListener('input', () => {
+            const inv = getSelectedInventoryItem(prodInput.value);
+            if (inv && priceInput) {
+                priceInput.value = inv.price || '';
+            }
+        });
+        prodInput.addEventListener('change', () => {
+            const inv = getSelectedInventoryItem(prodInput.value);
             if (inv && priceInput) {
                 priceInput.value = inv.price || '';
             }
@@ -479,23 +482,33 @@ function initPOS() {
     }
 
     document.getElementById('pos-add-item-btn').addEventListener('click', () => {
-        const sel = document.getElementById('pos-product-select');
-        const itemId = sel.value;
-        const salePrice = parseFloat(document.getElementById('pos-sale-price').value);
-        if (!itemId) { alert('Please select a product.'); return; }
-        if (!salePrice || salePrice <= 0) { alert('Please enter a valid sale price.'); return; }
-        const inv = appData.inventory.find(i => String(i.id) === String(itemId));
-        if (!inv) return;
-        const existing = posItems.find(i => String(i.id) === String(itemId));
+        const val = prodInput ? prodInput.value.trim() : '';
+        const inv = getSelectedInventoryItem(val);
+        const salePrice = parseFloat(priceInput ? priceInput.value : 0);
+
+        if (!inv) {
+            alert('Please select or type an available item from inventory.');
+            return;
+        }
+        if (!salePrice || salePrice <= 0) {
+            alert('Please enter a valid sale price.');
+            return;
+        }
+
+        const existing = posItems.find(i => String(i.id) === String(inv.id));
         if (existing) {
             existing.qty += 1;
         } else {
-            posItems.push({ id: itemId, name: inv.name, consignor: inv.consignor, costPrice: inv.price, salePrice: salePrice, qty: 1 });
+            posItems.push({ id: inv.id, name: inv.name, consignor: inv.consignor, costPrice: inv.price, salePrice: salePrice, qty: 1 });
         }
+
         // Reset item add inputs
-        document.getElementById('pos-sale-price').value = '';
-        if (prodSearch) prodSearch.value = '';
-        populatePosProductSelect();
+        if (prodInput) {
+            prodInput.value = '';
+            prodInput.focus();
+        }
+        if (priceInput) priceInput.value = '';
+        populatePosProductDatalist();
         renderPosItems();
     });
 
