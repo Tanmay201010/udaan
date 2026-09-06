@@ -69,6 +69,13 @@
       "consignor": "",
       "qty": 1,
       "price": 200
+    },
+    {
+      "id": "mtq17cbpmucvd",
+      "name": "Evil eye bracelet",
+      "consignor": "",
+      "qty": 1,
+      "price": 25
     }
   ],
   "pos": [],
