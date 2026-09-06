@@ -48,24 +48,6 @@
       "creditAmt": 150
     },
     {
-      "id": 1787243522789,
-      "date": "2026-08-20",
-      "desc": "Payment to Consignor - Invoice #000002",
-      "debitAcc": "Ravi traders A/c",
-      "debitAmt": 300,
-      "creditAcc": "Cash A/c",
-      "creditAmt": 300
-    },
-    {
-      "id": 1788280549041,
-      "date": "2026-09-01",
-      "desc": "Sale to Karun - Invoice #000003",
-      "debitAcc": "Cash A/c",
-      "debitAmt": 200,
-      "creditAcc": "Ravi traders A/c",
-      "creditAmt": 200
-    },
-    {
       "id": 1788677657031,
       "date": "2026-09-06",
       "desc": "Capital",
