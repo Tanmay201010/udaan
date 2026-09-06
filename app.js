@@ -208,37 +208,40 @@ const pageTitles = {
 // DASHBOARD
 // =============================================
 function initDashboard() {
-    // Cash balance from journal (Cash account)
+    const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed'];
+
+    // Cash balance from journal (Cash and Bank accounts)
     let cashBalance = 0;
     appData.journal.forEach(e => {
-        if ((e.debitAcc || '').toLowerCase() === 'cash') cashBalance += parseFloat(e.debitAmt) || 0;
-        if ((e.creditAcc || '').toLowerCase() === 'cash') cashBalance -= parseFloat(e.creditAmt) || 0;
+        const d = (e.debitAcc || '').toLowerCase();
+        const c = (e.creditAcc || '').toLowerCase();
+        if (d.includes('cash') || d.includes('bank')) cashBalance += parseFloat(e.debitAmt) || 0;
+        if (c.includes('cash') || c.includes('bank')) cashBalance -= parseFloat(e.creditAmt) || 0;
     });
-    // Also include POS cash sales
-    appData.pos.forEach(bill => {
-        if ((bill.note || '').toLowerCase() === 'cash') {
-            cashBalance += parseFloat(bill.total) || 0;
-        }
-    });
+
     const cashEl = document.getElementById('dash-cash-balance');
     if (cashEl) cashEl.textContent = fmt(cashBalance);
 
     const billsEl = document.getElementById('dash-bills-count');
-    if (billsEl) billsEl.textContent = appData.pos.length;
+    if (billsEl) billsEl.textContent = appData.pos ? appData.pos.length : 0;
 
-    // Total expenses (credit entries for expense accounts)
+    // Total expenses (debit entries for expense accounts)
     let expenses = 0;
     appData.journal.forEach(e => {
-        const acc = (e.debitAcc || '').toLowerCase();
-        if (acc === 'rent' || acc === 'salary' || acc === 'expense' || acc === 'wages' || acc === 'utilities' || acc === 'electricity') {
+        const d = (e.debitAcc || '').toLowerCase();
+        const c = (e.creditAcc || '').toLowerCase();
+        if (expenseKeywords.some(k => d.includes(k))) {
             expenses += parseFloat(e.debitAmt) || 0;
+        }
+        if (expenseKeywords.some(k => c.includes(k))) {
+            expenses -= parseFloat(e.creditAmt) || 0;
         }
     });
     const expEl = document.getElementById('dash-expenses');
-    if (expEl) expEl.textContent = fmt(expenses);
+    if (expEl) expEl.textContent = fmt(Math.max(0, expenses));
 
     const jEl = document.getElementById('dash-journal-count');
-    if (jEl) jEl.textContent = appData.journal.length;
+    if (jEl) jEl.textContent = appData.journal ? appData.journal.length : 0;
 
     // Recent transactions table
     const tbody = document.querySelector('#dash-recent-table tbody');
@@ -290,6 +293,7 @@ function initInventory() {
 
         appData.inventory.push({ id: uid(), name, consignor, qty, price });
         saveLocal();
+        syncData();
         document.getElementById('inventory-modal').style.display = 'none';
         renderInventoryTable();
     });
@@ -319,6 +323,7 @@ function renderInventoryTable() {
             const id = btn.getAttribute('data-id');
             appData.inventory = appData.inventory.filter(i => i.id !== id);
             saveLocal();
+            syncData();
             renderInventoryTable();
         });
     });
@@ -444,6 +449,7 @@ function initPOS() {
         };
         appData.journal.push(jEntry);
         saveLocal();
+        syncData();
         if (withPrint) generateAndPrintBill(bill);
         // Reset
         posItems = [];
@@ -901,10 +907,12 @@ function initTrialBalance() {
 function initCashBook() {
     const cashEntries = [];
     appData.journal.forEach(e => {
-        if ((e.debitAcc || '').toLowerCase() === 'cash') {
+        const d = (e.debitAcc || '').toLowerCase();
+        const c = (e.creditAcc || '').toLowerCase();
+        if (d.includes('cash')) {
             cashEntries.push({ date: e.date, particulars: e.desc + ` (from ${e.creditAcc})`, receipts: parseFloat(e.debitAmt) || 0, payments: 0 });
         }
-        if ((e.creditAcc || '').toLowerCase() === 'cash') {
+        if (c.includes('cash')) {
             cashEntries.push({ date: e.date, particulars: e.desc + ` (to ${e.debitAcc})`, receipts: 0, payments: parseFloat(e.creditAmt) || 0 });
         }
     });
