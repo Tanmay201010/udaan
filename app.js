@@ -22,7 +22,14 @@ function uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
+function ensureIds() {
+    if (appData.journal) appData.journal.forEach(e => { if (!e.id) e.id = uid(); });
+    if (appData.pos) appData.pos.forEach(b => { if (!b.id) b.id = uid(); });
+    if (appData.inventory) appData.inventory.forEach(i => { if (!i.id) i.id = uid(); });
+}
+
 function saveLocal() {
+    ensureIds();
     localStorage.setItem('udaanData', JSON.stringify(appData));
 }
 
@@ -35,6 +42,7 @@ function loadLocal() {
     if (!appData.pos) appData.pos = [];
     if (!appData.journal) appData.journal = [];
     if (!appData.nextInvoice) appData.nextInvoice = 1;
+    ensureIds();
 }
 
 // =============================================
@@ -45,9 +53,13 @@ function initApp() {
     lucide.createIcons();
 
     if (!currentRole) {
-        document.getElementById('login-overlay').style.display = 'flex';
-        document.getElementById('app').style.display = 'none';
+        const overlay = document.getElementById('login-overlay');
+        if (overlay) overlay.style.display = 'flex';
+        const appEl = document.getElementById('app');
+        if (appEl) appEl.style.display = 'none';
     } else {
+        const overlay = document.getElementById('login-overlay');
+        if (overlay) overlay.style.display = 'none';
         startApp();
     }
 
@@ -79,8 +91,11 @@ function handleLogin() {
 }
 
 function startApp() {
+    const overlay = document.getElementById('login-overlay');
+    if (overlay) overlay.style.display = 'none';
+
     const appEl = document.getElementById('app');
-    appEl.style.display = 'flex';
+    if (appEl) appEl.style.display = 'flex';
     document.getElementById('logged-in-role').textContent = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
 
     // Show/hide nav links based on role
@@ -715,9 +730,10 @@ function initJournal() {
             }
 
             // Edit
-            if (e.target.closest('.j-edit-btn')) {
-                const id = e.target.closest('.j-edit-btn').getAttribute('data-id');
-                const entry = appData.journal.find(j => j.id === id);
+            const editBtn = e.target.closest('.j-edit-btn');
+            if (editBtn) {
+                const id = editBtn.getAttribute('data-id');
+                const entry = appData.journal.find(j => String(j.id) === String(id));
                 if (!entry) return;
                 const modal = document.getElementById('journal-modal');
                 if (!modal) return;
@@ -733,10 +749,11 @@ function initJournal() {
             }
 
             // Delete
-            if (e.target.closest('.j-del-btn')) {
-                const id = e.target.closest('.j-del-btn').getAttribute('data-id');
+            const delBtn = e.target.closest('.j-del-btn');
+            if (delBtn) {
+                const id = delBtn.getAttribute('data-id');
                 if (!confirm('Delete this entry?')) return;
-                appData.journal = appData.journal.filter(j => j.id !== id);
+                appData.journal = appData.journal.filter(j => String(j.id) !== String(id));
                 saveLocal();
                 syncData();
                 renderJournalTable();
@@ -1193,9 +1210,10 @@ async function fetchFromGitHub() {
         }
         const json = await res.json();
         currentSha = json.sha;
-        const decoded = atob(json.content.replace(/\n/g, ''));
+        const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
         const data = JSON.parse(decoded);
         appData = { inventory: data.inventory || [], pos: data.pos || [], journal: data.journal || [], nextInvoice: data.nextInvoice || 1 };
+        ensureIds();
         saveLocal();
         updateSyncStatus('Synced from GitHub', 'ok');
         // Refresh current view
@@ -1214,17 +1232,35 @@ async function syncData() {
     updateSyncStatus('Saving...', 'warning');
     try {
         const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${settings.path || 'data.json'}`;
-        const content = btoa(JSON.stringify(appData, null, 2));
+        const jsonStr = JSON.stringify(appData, null, 2);
+        const content = btoa(unescape(encodeURIComponent(jsonStr)));
         const body = { message: 'UdaanPro data update', content };
         if (currentSha) body.sha = currentSha;
-        const res = await fetch(url, {
+        
+        let res = await fetch(url, {
             method: 'PUT',
             headers: { Authorization: `token ${settings.pat}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
             body: JSON.stringify(body)
         });
+
+        // If 409 Conflict, re-fetch the latest sha and retry once
+        if (res.status === 409) {
+            const getRes = await fetch(url, { headers: { Authorization: `token ${settings.pat}`, Accept: 'application/vnd.github.v3+json' } });
+            if (getRes.ok) {
+                const getJson = await getRes.json();
+                currentSha = getJson.sha;
+                body.sha = currentSha;
+                res = await fetch(url, {
+                    method: 'PUT',
+                    headers: { Authorization: `token ${settings.pat}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+                    body: JSON.stringify(body)
+                });
+            }
+        }
+
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-        currentSha = json.content.sha;
+        currentSha = json.content ? json.content.sha : json.sha;
         updateSyncStatus('Saved to GitHub ✓', 'ok');
     } catch (err) {
         updateSyncStatus('Save error: ' + err.message, 'error');
