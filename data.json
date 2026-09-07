@@ -165,7 +165,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 58,
+      "qty": 57,
       "price": 20
     },
     {
@@ -193,7 +193,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 48,
+      "qty": 47,
       "price": 30
     },
     {
@@ -530,6 +530,32 @@
       ],
       "total": 60,
       "note": "UPI"
+    },
+    {
+      "id": "mtqq8vgw8lsk4",
+      "invoiceNo": "#000017",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        },
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 90,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -703,7 +729,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqq8vgwlnjdx",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000017 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 90,
+      "creditAcc": "Sales",
+      "creditAmt": 90
     }
   ],
-  "nextInvoice": 17
+  "nextInvoice": 18
 }
