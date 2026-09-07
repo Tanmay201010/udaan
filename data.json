@@ -88,7 +88,7 @@
       "id": "mtq17vb1plnvn",
       "name": "Round flower keychain",
       "consignor": "",
-      "qty": 4,
+      "qty": 3,
       "price": 100
     },
     {
@@ -2513,6 +2513,24 @@
       ],
       "total": 50,
       "note": "Cash"
+    },
+    {
+      "id": "mtqxr8upak8la",
+      "invoiceNo": "#000113",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq17vb1plnvn",
+          "name": "Round flower keychain",
+          "consignor": "",
+          "costPrice": 100,
+          "salePrice": 100,
+          "qty": 1
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3559,7 +3577,16 @@
       "debitAmt": 50,
       "creditAcc": "Sales",
       "creditAmt": 50
+    },
+    {
+      "id": "mtqxr8uplilva",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000113 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 100,
+      "creditAcc": "Sales",
+      "creditAmt": 100
     }
   ],
-  "nextInvoice": 113
+  "nextInvoice": 114
 }
