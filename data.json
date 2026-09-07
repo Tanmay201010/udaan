@@ -158,7 +158,7 @@
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 69,
+      "qty": 68,
       "price": 40
     },
     {
@@ -3629,6 +3629,24 @@
       ],
       "total": 120,
       "note": "UPI"
+    },
+    {
+      "id": "mtr27hp3rfqo0",
+      "invoiceNo": "#000163",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19fk1wt78d",
+          "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -5125,7 +5143,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtr27hp4phnda",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000163 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 163
+  "nextInvoice": 164
 }
