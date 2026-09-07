@@ -165,14 +165,14 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 46,
+      "qty": 45,
       "price": 20
     },
     {
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 39,
+      "qty": 38,
       "price": 20
     },
     {
@@ -1833,6 +1833,32 @@
       ],
       "total": 50,
       "note": "Cash"
+    },
+    {
+      "id": "mtqvascw5yohb",
+      "invoiceNo": "#000081",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        },
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 10,
+          "qty": 1
+        }
+      ],
+      "total": 30,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2591,7 +2617,16 @@
       "debitAmt": 50,
       "creditAcc": "Sales",
       "creditAmt": 50
+    },
+    {
+      "id": "mtqvascw7npyx",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000081 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 30,
+      "creditAcc": "Sales",
+      "creditAmt": 30
     }
   ],
-  "nextInvoice": 81
+  "nextInvoice": 82
 }
