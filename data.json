@@ -179,7 +179,7 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 42,
+      "qty": 41,
       "price": 20
     },
     {
@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 78,
+      "qty": 77,
       "price": 70
     },
     {
@@ -1859,6 +1859,32 @@
       ],
       "total": 30,
       "note": "Cash"
+    },
+    {
+      "id": "mtqvptjmnnbup",
+      "invoiceNo": "#000082",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        },
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2626,7 +2652,16 @@
       "debitAmt": 30,
       "creditAcc": "Sales",
       "creditAmt": 30
+    },
+    {
+      "id": "mtqvptjmslpyz",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000082 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 100,
+      "creditAcc": "Sales",
+      "creditAmt": 100
     }
   ],
-  "nextInvoice": 82
+  "nextInvoice": 83
 }
