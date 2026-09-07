@@ -4,7 +4,7 @@
       "id": "mtq15fqr6t6s7",
       "name": "Gym keychain",
       "consignor": "",
-      "qty": 16,
+      "qty": 15,
       "price": 250
     },
     {
@@ -417,6 +417,24 @@
       ],
       "total": 100,
       "note": "UPI"
+    },
+    {
+      "id": "mtqpy4cmakoq3",
+      "invoiceNo": "#000012",
+      "date": "2026-09-07",
+      "customer": "Matilda",
+      "items": [
+        {
+          "id": "mtq15fqr6t6s7",
+          "name": "Gym keychain",
+          "consignor": "",
+          "costPrice": 250,
+          "salePrice": 250,
+          "qty": 1
+        }
+      ],
+      "total": 250,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -545,7 +563,16 @@
       "debitAmt": 100,
       "creditAcc": "Sales",
       "creditAmt": 100
+    },
+    {
+      "id": "mtqpy4cmtqir3",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000012 to Matilda",
+      "debitAcc": "Cash",
+      "debitAmt": 250,
+      "creditAcc": "Sales",
+      "creditAmt": 250
     }
   ],
-  "nextInvoice": 12
+  "nextInvoice": 13
 }
