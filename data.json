@@ -207,7 +207,7 @@
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 50,
+      "qty": 48,
       "price": 32
     },
     {
@@ -778,6 +778,24 @@
       ],
       "total": 180,
       "note": "UPI"
+    },
+    {
+      "id": "mtqqvw6uz7m0e",
+      "invoiceNo": "#000029",
+      "date": "2026-09-07",
+      "customer": "Mohak",
+      "items": [
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 120,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -1059,7 +1077,16 @@
       "debitAmt": 180,
       "creditAcc": "Sales",
       "creditAmt": 180
+    },
+    {
+      "id": "mtqqvw6v5m7u0",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000029 to Mohak",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 29
+  "nextInvoice": 30
 }
