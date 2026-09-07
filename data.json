@@ -74,7 +74,7 @@
       "id": "mtq17mndj06pa",
       "name": "Glitter heart keychain",
       "consignor": "",
-      "qty": 6,
+      "qty": 5,
       "price": 250
     },
     {
@@ -151,7 +151,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 73,
+      "qty": 74,
       "price": 40
     },
     {
@@ -165,14 +165,14 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 45,
+      "qty": 44,
       "price": 20
     },
     {
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 38,
+      "qty": 37,
       "price": 20
     },
     {
@@ -193,21 +193,21 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 36,
+      "qty": 35,
       "price": 30
     },
     {
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 14,
+      "qty": 12,
       "price": 30
     },
     {
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 41,
+      "qty": 43,
       "price": 32
     },
     {
@@ -2091,46 +2091,80 @@
       "note": "Cash"
     },
     {
-      "id": "mtqwpddym9jjl",
+      "id": "mtqwng6v2lmnx",
       "invoiceNo": "#000093",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq1yl0l0n2me",
-          "name": "Millionaire brownie",
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
           "consignor": "",
-          "costPrice": 32,
-          "salePrice": 50,
-          "qty": 2
+          "costPrice": 30,
+          "salePrice": 100,
+          "qty": 1
         }
       ],
       "total": 100,
       "note": "Cash"
     },
     {
-      "id": "mtqwsp6mtjs9h",
+      "id": "mtqwqq8eoos8x",
       "invoiceNo": "#000094",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq196aapwie0",
-          "name": "Dipped cookies Milk chocolate",
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
           "consignor": "",
-          "costPrice": 40,
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        },
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        }
+      ],
+      "total": 40,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqwt9qobi6bn",
+      "invoiceNo": "#000095",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
           "salePrice": 60,
           "qty": 1
         }
       ],
-      "total": 60,
-      "note": "Cash"
+      "total": 120,
+      "note": "UPI"
     },
     {
-      "id": "mtqwu0xzaet7j",
-      "invoiceNo": "#000095",
+      "id": "mtqwu0jc8bwsn",
+      "invoiceNo": "#000096",
       "date": "2026-09-07",
-      "customer": "Walk-in Customer",
+      "customer": "Nayua",
       "items": [
         {
           "id": "mtq15fqr6t6s7",
@@ -2150,6 +2184,24 @@
         }
       ],
       "total": 310,
+      "note": "UPI"
+    },
+    {
+      "id": "mtqwxger39c5p",
+      "invoiceNo": "#000097",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq17mndj06pa",
+          "name": "Glitter heart keychain",
+          "consignor": "",
+          "costPrice": 250,
+          "salePrice": 250,
+          "qty": 1
+        }
+      ],
+      "total": 250,
       "note": "UPI"
     }
   ],
@@ -3019,7 +3071,7 @@
       "creditAmt": 120
     },
     {
-      "id": "mtqwpddyny1hk",
+      "id": "mtqwng6vnx6q2",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000093 to Walk-in Customer",
       "debitAcc": "Cash",
@@ -3028,23 +3080,41 @@
       "creditAmt": 100
     },
     {
-      "id": "mtqwsp6nk57lc",
+      "id": "mtqwqq8e9wwdi",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000094 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 60,
+      "debitAmt": 40,
       "creditAcc": "Sales",
-      "creditAmt": 60
+      "creditAmt": 40
     },
     {
-      "id": "mtqwu0xz47n6o",
+      "id": "mtqwt9qooulng",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000095 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
+    },
+    {
+      "id": "mtqwu0jc4oic3",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000096 to Nayua",
       "debitAcc": "Cash",
       "debitAmt": 310,
       "creditAcc": "Sales",
       "creditAmt": 310
+    },
+    {
+      "id": "mtqwxgerxpv8a",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000097 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 250,
+      "creditAcc": "Sales",
+      "creditAmt": 250
     }
   ],
-  "nextInvoice": 96
+  "nextInvoice": 98
 }
