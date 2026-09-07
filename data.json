@@ -179,14 +179,14 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 38,
+      "qty": 37,
       "price": 20
     },
     {
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 36,
+      "qty": 35,
       "price": 28
     },
     {
@@ -2593,6 +2593,32 @@
       ],
       "total": 50,
       "note": "UPI"
+    },
+    {
+      "id": "mtqxym5ozq78b",
+      "invoiceNo": "#000117",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 40,
+          "qty": 1
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3675,7 +3701,16 @@
       "debitAmt": 50,
       "creditAcc": "Sales",
       "creditAmt": 50
+    },
+    {
+      "id": "mtqxym5o79x3r",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000117 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 100,
+      "creditAcc": "Sales",
+      "creditAmt": 100
     }
   ],
-  "nextInvoice": 117
+  "nextInvoice": 118
 }
