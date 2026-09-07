@@ -193,7 +193,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 43,
+      "qty": 42,
       "price": 30
     },
     {
@@ -1010,6 +1010,24 @@
       ],
       "total": 120,
       "note": "UPI"
+    },
+    {
+      "id": "mtqslf7b486i0",
+      "invoiceNo": "#000041",
+      "date": "2026-09-07",
+      "customer": "Sanjana hershini",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -1399,7 +1417,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtqslf7hbfo1j",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000041 to Sanjana hershini",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 41
+  "nextInvoice": 42
 }
