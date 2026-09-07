@@ -179,7 +179,7 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 37,
+      "qty": 36,
       "price": 20
     },
     {
@@ -2645,6 +2645,24 @@
       ],
       "total": 130,
       "note": "Cash"
+    },
+    {
+      "id": "mtqy1bkz2vcv5",
+      "invoiceNo": "#000119",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        }
+      ],
+      "total": 20,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3745,7 +3763,16 @@
       "debitAmt": 130,
       "creditAcc": "Sales",
       "creditAmt": 130
+    },
+    {
+      "id": "mtqy1bkz00b92",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000119 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 20,
+      "creditAcc": "Sales",
+      "creditAmt": 20
     }
   ],
-  "nextInvoice": 119
+  "nextInvoice": 120
 }
