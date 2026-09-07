@@ -1665,6 +1665,15 @@
       "debitAmt": 180,
       "creditAcc": "Sales",
       "creditAmt": 180
+    },
+    {
+      "id": "mtqt7lm73d576",
+      "date": "2026-09-07",
+      "desc": "Zepto",
+      "debitAcc": "Zepto",
+      "debitAmt": 200,
+      "creditAcc": "Cash A/c",
+      "creditAmt": 200
     }
   ],
   "nextInvoice": 50
