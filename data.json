@@ -4,7 +4,7 @@
       "id": "mtq15fqr6t6s7",
       "name": "Gym keychain",
       "consignor": "",
-      "qty": 16,
+      "qty": 15,
       "price": 250
     },
     {
@@ -60,7 +60,7 @@
       "id": "mtq17cbpmucvd",
       "name": "Evil eye bracelet",
       "consignor": "",
-      "qty": 16,
+      "qty": 12,
       "price": 25
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 43,
+      "qty": 44,
       "price": 30
     },
     {
@@ -209,13 +209,6 @@
       "consignor": "",
       "qty": 50,
       "price": 32
-    },
-    {
-      "id": "mtqq259ypk0ec",
-      "name": "Cookie",
-      "consignor": "",
-      "qty": 100,
-      "price": 70
     }
   ],
   "pos": [
@@ -426,28 +419,28 @@
       "note": "UPI"
     },
     {
-      "id": "mtqpywu45jru6",
+      "id": "mtqpy4cmakoq3",
       "invoiceNo": "#000012",
       "date": "2026-09-07",
-      "customer": "Walk-in Customer",
+      "customer": "Matilda",
       "items": [
         {
-          "id": "mtq1xww8d0w3z",
-          "name": "Nutella brownie",
+          "id": "mtq15fqr6t6s7",
+          "name": "Gym keychain",
           "consignor": "",
-          "costPrice": 30,
-          "salePrice": 50,
+          "costPrice": 250,
+          "salePrice": 250,
           "qty": 1
         }
       ],
-      "total": 50,
-      "note": "UPI"
+      "total": 250,
+      "note": "Cash"
     },
     {
-      "id": "mtqq0kv16u1v9",
+      "id": "mtqq24m1rp8da",
       "invoiceNo": "#000013",
       "date": "2026-09-07",
-      "customer": "Saalim",
+      "customer": "Walk-in Customer",
       "items": [
         {
           "id": "mtq17cbpmucvd",
@@ -455,11 +448,11 @@
           "consignor": "",
           "costPrice": 25,
           "salePrice": 25,
-          "qty": 1
+          "qty": 5
         }
       ],
-      "total": 25,
-      "note": "UPI"
+      "total": 125,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -590,22 +583,22 @@
       "creditAmt": 100
     },
     {
-      "id": "mtqpywu47ao23",
+      "id": "mtqpy4cmtqir3",
       "date": "2026-09-07",
-      "desc": "Sale - Invoice #000012 to Walk-in Customer",
+      "desc": "Sale - Invoice #000012 to Matilda",
       "debitAcc": "Cash",
-      "debitAmt": 50,
+      "debitAmt": 250,
       "creditAcc": "Sales",
-      "creditAmt": 50
+      "creditAmt": 250
     },
     {
-      "id": "mtqq0kv1xiwyg",
+      "id": "mtqq24m1hq419",
       "date": "2026-09-07",
-      "desc": "Sale - Invoice #000013 to Saalim",
+      "desc": "Sale - Invoice #000013 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 25,
+      "debitAmt": 125,
       "creditAcc": "Sales",
-      "creditAmt": 25
+      "creditAmt": 125
     }
   ],
   "nextInvoice": 14
