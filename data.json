@@ -193,21 +193,21 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 37,
+      "qty": 36,
       "price": 30
     },
     {
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 15,
+      "qty": 14,
       "price": 30
     },
     {
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 45,
+      "qty": 44,
       "price": 32
     },
     {
@@ -2027,6 +2027,40 @@
       ],
       "total": 59,
       "note": "UPI"
+    },
+    {
+      "id": "mtqw7qdwb5o72",
+      "invoiceNo": "#000090",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 180,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -2866,7 +2900,16 @@
       "debitAmt": 59,
       "creditAcc": "Sales",
       "creditAmt": 59
+    },
+    {
+      "id": "mtqw7qdw5vorc",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000090 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 180,
+      "creditAcc": "Sales",
+      "creditAmt": 180
     }
   ],
-  "nextInvoice": 90
+  "nextInvoice": 91
 }
