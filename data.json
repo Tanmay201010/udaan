@@ -53,7 +53,7 @@
       "id": "mtq178hsqa31k",
       "name": "Glitter bracelet",
       "consignor": "",
-      "qty": 9,
+      "qty": 8,
       "price": 200
     },
     {
@@ -2027,6 +2027,24 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtqwfodpwwydu",
+      "invoiceNo": "#000090",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq178hsqa31k",
+          "name": "Glitter bracelet",
+          "consignor": "",
+          "costPrice": 200,
+          "salePrice": 200,
+          "qty": 1
+        }
+      ],
+      "total": 200,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2866,7 +2884,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqwfodp6e7op",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000090 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 200,
+      "creditAcc": "Sales",
+      "creditAmt": 200
     }
   ],
-  "nextInvoice": 90
+  "nextInvoice": 91
 }
