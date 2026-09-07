@@ -102,7 +102,7 @@
       "id": "mtq183d1uus8v",
       "name": "Multicolor phone lanyard",
       "consignor": "",
-      "qty": 22,
+      "qty": 24,
       "price": 150
     },
     {
@@ -172,7 +172,7 @@
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 38,
+      "qty": 37,
       "price": 20
     },
     {
@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 76,
+      "qty": 75,
       "price": 70
     },
     {
@@ -1967,22 +1967,30 @@
       "note": "Cash"
     },
     {
-      "id": "mtqvzzqveatun",
+      "id": "mtqw0rb3jzdiw",
       "invoiceNo": "#000087",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq183d1uus8v",
-          "name": "Multicolor phone lanyard",
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
           "consignor": "",
-          "costPrice": 150,
-          "salePrice": 150,
-          "qty": 2
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        },
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 40,
+          "qty": 1
         }
       ],
-      "total": 300,
-      "note": "UPI"
+      "total": 110,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2797,13 +2805,13 @@
       "creditAmt": 120
     },
     {
-      "id": "mtqvzzqwo7io7",
+      "id": "mtqw0rb3fyyt7",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000087 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 300,
+      "debitAmt": 110,
       "creditAcc": "Sales",
-      "creditAmt": 300
+      "creditAmt": 110
     }
   ],
   "nextInvoice": 88
