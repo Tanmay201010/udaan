@@ -165,7 +165,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 53,
+      "qty": 51,
       "price": 20
     },
     {
@@ -956,6 +956,24 @@
       ],
       "total": 60,
       "note": "UPI"
+    },
+    {
+      "id": "mtqrzhcygkjwz",
+      "invoiceNo": "#000038",
+      "date": "2026-09-07",
+      "customer": "Sanjana ( irene)",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 2
+        }
+      ],
+      "total": 60,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -1318,7 +1336,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqrzhczpp5xm",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000038 to Sanjana ( irene)",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 38
+  "nextInvoice": 39
 }
