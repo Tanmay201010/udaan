@@ -193,7 +193,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 40,
+      "qty": 39,
       "price": 30
     },
     {
@@ -1283,6 +1283,24 @@
       ],
       "total": 120,
       "note": "UPI"
+    },
+    {
+      "id": "mtqte82qu9g8x",
+      "invoiceNo": "#000054",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -1798,7 +1816,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtqte82quvlqw",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000054 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 54
+  "nextInvoice": 55
 }
