@@ -137,7 +137,7 @@
       "id": "mtq18qhc1hyr0",
       "name": "Floral phone wristlet/lanyard",
       "consignor": "",
-      "qty": 4,
+      "qty": 3,
       "price": 200
     },
     {
@@ -247,6 +247,24 @@
       ],
       "total": 25,
       "note": "UPI"
+    },
+    {
+      "id": "mtqovhafp1ydu",
+      "invoiceNo": "#000003",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq18qhc1hyr0",
+          "name": "Floral phone wristlet/lanyard",
+          "consignor": "",
+          "costPrice": 200,
+          "salePrice": 200,
+          "qty": 1
+        }
+      ],
+      "total": 200,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -294,7 +312,16 @@
       "debitAmt": 25,
       "creditAcc": "Sales",
       "creditAmt": 25
+    },
+    {
+      "id": "mtqovhafhw66y",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000003 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 200,
+      "creditAcc": "Sales",
+      "creditAmt": 200
     }
   ],
-  "nextInvoice": 3
+  "nextInvoice": 4
 }
