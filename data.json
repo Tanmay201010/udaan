@@ -186,7 +186,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 10,
+      "qty": 8,
       "price": 28
     },
     {
@@ -3817,6 +3817,24 @@
       ],
       "total": 120,
       "note": "Cash"
+    },
+    {
+      "id": "mtr3zyrjg21ux",
+      "invoiceNo": "#000173",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 120,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -5403,7 +5421,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtr3zyrjkgodv",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000173 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 173
+  "nextInvoice": 174
 }
