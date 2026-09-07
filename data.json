@@ -186,7 +186,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 17,
+      "qty": 15,
       "price": 28
     },
     {
@@ -3683,6 +3683,24 @@
       ],
       "total": 50,
       "note": "Cash"
+    },
+    {
+      "id": "mtr2px0bub6c3",
+      "invoiceNo": "#000166",
+      "date": "2026-09-07",
+      "customer": "mohawk",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 50,
+          "qty": 2
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -5206,7 +5224,16 @@
       "debitAmt": 50,
       "creditAcc": "Sales",
       "creditAmt": 50
+    },
+    {
+      "id": "mtr2px0cz87i9",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000166 to mohawk",
+      "debitAcc": "Cash",
+      "debitAmt": 100,
+      "creditAcc": "Sales",
+      "creditAmt": 100
     }
   ],
-  "nextInvoice": 166
+  "nextInvoice": 167
 }
