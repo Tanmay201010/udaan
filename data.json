@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 65,
+      "qty": 64,
       "price": 70
     },
     {
@@ -2831,6 +2831,24 @@
       ],
       "total": 70,
       "note": "Cash"
+    },
+    {
+      "id": "mtqydclq4iis1",
+      "invoiceNo": "#000128",
+      "date": "2026-09-07",
+      "customer": "Suhas",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        }
+      ],
+      "total": 70,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4012,7 +4030,16 @@
       "debitAmt": 70,
       "creditAcc": "Sales",
       "creditAmt": 70
+    },
+    {
+      "id": "mtqydclqk8eik",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000128 to Suhas",
+      "debitAcc": "Cash",
+      "debitAmt": 70,
+      "creditAcc": "Sales",
+      "creditAmt": 70
     }
   ],
-  "nextInvoice": 128
+  "nextInvoice": 129
 }
