@@ -172,7 +172,7 @@
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 34,
+      "qty": 32,
       "price": 20
     },
     {
@@ -3479,6 +3479,24 @@
       ],
       "total": 150,
       "note": "UPI"
+    },
+    {
+      "id": "mtqzyovj1jk2m",
+      "invoiceNo": "#000156",
+      "date": "2026-09-07",
+      "customer": "HARSHINI CREDIT",
+      "items": [
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 2
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4912,7 +4930,16 @@
       "debitAmt": 150,
       "creditAcc": "Sales",
       "creditAmt": 150
+    },
+    {
+      "id": "mtqzyovjlq7fw",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000156 to HARSHINI CREDIT",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 156
+  "nextInvoice": 157
 }
