@@ -221,7 +221,7 @@
       "id": "mtqszf7mn99lk",
       "name": "Silicon bracelet",
       "consignor": "",
-      "qty": 3,
+      "qty": 2,
       "price": 150
     }
   ],
@@ -3647,6 +3647,24 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtr2fcsxvzod8",
+      "invoiceNo": "#000164",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtqszf7mn99lk",
+          "name": "Silicon bracelet",
+          "consignor": "",
+          "costPrice": 150,
+          "salePrice": 150,
+          "qty": 1
+        }
+      ],
+      "total": 150,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -5152,7 +5170,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtr2fcsxpj0oy",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000164 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 150,
+      "creditAcc": "Sales",
+      "creditAmt": 150
     }
   ],
-  "nextInvoice": 164
+  "nextInvoice": 165
 }
