@@ -165,7 +165,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 35,
+      "qty": 33,
       "price": 20
     },
     {
@@ -3549,6 +3549,24 @@
       ],
       "total": 120,
       "note": "UPI"
+    },
+    {
+      "id": "mtr07ox07i2na",
+      "invoiceNo": "#000159",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 2
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -5009,7 +5027,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtr07ox0ydz2r",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000159 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 159
+  "nextInvoice": 160
 }
