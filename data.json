@@ -144,7 +144,7 @@
       "id": "mtq18vlikd8w7",
       "name": "4 flowers keychain",
       "consignor": "",
-      "qty": 7,
+      "qty": 6,
       "price": 120
     },
     {
@@ -3835,6 +3835,24 @@
       ],
       "total": 120,
       "note": "Cash"
+    },
+    {
+      "id": "mtr48nen57dtu",
+      "invoiceNo": "#000174",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq18vlikd8w7",
+          "name": "4 flowers keychain",
+          "consignor": "",
+          "costPrice": 120,
+          "salePrice": 120,
+          "qty": 1
+        }
+      ],
+      "total": 120,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -5430,7 +5448,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtr48nenu47mz",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000174 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 174
+  "nextInvoice": 175
 }
