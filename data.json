@@ -165,14 +165,14 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 45,
+      "qty": 44,
       "price": 20
     },
     {
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 38,
+      "qty": 37,
       "price": 20
     },
     {
@@ -200,14 +200,14 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 15,
+      "qty": 14,
       "price": 30
     },
     {
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 41,
+      "qty": 43,
       "price": 32
     },
     {
@@ -2091,21 +2091,47 @@
       "note": "Cash"
     },
     {
-      "id": "mtqwpddym9jjl",
+      "id": "mtqwng6v2lmnx",
       "invoiceNo": "#000093",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq1yl0l0n2me",
-          "name": "Millionaire brownie",
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
           "consignor": "",
-          "costPrice": 32,
-          "salePrice": 50,
-          "qty": 2
+          "costPrice": 30,
+          "salePrice": 100,
+          "qty": 1
         }
       ],
       "total": 100,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqwqq8eoos8x",
+      "invoiceNo": "#000094",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        },
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        }
+      ],
+      "total": 40,
       "note": "Cash"
     }
   ],
@@ -2975,14 +3001,23 @@
       "creditAmt": 120
     },
     {
-      "id": "mtqwpddyny1hk",
+      "id": "mtqwng6vnx6q2",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000093 to Walk-in Customer",
       "debitAcc": "Cash",
       "debitAmt": 100,
       "creditAcc": "Sales",
       "creditAmt": 100
+    },
+    {
+      "id": "mtqwqq8e9wwdi",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000094 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 40,
+      "creditAcc": "Sales",
+      "creditAmt": 40
     }
   ],
-  "nextInvoice": 94
+  "nextInvoice": 95
 }
