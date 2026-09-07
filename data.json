@@ -193,7 +193,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 31,
+      "qty": 30,
       "price": 30
     },
     {
@@ -2407,6 +2407,24 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtqxhfl3hfedt",
+      "invoiceNo": "#000108",
+      "date": "2026-09-07",
+      "customer": "Tanmay",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3408,7 +3426,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqxhfl3hy7j3",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000108 to Tanmay",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 108
+  "nextInvoice": 109
 }
