@@ -1858,7 +1858,7 @@
       "desc": "Zepto",
       "debitAcc": "Zepto",
       "debitAmt": 200,
-      "creditAcc": "Cash A/c",
+      "creditAcc": "Cash",
       "creditAmt": 200
     },
     {
