@@ -172,7 +172,7 @@
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 45,
+      "qty": 44,
       "price": 20
     },
     {
@@ -283,6 +283,24 @@
       ],
       "total": 20,
       "note": "Cash"
+    },
+    {
+      "id": "mtqpb4f9n4w1a",
+      "invoiceNo": "#000005",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        }
+      ],
+      "total": 20,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -348,7 +366,16 @@
       "debitAmt": 20,
       "creditAcc": "Sales",
       "creditAmt": 20
+    },
+    {
+      "id": "mtqpb4f9aa67v",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000005 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 20,
+      "creditAcc": "Sales",
+      "creditAmt": 20
     }
   ],
-  "nextInvoice": 5
+  "nextInvoice": 6
 }
