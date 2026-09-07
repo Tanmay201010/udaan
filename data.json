@@ -207,7 +207,7 @@
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 48,
+      "qty": 47,
       "price": 32
     },
     {
@@ -1453,6 +1453,24 @@
       ],
       "total": 70,
       "note": "Cash"
+    },
+    {
+      "id": "mtqu8gp8s4au2",
+      "invoiceNo": "#000063",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2049,7 +2067,16 @@
       "debitAmt": 70,
       "creditAcc": "Sales",
       "creditAmt": 70
+    },
+    {
+      "id": "mtqu8gp8pxr56",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000063 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 63
+  "nextInvoice": 64
 }
