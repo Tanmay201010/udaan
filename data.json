@@ -18,7 +18,7 @@
       "id": "mtq16lxan7yzl",
       "name": "Rainbow lanyard",
       "consignor": "",
-      "qty": 3,
+      "qty": 2,
       "price": 270
     },
     {
@@ -221,7 +221,7 @@
       "id": "mtqszf7mn99lk",
       "name": "Silicon bracelet",
       "consignor": "",
-      "qty": 4,
+      "qty": 3,
       "price": 150
     }
   ],
@@ -2549,6 +2549,32 @@
       ],
       "total": 200,
       "note": "Cash"
+    },
+    {
+      "id": "mtqxs52w9hdqa",
+      "invoiceNo": "#000115",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq16lxan7yzl",
+          "name": "Rainbow lanyard",
+          "consignor": "",
+          "costPrice": 270,
+          "salePrice": 270,
+          "qty": 1
+        },
+        {
+          "id": "mtqszf7mn99lk",
+          "name": "Silicon bracelet",
+          "consignor": "",
+          "costPrice": 150,
+          "salePrice": 150,
+          "qty": 1
+        }
+      ],
+      "total": 420,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3613,7 +3639,16 @@
       "debitAmt": 200,
       "creditAcc": "Sales",
       "creditAmt": 200
+    },
+    {
+      "id": "mtqxs52wbgw9a",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000115 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 420,
+      "creditAcc": "Sales",
+      "creditAmt": 420
     }
   ],
-  "nextInvoice": 115
+  "nextInvoice": 116
 }
