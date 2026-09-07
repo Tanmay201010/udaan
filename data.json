@@ -102,7 +102,7 @@
       "id": "mtq183d1uus8v",
       "name": "Multicolor phone lanyard",
       "consignor": "",
-      "qty": 20,
+      "qty": 19,
       "price": 150
     },
     {
@@ -151,28 +151,28 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 70,
+      "qty": 68,
       "price": 40
     },
     {
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 71,
+      "qty": 69,
       "price": 40
     },
     {
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 42,
+      "qty": 36,
       "price": 20
     },
     {
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 36,
+      "qty": 34,
       "price": 20
     },
     {
@@ -186,21 +186,21 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 23,
+      "qty": 21,
       "price": 28
     },
     {
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 22,
+      "qty": 16,
       "price": 30
     },
     {
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 11,
+      "qty": 10,
       "price": 30
     },
     {
@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 60,
+      "qty": 58,
       "price": 70
     },
     {
@@ -3191,6 +3191,222 @@
       ],
       "total": 50,
       "note": "Cash"
+    },
+    {
+      "id": "mtqz4wwc6kx9o",
+      "invoiceNo": "#000144",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 2
+        },
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 180,
+      "note": "UPI"
+    },
+    {
+      "id": "mtqz5s5bjy9zo",
+      "invoiceNo": "#000145",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 2
+        },
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 150,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqz98o5m2s3i",
+      "invoiceNo": "#000146",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 2
+        },
+        {
+          "id": "mtq19fk1wt78d",
+          "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 2
+        },
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 2
+        },
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 2
+        },
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        }
+      ],
+      "total": 430,
+      "note": "UPI"
+    },
+    {
+      "id": "mtqzaz9pje5t4",
+      "invoiceNo": "#000147",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        },
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 130,
+      "note": "UPI"
+    },
+    {
+      "id": "mtqzfpinx63kj",
+      "invoiceNo": "#000148",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 2
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqzgotyvcqna",
+      "invoiceNo": "#000149",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 120,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqzhe4l7hjtd",
+      "invoiceNo": "#000150",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq183d1uus8v",
+          "name": "Multicolor phone lanyard",
+          "consignor": "",
+          "costPrice": 150,
+          "salePrice": 150,
+          "qty": 1
+        }
+      ],
+      "total": 150,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqzj8polk1is",
+      "invoiceNo": "#000151",
+      "date": "2026-09-07",
+      "customer": "aksith",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        }
+      ],
+      "total": 20,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4516,7 +4732,79 @@
       "debitAmt": 50,
       "creditAcc": "Sales",
       "creditAmt": 50
+    },
+    {
+      "id": "mtqz4wwchg5by",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000144 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 180,
+      "creditAcc": "Sales",
+      "creditAmt": 180
+    },
+    {
+      "id": "mtqz5s5bykxwm",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000145 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 150,
+      "creditAcc": "Sales",
+      "creditAmt": 150
+    },
+    {
+      "id": "mtqz98o526fou",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000146 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 430,
+      "creditAcc": "Sales",
+      "creditAmt": 430
+    },
+    {
+      "id": "mtqzaz9pg2guy",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000147 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 130,
+      "creditAcc": "Sales",
+      "creditAmt": 130
+    },
+    {
+      "id": "mtqzfpinbsjmg",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000148 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 100,
+      "creditAcc": "Sales",
+      "creditAmt": 100
+    },
+    {
+      "id": "mtqzgoty116sz",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000149 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
+    },
+    {
+      "id": "mtqzhe4l0g5bv",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000150 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 150,
+      "creditAcc": "Sales",
+      "creditAmt": 150
+    },
+    {
+      "id": "mtqzj8pouwtcf",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000151 to aksith",
+      "debitAcc": "Cash",
+      "debitAmt": 20,
+      "creditAcc": "Sales",
+      "creditAmt": 20
     }
   ],
-  "nextInvoice": 144
+  "nextInvoice": 152
 }
