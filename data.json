@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 91,
+      "qty": 90,
       "price": 70
     },
     {
@@ -1221,6 +1221,24 @@
       ],
       "total": 600,
       "note": "UPI"
+    },
+    {
+      "id": "mtqtbv554bjto",
+      "invoiceNo": "#000051",
+      "date": "2026-09-07",
+      "customer": "Not paid",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        }
+      ],
+      "total": 70,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -1709,7 +1727,16 @@
       "debitAmt": 600,
       "creditAcc": "Sales",
       "creditAmt": 600
+    },
+    {
+      "id": "mtqtbv5575nme",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000051 to Not paid",
+      "debitAcc": "Cash",
+      "debitAmt": 70,
+      "creditAcc": "Sales",
+      "creditAmt": 70
     }
   ],
-  "nextInvoice": 51
+  "nextInvoice": 52
 }
