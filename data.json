@@ -151,14 +151,14 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 71,
+      "qty": 70,
       "price": 40
     },
     {
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 72,
+      "qty": 71,
       "price": 40
     },
     {
@@ -179,14 +179,14 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 36,
+      "qty": 35,
       "price": 20
     },
     {
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 26,
+      "qty": 25,
       "price": 28
     },
     {
@@ -3015,6 +3015,48 @@
       ],
       "total": 720,
       "note": "Cash"
+    },
+    {
+      "id": "mtqyorsy9jvah",
+      "invoiceNo": "#000136",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        },
+        {
+          "id": "mtq19fk1wt78d",
+          "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 200,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4268,7 +4310,16 @@
       "debitAmt": 720,
       "creditAcc": "Sales",
       "creditAmt": 720
+    },
+    {
+      "id": "mtqyorsya0bws",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000136 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 200,
+      "creditAcc": "Sales",
+      "creditAmt": 200
     }
   ],
-  "nextInvoice": 136
+  "nextInvoice": 137
 }
