@@ -158,14 +158,14 @@
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 74,
+      "qty": 72,
       "price": 40
     },
     {
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 57,
+      "qty": 55,
       "price": 20
     },
     {
@@ -752,6 +752,32 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtqqtvihj5dmx",
+      "invoiceNo": "#000028",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 2
+        },
+        {
+          "id": "mtq19fk1wt78d",
+          "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 180,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -1024,7 +1050,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqqtvih8std0",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000028 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 180,
+      "creditAcc": "Sales",
+      "creditAmt": 180
     }
   ],
-  "nextInvoice": 28
+  "nextInvoice": 29
 }
