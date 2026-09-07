@@ -186,7 +186,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 15,
+      "qty": 14,
       "price": 28
     },
     {
@@ -3701,6 +3701,24 @@
       ],
       "total": 100,
       "note": "Cash"
+    },
+    {
+      "id": "mtr2sw2yomzy5",
+      "invoiceNo": "#000167",
+      "date": "2026-09-07",
+      "customer": "Suhas (credit)",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 50,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -5233,7 +5251,16 @@
       "debitAmt": 100,
       "creditAcc": "Sales",
       "creditAmt": 100
+    },
+    {
+      "id": "mtr2sw2y5rlkw",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000167 to Suhas (credit)",
+      "debitAcc": "Cash",
+      "debitAmt": 50,
+      "creditAcc": "Sales",
+      "creditAmt": 50
     }
   ],
-  "nextInvoice": 167
+  "nextInvoice": 168
 }
