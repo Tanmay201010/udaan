@@ -53,7 +53,7 @@
       "id": "mtq178hsqa31k",
       "name": "Glitter bracelet",
       "consignor": "",
-      "qty": 8,
+      "qty": 9,
       "price": 200
     },
     {
@@ -179,7 +179,7 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 40,
+      "qty": 39,
       "price": 20
     },
     {
@@ -193,7 +193,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 35,
+      "qty": 36,
       "price": 30
     },
     {
@@ -207,14 +207,14 @@
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 45,
+      "qty": 43,
       "price": 32
     },
     {
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 76,
+      "qty": 74,
       "price": 70
     },
     {
@@ -2029,39 +2029,65 @@
       "note": "Cash"
     },
     {
-      "id": "mtqwfodpwwydu",
+      "id": "mtqwgnx4rwk4a",
       "invoiceNo": "#000090",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq178hsqa31k",
-          "name": "Glitter bracelet",
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
           "consignor": "",
-          "costPrice": 200,
-          "salePrice": 200,
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        },
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
           "qty": 1
         }
       ],
-      "total": 200,
+      "total": 100,
       "note": "Cash"
     },
     {
-      "id": "mtqwip4chryt7",
+      "id": "mtqwiiduhu8xd",
       "invoiceNo": "#000091",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq1xe47x4ww6",
-          "name": "Triple chocolate brownies",
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
           "consignor": "",
-          "costPrice": 30,
-          "salePrice": 60,
+          "costPrice": 70,
+          "salePrice": 70,
           "qty": 1
         }
       ],
-      "total": 60,
+      "total": 70,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqwl1d29no8f",
+      "invoiceNo": "#000092",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 120,
       "note": "Cash"
     }
   ],
@@ -2904,23 +2930,32 @@
       "creditAmt": 60
     },
     {
-      "id": "mtqwfodp6e7op",
+      "id": "mtqwgnx4ug91z",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000090 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 200,
+      "debitAmt": 100,
       "creditAcc": "Sales",
-      "creditAmt": 200
+      "creditAmt": 100
     },
     {
-      "id": "mtqwip4c5chs1",
+      "id": "mtqwiidutsa38",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000091 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 60,
+      "debitAmt": 70,
       "creditAcc": "Sales",
-      "creditAmt": 60
+      "creditAmt": 70
+    },
+    {
+      "id": "mtqwl1d2m1oj1",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000092 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 92
+  "nextInvoice": 93
 }
