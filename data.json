@@ -151,7 +151,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 74,
+      "qty": 73,
       "price": 40
     },
     {
@@ -165,14 +165,14 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 44,
+      "qty": 45,
       "price": 20
     },
     {
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 37,
+      "qty": 38,
       "price": 20
     },
     {
@@ -193,21 +193,21 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 35,
+      "qty": 36,
       "price": 30
     },
     {
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 12,
+      "qty": 14,
       "price": 30
     },
     {
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 43,
+      "qty": 41,
       "price": 32
     },
     {
@@ -2091,80 +2091,46 @@
       "note": "Cash"
     },
     {
-      "id": "mtqwng6v2lmnx",
+      "id": "mtqwpddym9jjl",
       "invoiceNo": "#000093",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq1xww8d0w3z",
-          "name": "Nutella brownie",
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
           "consignor": "",
-          "costPrice": 30,
-          "salePrice": 100,
-          "qty": 1
+          "costPrice": 32,
+          "salePrice": 50,
+          "qty": 2
         }
       ],
       "total": 100,
       "note": "Cash"
     },
     {
-      "id": "mtqwqq8eoos8x",
+      "id": "mtqwsp6mtjs9h",
       "invoiceNo": "#000094",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq19ugpvlus2",
-          "name": "Hazelnut Chocolates",
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
           "consignor": "",
-          "costPrice": 20,
-          "salePrice": 20,
-          "qty": 1
-        },
-        {
-          "id": "mtq1a4u9oz9g4",
-          "name": "Milk Chocolates",
-          "consignor": "",
-          "costPrice": 20,
-          "salePrice": 20,
+          "costPrice": 40,
+          "salePrice": 60,
           "qty": 1
         }
       ],
-      "total": 40,
+      "total": 60,
       "note": "Cash"
     },
     {
-      "id": "mtqwt9qobi6bn",
+      "id": "mtqwu0xzaet7j",
       "invoiceNo": "#000095",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
-      "items": [
-        {
-          "id": "mtq1xww8d0w3z",
-          "name": "Nutella brownie",
-          "consignor": "",
-          "costPrice": 30,
-          "salePrice": 60,
-          "qty": 1
-        },
-        {
-          "id": "mtq1xe47x4ww6",
-          "name": "Triple chocolate brownies",
-          "consignor": "",
-          "costPrice": 30,
-          "salePrice": 60,
-          "qty": 1
-        }
-      ],
-      "total": 120,
-      "note": "UPI"
-    },
-    {
-      "id": "mtqwu0jc8bwsn",
-      "invoiceNo": "#000096",
-      "date": "2026-09-07",
-      "customer": "Nayua",
       "items": [
         {
           "id": "mtq15fqr6t6s7",
@@ -3053,7 +3019,7 @@
       "creditAmt": 120
     },
     {
-      "id": "mtqwng6vnx6q2",
+      "id": "mtqwpddyny1hk",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000093 to Walk-in Customer",
       "debitAcc": "Cash",
@@ -3062,32 +3028,23 @@
       "creditAmt": 100
     },
     {
-      "id": "mtqwqq8e9wwdi",
+      "id": "mtqwsp6nk57lc",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000094 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 40,
+      "debitAmt": 60,
       "creditAcc": "Sales",
-      "creditAmt": 40
+      "creditAmt": 60
     },
     {
-      "id": "mtqwt9qooulng",
+      "id": "mtqwu0xz47n6o",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000095 to Walk-in Customer",
-      "debitAcc": "Cash",
-      "debitAmt": 120,
-      "creditAcc": "Sales",
-      "creditAmt": 120
-    },
-    {
-      "id": "mtqwu0jc4oic3",
-      "date": "2026-09-07",
-      "desc": "Sale - Invoice #000096 to Nayua",
       "debitAcc": "Cash",
       "debitAmt": 310,
       "creditAcc": "Sales",
       "creditAmt": 310
     }
   ],
-  "nextInvoice": 97
+  "nextInvoice": 96
 }
