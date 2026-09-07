@@ -102,7 +102,7 @@
       "id": "mtq183d1uus8v",
       "name": "Multicolor phone lanyard",
       "consignor": "",
-      "qty": 21,
+      "qty": 20,
       "price": 150
     },
     {
@@ -3093,6 +3093,24 @@
       ],
       "total": 270,
       "note": "Cash"
+    },
+    {
+      "id": "mtqytifj9gzy3",
+      "invoiceNo": "#000139",
+      "date": "2026-09-07",
+      "customer": "100 rs left",
+      "items": [
+        {
+          "id": "mtq183d1uus8v",
+          "name": "Multicolor phone lanyard",
+          "consignor": "",
+          "costPrice": 150,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 50,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4373,7 +4391,16 @@
       "debitAmt": 270,
       "creditAcc": "Sales",
       "creditAmt": 270
+    },
+    {
+      "id": "mtqytifj410hx",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000139 to 100 rs left",
+      "debitAcc": "Cash",
+      "debitAmt": 50,
+      "creditAcc": "Sales",
+      "creditAmt": 50
     }
   ],
-  "nextInvoice": 139
+  "nextInvoice": 140
 }
