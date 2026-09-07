@@ -60,7 +60,7 @@
       "id": "mtq17cbpmucvd",
       "name": "Evil eye bracelet",
       "consignor": "",
-      "qty": 13,
+      "qty": 12,
       "price": 25
     },
     {
@@ -3425,6 +3425,24 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtqzpr3lsvopb",
+      "invoiceNo": "#000153",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq17cbpmucvd",
+          "name": "Evil eye bracelet",
+          "consignor": "",
+          "costPrice": 25,
+          "salePrice": 25,
+          "qty": 1
+        }
+      ],
+      "total": 25,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4831,7 +4849,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqzpr3lv83i1",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000153 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 25,
+      "creditAcc": "Sales",
+      "creditAmt": 25
     }
   ],
-  "nextInvoice": 153
+  "nextInvoice": 154
 }
