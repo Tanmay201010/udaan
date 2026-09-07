@@ -95,7 +95,7 @@
       "id": "mtq17zflrpgnv",
       "name": "Single flower keychain",
       "consignor": "",
-      "qty": 4,
+      "qty": 2,
       "price": 60
     },
     {
@@ -1903,6 +1903,24 @@
       ],
       "total": 100,
       "note": "Cash"
+    },
+    {
+      "id": "mtqvr5tmryjzp",
+      "invoiceNo": "#000084",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq17zflrpgnv",
+          "name": "Single flower keychain",
+          "consignor": "",
+          "costPrice": 60,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 120,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2688,7 +2706,16 @@
       "debitAmt": 100,
       "creditAcc": "Sales",
       "creditAmt": 100
+    },
+    {
+      "id": "mtqvr5tm4aamu",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000084 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 84
+  "nextInvoice": 85
 }
