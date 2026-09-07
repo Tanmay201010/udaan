@@ -8,6 +8,7 @@ let settings = JSON.parse(localStorage.getItem('udaanSettings') || '{}');
 let appData = { inventory: [], pos: [], journal: [], nextInvoice: 1 };
 let currentSha = null;
 let journalListenersAttached = false;
+let autoSyncTimer = null;
 
 // --- Account Classifier Engine ---
 const incomeKeywords = ['sales', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission received', 'markup', 'discount received'];
@@ -58,10 +59,60 @@ function getBillTime(bill) {
     return '—';
 }
 
+function getSafeNextInvoice() {
+    let maxNum = 0;
+    if (appData.pos) {
+        appData.pos.forEach(b => {
+            const m = (b.invoiceNo || '').match(/#(\d+)/);
+            if (m) {
+                const num = parseInt(m[1]);
+                if (num > maxNum) maxNum = num;
+            }
+        });
+    }
+    const nextNum = Math.max(maxNum + 1, appData.nextInvoice || 1);
+    appData.nextInvoice = nextNum;
+    return '#' + String(nextNum).padStart(6, '0');
+}
+
 function ensureIds() {
     if (appData.journal) appData.journal.forEach(e => { if (!e.id) e.id = uid(); });
     if (appData.pos) appData.pos.forEach(b => { if (!b.id) b.id = uid(); });
     if (appData.inventory) appData.inventory.forEach(i => { if (!i.id) i.id = uid(); });
+}
+
+function reconcileMissingJournalEntries() {
+    if (!appData.pos || !appData.journal) return;
+    const existingInvoices = new Set();
+    appData.journal.forEach(j => {
+        const m = (j.desc || '').match(/#(\d+)/);
+        if (m) existingInvoices.add('#' + m[1].padStart(6, '0'));
+    });
+
+    let added = 0;
+    appData.pos.forEach(b => {
+        const invNo = b.invoiceNo;
+        if (invNo && !existingInvoices.has(invNo)) {
+            const total = parseFloat(b.total) || 0;
+            const customer = b.customer || 'Walk-in Customer';
+            const note = b.note || 'Cash';
+            appData.journal.push({
+                id: (b.id || uid()) + '_j',
+                date: b.date || today(),
+                desc: `Sale - Invoice ${invNo} to ${customer} [${note}] (Includes Commission paid by consignor)`,
+                debitAcc: 'Cash',
+                debitAmt: total,
+                creditAcc: 'Sales & Commission paid by consignor',
+                creditAmt: total
+            });
+            existingInvoices.add(invNo);
+            added++;
+        }
+    });
+
+    if (added > 0) {
+        saveLocal();
+    }
 }
 
 function saveLocal() {
@@ -79,6 +130,7 @@ function loadLocal() {
     if (!appData.journal) appData.journal = [];
     if (!appData.nextInvoice) appData.nextInvoice = 1;
     ensureIds();
+    reconcileMissingJournalEntries();
 }
 
 async function fetchDefaultData() {
@@ -87,14 +139,8 @@ async function fetchDefaultData() {
         if (res.ok) {
             const data = await res.json();
             if (data && (data.inventory || data.pos || data.journal)) {
-                // If local appData has fewer POS bills than data.json, update appData
                 if (!appData.pos || appData.pos.length < (data.pos ? data.pos.length : 0)) {
-                    appData = {
-                        inventory: data.inventory || [],
-                        pos: data.pos || [],
-                        journal: data.journal || [],
-                        nextInvoice: data.nextInvoice || 1
-                    };
+                    appData = mergeAppData(data);
                     ensureIds();
                     saveLocal();
                     refreshDashboardStats();
@@ -106,9 +152,26 @@ async function fetchDefaultData() {
     }
 }
 
+function mergeAppData(remoteData) {
+    const posMap = new Map();
+    (appData.pos || []).forEach(b => posMap.set(b.id || b.invoiceNo, b));
+    (remoteData.pos || []).forEach(b => posMap.set(b.id || b.invoiceNo, b));
+
+    const jMap = new Map();
+    (appData.journal || []).forEach(j => jMap.set(j.id, j));
+    (remoteData.journal || []).forEach(j => jMap.set(j.id, j));
+
+    const merged = {
+        inventory: remoteData.inventory || appData.inventory || [],
+        pos: Array.from(posMap.values()),
+        journal: Array.from(jMap.values()),
+        nextInvoice: Math.max(appData.nextInvoice || 1, remoteData.nextInvoice || 1)
+    };
+    return merged;
+}
+
 // --- Dynamic Reactivity ---
 function refreshDashboardStats() {
-    // 1. Total Cash Balance
     let cashBalance = 0;
     appData.journal.forEach(e => {
         const d = (e.debitAcc || '').toLowerCase();
@@ -117,10 +180,8 @@ function refreshDashboardStats() {
         if (c.includes('cash') || c.includes('bank')) cashBalance -= parseFloat(e.creditAmt) || 0;
     });
 
-    // 2. Total Bills Generated
     const totalBills = appData.pos ? appData.pos.length : 0;
 
-    // 3. Total Expenses (sum net Dr of all expense accounts including Rapido, Zepto)
     let expenses = 0;
     const accBalances = {};
     appData.journal.forEach(e => {
@@ -134,7 +195,6 @@ function refreshDashboardStats() {
         }
     });
 
-    // 4. Total Journal Entries
     const totalJournal = appData.journal ? appData.journal.length : 0;
 
     const cashEl = document.getElementById('dash-cash-balance');
@@ -175,7 +235,6 @@ function initApp() {
         startApp();
     }
 
-    // Login button
     document.getElementById('login-btn').addEventListener('click', handleLogin);
     document.getElementById('login-user').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') handleLogin();
@@ -191,7 +250,7 @@ function handleLogin() {
     const errEl = document.getElementById('login-error');
 
     if (user === 'admin' && (pass === 'sales' || pass === 'finance')) {
-        currentRole = pass; // 'sales' or 'finance'
+        currentRole = pass;
         localStorage.setItem('udaanRole', currentRole);
         document.getElementById('login-overlay').style.display = 'none';
         errEl.style.display = 'none';
@@ -256,6 +315,7 @@ function startApp() {
 
     if (settings.pat && settings.owner && settings.repo) {
         fetchFromGitHub();
+        startAutoSyncPolling();
     } else {
         updateSyncStatus('Not configured', 'warning');
     }
@@ -267,6 +327,16 @@ function startApp() {
         const h = location.hash.replace('#', '') || 'dashboard';
         navigateTo(h, false);
     });
+}
+
+function startAutoSyncPolling() {
+    if (autoSyncTimer) clearInterval(autoSyncTimer);
+    // Poll every 10 seconds for multi-device sync
+    autoSyncTimer = setInterval(() => {
+        if (settings.pat && settings.owner && settings.repo) {
+            fetchFromGitHub();
+        }
+    }, 10000);
 }
 
 // =============================================
@@ -442,7 +512,7 @@ function renderInventoryTable() {
 function initPOS() {
     let posItems = [];
 
-    const invoiceNo = '#' + String(appData.nextInvoice || 1).padStart(6, '0');
+    const invoiceNo = getSafeNextInvoice();
     const posNoEl = document.getElementById('pos-no');
     const posDateEl = document.getElementById('pos-date');
     if (posNoEl) posNoEl.value = invoiceNo;
@@ -649,7 +719,7 @@ function initPOS() {
 
         const bill = {
             id: uid(),
-            invoiceNo: document.getElementById('pos-no').value,
+            invoiceNo: getSafeNextInvoice(),
             date: document.getElementById('pos-date').value || today(),
             time: timeStr,
             createdAt: now.toISOString(),
@@ -660,7 +730,6 @@ function initPOS() {
         };
 
         appData.pos.push(bill);
-        appData.nextInvoice = (appData.nextInvoice || 1) + 1;
 
         posItems.forEach(pi => {
             const inv = appData.inventory.find(i => String(i.id) === String(pi.id));
@@ -668,12 +737,12 @@ function initPOS() {
         });
 
         const jEntry = {
-            id: uid(),
+            id: bill.id + '_j',
             date: bill.date,
-            desc: `Sale - Invoice ${bill.invoiceNo} to ${customer} [${note}]`,
+            desc: `Sale - Invoice ${bill.invoiceNo} to ${customer} [${note}] (Includes Commission paid by consignor)`,
             debitAcc: 'Cash',
             debitAmt: total,
-            creditAcc: 'Sales',
+            creditAcc: 'Sales & Commission paid by consignor',
             creditAmt: total
         };
         appData.journal.push(jEntry);
@@ -684,7 +753,7 @@ function initPOS() {
 
         posItems = [];
         document.getElementById('pos-customer').value = '';
-        document.getElementById('pos-no').value = '#' + String(appData.nextInvoice).padStart(6, '0');
+        document.getElementById('pos-no').value = getSafeNextInvoice();
         renderPosItems();
     }
 
@@ -799,7 +868,7 @@ function generateAndPrintBill(bill) {
 }
 
 // =============================================
-// BILL HISTORY
+// BILL HISTORY & EDIT BILL
 // =============================================
 function initBillHistory() {
     let filtered = [...appData.pos].reverse();
@@ -832,7 +901,10 @@ function initBillHistory() {
                     <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${itemSummary}">${itemSummary || '—'}</td>
                     <td>${bill.note || 'Cash'}</td>
                     <td style="text-align:right;font-weight:600;">${fmt(bill.total)}</td>
-                    <td>
+                    <td style="display:flex;gap:0.4rem;">
+                        <button class="btn btn-sm btn-secondary edit-bill-btn" data-id="${bill.id}">
+                            <i data-lucide="edit-3"></i> Edit
+                        </button>
                         <button class="btn btn-sm btn-secondary reprint-btn" data-id="${bill.id}">
                             <i data-lucide="printer"></i> Reprint
                         </button>
@@ -844,11 +916,18 @@ function initBillHistory() {
         lucide.createIcons();
 
         tbody.querySelectorAll('.reprint-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.onclick = () => {
                 const id = btn.getAttribute('data-id');
                 const bill = appData.pos.find(b => String(b.id) === String(id));
                 if (bill) generateAndPrintBill(bill);
-            });
+            };
+        });
+
+        tbody.querySelectorAll('.edit-bill-btn').forEach(btn => {
+            btn.onclick = () => {
+                const id = btn.getAttribute('data-id');
+                openEditBillModal(id);
+            };
         });
     }
 
@@ -856,7 +935,7 @@ function initBillHistory() {
 
     const searchInput = document.getElementById('bill-search');
     if (searchInput) {
-        searchInput.addEventListener('input', () => {
+        searchInput.oninput = () => {
             const q = searchInput.value.trim().toLowerCase();
             if (!q) {
                 render(filtered);
@@ -867,12 +946,12 @@ function initBillHistory() {
                 (b.invoiceNo || '').toLowerCase().includes(q) ||
                 (b.date || '').includes(q)
             ));
-        });
+        };
     }
 
     const exportBtn = document.getElementById('export-bills-btn');
     if (exportBtn) {
-        exportBtn.addEventListener('click', () => {
+        exportBtn.onclick = () => {
             if (appData.pos.length === 0) { alert('No bills to export.'); return; }
             const header = 'Invoice No,Date,Time,Customer,Items,Payment,Total\n';
             const rows = [...appData.pos].reverse().map(b => {
@@ -884,15 +963,172 @@ function initBillHistory() {
             a.href = URL.createObjectURL(blob);
             a.download = 'bill_history.csv';
             a.click();
+        };
+    }
+
+    // Merge Device Sync File handler
+    const syncFileBtn = document.getElementById('sync-bills-file-btn');
+    const syncFileInput = document.getElementById('sync-file-input');
+    if (syncFileBtn && syncFileInput) {
+        syncFileBtn.onclick = () => syncFileInput.click();
+        syncFileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                try {
+                    const remote = JSON.parse(evt.target.result);
+                    appData = mergeAppData(remote);
+                    notifyDataChanged();
+                    alert('Successfully merged device sync file!');
+                    initBillHistory();
+                } catch(err) {
+                    alert('Error reading sync file: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        };
+    }
+}
+
+function openEditBillModal(billId) {
+    const bill = appData.pos.find(b => String(b.id) === String(billId));
+    if (!bill) return;
+
+    const modal = document.getElementById('edit-bill-modal');
+    if (!modal) return;
+
+    modal.style.display = 'block';
+    document.getElementById('edit-bill-id').value = bill.id;
+    document.getElementById('edit-bill-no').value = bill.invoiceNo || '';
+    document.getElementById('edit-bill-date').value = bill.date || today();
+    document.getElementById('edit-bill-time').value = getBillTime(bill);
+    document.getElementById('edit-bill-customer').value = bill.customer || '';
+    document.getElementById('edit-bill-note').value = bill.note || 'Cash';
+
+    let draftItems = JSON.parse(JSON.stringify(bill.items || []));
+
+    function renderDraftItems() {
+        const listEl = document.getElementById('edit-bill-items-list');
+        if (!listEl) return;
+
+        let total = 0;
+        draftItems.forEach(i => total += (i.salePrice * i.qty));
+        document.getElementById('edit-bill-total-lbl').textContent = fmt(total);
+
+        if (draftItems.length === 0) {
+            listEl.innerHTML = '<p style="color:var(--text-secondary);text-align:center;">No items in bill.</p>';
+            return;
+        }
+
+        listEl.innerHTML = `
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th style="text-align:right;">Sale Price</th>
+                        <th style="text-align:center;">Qty</th>
+                        <th style="text-align:right;">Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${draftItems.map((item, idx) => `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td style="text-align:right;">
+                                <input type="number" class="edit-item-price-inp" data-idx="${idx}" value="${item.salePrice}" style="width:80px;padding:0.25rem;background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);border-radius:4px;text-align:right;">
+                            </td>
+                            <td style="text-align:center;">
+                                <input type="number" class="edit-item-qty-inp" data-idx="${idx}" min="1" value="${item.qty}" style="width:60px;padding:0.25rem;background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);border-radius:4px;text-align:center;">
+                            </td>
+                            <td style="text-align:right;">${fmt(item.salePrice * item.qty)}</td>
+                            <td><button class="btn btn-sm btn-secondary edit-item-rm-btn" data-idx="${idx}">✕</button></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+
+        listEl.querySelectorAll('.edit-item-price-inp').forEach(inp => {
+            inp.onchange = () => {
+                const idx = parseInt(inp.getAttribute('data-idx'));
+                draftItems[idx].salePrice = parseFloat(inp.value) || 0;
+                renderDraftItems();
+            };
+        });
+
+        listEl.querySelectorAll('.edit-item-qty-inp').forEach(inp => {
+            inp.onchange = () => {
+                const idx = parseInt(inp.getAttribute('data-idx'));
+                draftItems[idx].qty = Math.max(1, parseInt(inp.value) || 1);
+                renderDraftItems();
+            };
+        });
+
+        listEl.querySelectorAll('.edit-item-rm-btn').forEach(btn => {
+            btn.onclick = () => {
+                const idx = parseInt(btn.getAttribute('data-idx'));
+                draftItems.splice(idx, 1);
+                renderDraftItems();
+            };
         });
     }
+
+    renderDraftItems();
+
+    document.getElementById('edit-bill-close-btn').onclick = () => modal.style.display = 'none';
+    document.getElementById('edit-bill-cancel-btn').onclick = () => modal.style.display = 'none';
+
+    document.getElementById('edit-bill-save-btn').onclick = () => {
+        if (draftItems.length === 0) { alert('Bill must contain at least one item.'); return; }
+
+        const newDate = document.getElementById('edit-bill-date').value || today();
+        const newTime = document.getElementById('edit-bill-time').value.trim();
+        const newCustomer = document.getElementById('edit-bill-customer').value.trim() || 'Walk-in Customer';
+        const newNote = document.getElementById('edit-bill-note').value;
+
+        // Restore old stock
+        (bill.items || []).forEach(oldItem => {
+            const inv = appData.inventory.find(i => String(i.id) === String(oldItem.id) || i.name === oldItem.name);
+            if (inv) inv.qty += oldItem.qty;
+        });
+
+        // Deduct new stock
+        draftItems.forEach(newItem => {
+            const inv = appData.inventory.find(i => String(i.id) === String(newItem.id) || i.name === newItem.name);
+            if (inv) inv.qty = Math.max(0, inv.qty - newItem.qty);
+        });
+
+        const newTotal = draftItems.reduce((s, i) => s + (i.salePrice * i.qty), 0);
+
+        bill.date = newDate;
+        bill.time = newTime;
+        bill.customer = newCustomer;
+        bill.note = newNote;
+        bill.items = draftItems;
+        bill.total = newTotal;
+
+        // Update matching journal entry
+        const jIdx = appData.journal.findIndex(j => (j.desc || '').includes(bill.invoiceNo) || String(j.id) === String(bill.id + '_j'));
+        if (jIdx >= 0) {
+            appData.journal[jIdx].date = newDate;
+            appData.journal[jIdx].desc = `Sale - Invoice ${bill.invoiceNo} to ${newCustomer} [${newNote}] (Includes Commission paid by consignor)`;
+            appData.journal[jIdx].debitAmt = newTotal;
+            appData.journal[jIdx].creditAmt = newTotal;
+            appData.journal[jIdx].creditAcc = 'Sales & Commission paid by consignor';
+        }
+
+        notifyDataChanged();
+        modal.style.display = 'none';
+        initBillHistory();
+    };
 }
 
 // =============================================
 // JOURNAL
 // =============================================
 function initJournal() {
-    // Populate date filter dropdown
     const filterSelect = document.getElementById('journal-date-filter');
     const dates = new Set();
     appData.journal.forEach(j => { if (j.date) dates.add(j.date); });
@@ -1011,7 +1247,6 @@ function renderJournalTable(filterDate = 'all') {
         return;
     }
 
-    // Sort by date descending
     filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
     tbody.innerHTML = filtered.map(e => `
@@ -1234,7 +1469,6 @@ function renderFinancialStatements(selectedDate = 'all') {
         ? appData.journal
         : appData.journal.filter(j => j.date === selectedDate);
 
-    // Consignment Commission Model Calculations
     let grossSales = 0;
     let standardSales = 0;
     let standardCommission = 0;
@@ -1255,13 +1489,11 @@ function renderFinancialStatements(selectedDate = 'all') {
             grossSales += subtotal;
 
             if (Math.abs(salePrice - costPrice) < 0.001) {
-                // 20% commission on unchanged price
                 const comm = subtotal * 0.20;
                 standardSales += subtotal;
                 standardCommission += comm;
                 consignorShare += (subtotal - comm);
             } else {
-                // Markup profit on changed price: (salePrice - costPrice) * qty
                 const markup = (salePrice - costPrice) * qty;
                 customMarkup += markup;
                 consignorShare += (costPrice * qty);
@@ -1271,7 +1503,6 @@ function renderFinancialStatements(selectedDate = 'all') {
 
     const netTradingIncome = standardCommission + customMarkup;
 
-    // Expenses from Journal for the period (Rapido, Zepto, Banner expenses)
     const expenseRows = [];
     let totalExpenses = 0;
     const accTotals = {};
@@ -1288,7 +1519,6 @@ function renderFinancialStatements(selectedDate = 'all') {
         }
     });
 
-    // Income Statement Table
     const isTbody = document.querySelector('#is-table tbody');
     if (isTbody) {
         let html = `
@@ -1296,8 +1526,8 @@ function renderFinancialStatements(selectedDate = 'all') {
             <tr><td style="padding-left:1.5rem;">Gross Billing Sales</td><td style="text-align:right;">${fmt(grossSales)}</td></tr>
             <tr><td style="padding-left:1.5rem;color:var(--text-secondary);">Less: Consignor Settlement / Goods Cost</td><td style="text-align:right;color:var(--text-secondary);">- ${fmt(consignorShare)}</td></tr>
             <tr style="border-top:1px dashed var(--border);"><td style="padding-left:1.5rem;color:var(--success);">Standard 20% Commission (Unchanged Inventory Prices)</td><td style="text-align:right;color:var(--success);">${fmt(standardCommission)}</td></tr>
-            <tr><td style="padding-left:1.5rem;color:var(--success);">Price Markup Margin (Custom Sold Price - Inventory Price)</td><td style="text-align:right;color:var(--success);">${fmt(customMarkup)}</td></tr>
-            <tr style="border-top:1px solid var(--border);"><td><strong>Total Operating Income (Commission + Markup)</strong></td><td style="text-align:right;color:var(--success);"><strong>${fmt(netTradingIncome)}</strong></td></tr>
+            <tr><td style="padding-left:1.5rem;color:var(--success);">Price Markup Margin (Commission / Extra paid by Consignor)</td><td style="text-align:right;color:var(--success);">${fmt(customMarkup)}</td></tr>
+            <tr style="border-top:1px solid var(--border);"><td><strong>Total Trading Income (Commission + Markup)</strong></td><td style="text-align:right;color:var(--success);"><strong>${fmt(netTradingIncome)}</strong></td></tr>
             
             <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Operating Expenses</strong></td></tr>
         `;
@@ -1322,7 +1552,6 @@ function renderFinancialStatements(selectedDate = 'all') {
         isResult.textContent = `Net ${netPL >= 0 ? 'Profit' : 'Loss'}: ${fmt(Math.abs(netPL))}`;
     }
 
-    // Balance Sheet
     renderBalanceSheet(netPL);
 }
 
@@ -1498,7 +1727,7 @@ async function fetchFromGitHub() {
         currentSha = json.sha;
         const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
         const data = JSON.parse(decoded);
-        appData = { inventory: data.inventory || [], pos: data.pos || [], journal: data.journal || [], nextInvoice: data.nextInvoice || 1 };
+        appData = mergeAppData(data);
         ensureIds();
         saveLocal();
         updateSyncStatus('Synced from GitHub', 'ok');

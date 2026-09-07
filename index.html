@@ -343,6 +343,8 @@
         <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
           <input type="text" id="bill-search" placeholder="Search customer / invoice…" style="padding:0.5rem 0.75rem; background:var(--bg-primary); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text-primary); font-family:inherit; font-size:14px; min-width:200px;">
           <button id="export-bills-btn" class="btn btn-secondary"><i data-lucide="download"></i> Export CSV</button>
+          <button id="sync-bills-file-btn" class="btn btn-secondary" title="Merge device billing file"><i data-lucide="arrow-left-right"></i> Merge Sync File</button>
+          <input type="file" id="sync-file-input" accept=".json" style="display:none;">
         </div>
       </div>
       <div class="table-container">
@@ -355,13 +357,65 @@
               <th>Items</th>
               <th>Payment</th>
               <th style="text-align:right;">Total</th>
-              <th>Action</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
       <p id="bill-history-empty" style="text-align:center; color:var(--text-secondary); padding:2rem; display:none;">No bills found.</p>
+    </div>
+
+    <!-- Edit Bill Modal -->
+    <div id="edit-bill-modal" class="modal" style="display: none;">
+      <div class="modal-content card" style="max-width: 650px; margin: 5% auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <h3 id="edit-bill-title">Edit Invoice</h3>
+          <button id="edit-bill-close-btn" class="btn btn-sm btn-secondary" style="padding:0.2rem 0.5rem;">✕</button>
+        </div>
+        <input type="hidden" id="edit-bill-id" value="">
+        <div class="split-layout">
+          <div class="form-group">
+            <label>Invoice No</label>
+            <input type="text" id="edit-bill-no" readonly style="background-color: var(--bg-tertiary);">
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="edit-bill-date">
+          </div>
+        </div>
+        <div class="split-layout">
+          <div class="form-group">
+            <label>Time</label>
+            <input type="text" id="edit-bill-time" placeholder="e.g. 08:51 AM">
+          </div>
+          <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" id="edit-bill-customer" placeholder="Customer Name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Payment Method</label>
+          <select id="edit-bill-note" class="custom-select">
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Credit">Credit</option>
+          </select>
+        </div>
+
+        <h4 style="margin-top:1rem; margin-bottom:0.5rem;">Bill Items</h4>
+        <div id="edit-bill-items-list" style="margin-bottom:1rem;">
+          <!-- Item rows -->
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem; border-top:1px solid var(--border); padding-top:1rem;">
+          <strong style="font-size:1.1rem;">Total: <span id="edit-bill-total-lbl">₹ 0.00</span></strong>
+          <div style="display:flex; gap:0.5rem;">
+            <button id="edit-bill-cancel-btn" class="btn btn-secondary">Cancel</button>
+            <button id="edit-bill-save-btn" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </div>
     </div>
   </template>
 
