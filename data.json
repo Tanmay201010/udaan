@@ -18,7 +18,7 @@
       "id": "mtq16lxan7yzl",
       "name": "Rainbow lanyard",
       "consignor": "",
-      "qty": 2,
+      "qty": 1,
       "price": 270
     },
     {
@@ -3075,6 +3075,24 @@
       ],
       "total": 60,
       "note": "UPI"
+    },
+    {
+      "id": "mtqyspf3487z8",
+      "invoiceNo": "#000138",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq16lxan7yzl",
+          "name": "Rainbow lanyard",
+          "consignor": "",
+          "costPrice": 270,
+          "salePrice": 270,
+          "qty": 1
+        }
+      ],
+      "total": 270,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4346,7 +4364,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqyspf41nuuf",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000138 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 270,
+      "creditAcc": "Sales",
+      "creditAmt": 270
     }
   ],
-  "nextInvoice": 138
+  "nextInvoice": 139
 }
