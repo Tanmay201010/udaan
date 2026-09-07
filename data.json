@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 56,
+      "qty": 55,
       "price": 70
     },
     {
@@ -3611,6 +3611,24 @@
       ],
       "total": 190,
       "note": "UPI"
+    },
+    {
+      "id": "mtr14cd7qwj6z",
+      "invoiceNo": "#000162",
+      "date": "2026-09-07",
+      "customer": "shrine",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        }
+      ],
+      "total": 70,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -5098,7 +5116,16 @@
       "debitAmt": 190,
       "creditAcc": "Sales",
       "creditAmt": 190
+    },
+    {
+      "id": "mtr14cd7p1ozh",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000162 to shrine",
+      "debitAcc": "Cash",
+      "debitAmt": 70,
+      "creditAcc": "Sales",
+      "creditAmt": 70
     }
   ],
-  "nextInvoice": 162
+  "nextInvoice": 163
 }
