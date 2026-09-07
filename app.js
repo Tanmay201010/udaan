@@ -11,11 +11,11 @@ let journalListenersAttached = false;
 let autoSyncTimer = null;
 
 // --- Account Classifier Engine ---
-const incomeKeywords = ['sales', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission received', 'commission paid by consignor', 'markup', 'discount received'];
+const incomeKeywords = ['sales', 'sales a/c', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission a/c', 'commission received', 'commission paid by consignor', 'markup', 'discount received'];
 const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'expenses', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed', 'rapido', 'zepto', 'swiggy', 'zomato', 'delivery', 'courier', 'travel', 'conveyance', 'transport', 'logistics', 'printing', 'banner', 'banners', 'packaging', 'refreshments', 'food', 'snacks', 'tea', 'coffee', 'supplies', 'maintenance'];
 const equityKeywords = ['capital', 'equity', 'drawing', 'drawings', 'share capital', 'retained earnings'];
 const liabilityKeywords = ['payable', 'consignor payable', 'creditor', 'creditors', 'loan', 'borrowing', 'overdraft', 'liability', 'liabilities', 'duty', 'duties', 'tax payable', 'outstanding', 'unearned'];
-const assetKeywords = ['cash', 'bank', 'receivable', 'debtor', 'debtors', 'inventory', 'stock', 'equipment', 'machinery', 'building', 'land', 'furniture', 'fixtures', 'vehicle', 'asset', 'prepaid', 'investment'];
+const assetKeywords = ['cash', 'cash a/c', 'bank', 'receivable', 'debtor', 'debtors', 'inventory', 'stock', 'equipment', 'machinery', 'building', 'land', 'furniture', 'fixtures', 'vehicle', 'asset', 'prepaid', 'investment'];
 
 function classifyAccount(accName) {
     if (!accName) return 'unclassified';
@@ -78,7 +78,7 @@ function getSafeNextInvoice() {
 function calculateBillSplit(bill) {
     let gross = 0;
     let comm = 0;
-    let consignor = 0;
+    let salesCost = 0;
 
     (bill.items || []).forEach(item => {
         const qty = parseInt(item.qty) || 1;
@@ -93,25 +93,27 @@ function calculateBillSplit(bill) {
         gross += subtotal;
 
         if (Math.abs(salePrice - costPrice) < 0.001) {
+            // Price unchanged: 20% commission, sales = 80% (price after reduction of 20%)
             const c = subtotal * 0.20;
             comm += c;
-            consignor += (subtotal - c);
+            salesCost += (subtotal - c);
         } else {
+            // Price changed: sales = cost price, commission = rest of total
             const markup = (salePrice - costPrice) * qty;
             comm += markup;
-            consignor += (costPrice * qty);
+            salesCost += (costPrice * qty);
         }
     });
 
     return {
         gross: Math.round(gross * 100) / 100,
-        consignorShare: Math.round(consignor * 100) / 100,
+        salesCost: Math.round(salesCost * 100) / 100,
         commissionEarned: Math.round(comm * 100) / 100
     };
 }
 
 function createCompoundSaleJournalEntry(bill) {
-    const { gross, consignorShare, commissionEarned } = calculateBillSplit(bill);
+    const { gross, salesCost, commissionEarned } = calculateBillSplit(bill);
     const customer = bill.customer || 'Walk-in Customer';
     const note = bill.note || 'Cash';
 
@@ -119,15 +121,15 @@ function createCompoundSaleJournalEntry(bill) {
         id: bill.id + '_j',
         date: bill.date || today(),
         desc: `Sale - Invoice ${bill.invoiceNo} to ${customer} [${note}]`,
-        debitAcc: 'Cash',
+        debitAcc: 'Cash A/c',
         debitAmt: gross,
-        creditAcc: 'Consignor Payable / Commission paid by Consignor',
+        creditAcc: 'Sales A/c / Commission A/c',
         creditAmt: gross,
         isCompound: true,
         entries: [
-            { type: 'Dr', account: 'Cash', amount: gross },
-            { type: 'Cr', account: 'Consignor Payable', amount: consignorShare },
-            { type: 'Cr', account: 'Commission paid by Consignor', amount: commissionEarned }
+            { type: 'Dr', account: 'Cash A/c', amount: gross },
+            { type: 'Cr', account: 'Sales A/c', amount: salesCost },
+            { type: 'Cr', account: 'Commission A/c', amount: commissionEarned }
         ]
     };
 }
@@ -811,7 +813,7 @@ function initPOS() {
             if (inv) inv.qty = Math.max(0, inv.qty - pi.qty);
         });
 
-        // Add Compound Journal Entry
+        // Add Compound Journal Entry with exact account names: Cash A/c, Sales A/c, Commission A/c
         appData.journal.push(createCompoundSaleJournalEntry(bill));
 
         notifyDataChanged();
@@ -1335,13 +1337,14 @@ function renderJournalTable(filterDate = 'all') {
                     return `<div style="color:var(--success);font-weight:600;">Dr: ${e.account} (${fmt(e.amount)})</div>`;
                 } else {
                     crTotal += parseFloat(e.amount) || 0;
-                    return `<div style="padding-left:1.25rem;color:var(--accent);font-size:0.85rem;">Cr: ${e.account} (${fmt(e.amount)})</div>`;
+                    const isComm = e.account.toLowerCase().includes('commission');
+                    return `<div style="padding-left:1.25rem;color:${isComm ? 'var(--success)' : 'var(--accent)'};font-size:0.85rem;">To ${e.account} (${fmt(e.amount)})</div>`;
                 }
             }).join('');
         } else {
             drTotal = parseFloat(j.debitAmt) || 0;
             crTotal = parseFloat(j.creditAmt) || 0;
-            accHTML = `<div style="color:var(--success);font-weight:600;">Dr: ${j.debitAcc}</div><div style="padding-left:1.25rem;color:var(--accent);font-size:0.85rem;">Cr: ${j.creditAcc}</div>`;
+            accHTML = `<div style="color:var(--success);font-weight:600;">Dr: ${j.debitAcc}</div><div style="padding-left:1.25rem;color:var(--accent);font-size:0.85rem;">To ${j.creditAcc}</div>`;
         }
 
         return `
@@ -1631,7 +1634,7 @@ function renderFinancialStatements(selectedDate = 'all') {
     let standardSales = 0;
     let standardCommission = 0;
     let customMarkup = 0;
-    let consignorShare = 0;
+    let salesCostTotal = 0;
 
     filteredBills.forEach(bill => {
         (bill.items || []).forEach(item => {
@@ -1650,11 +1653,11 @@ function renderFinancialStatements(selectedDate = 'all') {
                 const comm = subtotal * 0.20;
                 standardSales += subtotal;
                 standardCommission += comm;
-                consignorShare += (subtotal - comm);
+                salesCostTotal += (subtotal - comm);
             } else {
                 const markup = (salePrice - costPrice) * qty;
                 customMarkup += markup;
-                consignorShare += (costPrice * qty);
+                salesCostTotal += (costPrice * qty);
             }
         });
     });
@@ -1690,11 +1693,11 @@ function renderFinancialStatements(selectedDate = 'all') {
     if (isTbody) {
         let html = `
             <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Consignment Revenue & Commission Income</strong></td></tr>
-            <tr><td style="padding-left:1.5rem;">Gross Billing Sales</td><td style="text-align:right;">${fmt(grossSales)}</td></tr>
-            <tr><td style="padding-left:1.5rem;color:var(--text-secondary);">Less: Consignor Share / Settlement (Consignor Payable)</td><td style="text-align:right;color:var(--text-secondary);">- ${fmt(consignorShare)}</td></tr>
-            <tr style="border-top:1px dashed var(--border);"><td style="padding-left:1.5rem;color:var(--success);">Standard 20% Commission (Unchanged Inventory Prices)</td><td style="text-align:right;color:var(--success);">${fmt(standardCommission)}</td></tr>
-            <tr><td style="padding-left:1.5rem;color:var(--success);">Price Markup Margin (Commission / Extra paid by Consignor)</td><td style="text-align:right;color:var(--success);">${fmt(customMarkup)}</td></tr>
-            <tr style="border-top:1px solid var(--border);"><td><strong>Total Trading Income (Commission + Markup)</strong></td><td style="text-align:right;color:var(--success);"><strong>${fmt(netTradingIncome)}</strong></td></tr>
+            <tr><td style="padding-left:1.5rem;">Gross Cash Received (Cash A/c)</td><td style="text-align:right;">${fmt(grossSales)}</td></tr>
+            <tr><td style="padding-left:1.5rem;color:var(--text-secondary);">Less: Cost Price / Price after 20% reduction (Sales A/c)</td><td style="text-align:right;color:var(--text-secondary);">- ${fmt(salesCostTotal)}</td></tr>
+            <tr style="border-top:1px dashed var(--border);"><td style="padding-left:1.5rem;color:var(--success);">Standard 20% Commission (Unchanged Prices)</td><td style="text-align:right;color:var(--success);">${fmt(standardCommission)}</td></tr>
+            <tr><td style="padding-left:1.5rem;color:var(--success);">Price Markup Margin (Custom Sold Price - Inventory Price)</td><td style="text-align:right;color:var(--success);">${fmt(customMarkup)}</td></tr>
+            <tr style="border-top:1px solid var(--border);"><td><strong>Total Commission Earned (Commission A/c)</strong></td><td style="text-align:right;color:var(--success);"><strong>${fmt(netTradingIncome)}</strong></td></tr>
             
             <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Operating Expenses</strong></td></tr>
         `;
