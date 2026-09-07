@@ -200,7 +200,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 36,
+      "qty": 35,
       "price": 30
     },
     {
@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 96,
+      "qty": 95,
       "price": 70
     }
   ],
@@ -814,6 +814,32 @@
       ],
       "total": 30,
       "note": "Cash"
+    },
+    {
+      "id": "mtqr0oz00hw3u",
+      "invoiceNo": "#000031",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        }
+      ],
+      "total": 130,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -1113,7 +1139,16 @@
       "debitAmt": 30,
       "creditAcc": "Sales",
       "creditAmt": 30
+    },
+    {
+      "id": "mtqr0oz2aqe7a",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000031 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 130,
+      "creditAcc": "Sales",
+      "creditAmt": 130
     }
   ],
-  "nextInvoice": 31
+  "nextInvoice": 32
 }
