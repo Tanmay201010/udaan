@@ -165,7 +165,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 54,
+      "qty": 53,
       "price": 20
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 35,
+      "qty": 34,
       "price": 30
     },
     {
@@ -840,6 +840,32 @@
       ],
       "total": 130,
       "note": "Cash"
+    },
+    {
+      "id": "mtqr2b3jut3n8",
+      "invoiceNo": "#000032",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 90,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -1148,7 +1174,16 @@
       "debitAmt": 130,
       "creditAcc": "Sales",
       "creditAmt": 130
+    },
+    {
+      "id": "mtqr2b3j882qa",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000032 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 90,
+      "creditAcc": "Sales",
+      "creditAmt": 90
     }
   ],
-  "nextInvoice": 32
+  "nextInvoice": 33
 }
