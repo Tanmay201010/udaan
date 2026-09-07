@@ -251,7 +251,7 @@
       "desc": "Mehul paid for rapido",
       "debitAcc": "Rapido",
       "debitAmt": 100,
-      "creditAcc": "Cash",
+      "creditAcc": "Cash A/c",
       "creditAmt": 100
     }
   ],
