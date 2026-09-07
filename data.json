@@ -179,14 +179,14 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 39,
+      "qty": 38,
       "price": 20
     },
     {
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 37,
+      "qty": 36,
       "price": 28
     },
     {
@@ -207,7 +207,7 @@
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 35,
+      "qty": 34,
       "price": 32
     },
     {
@@ -2459,6 +2459,60 @@
       ],
       "total": 190,
       "note": "UPI"
+    },
+    {
+      "id": "mtqxm2c6vhcd9",
+      "invoiceNo": "#000110",
+      "date": "2026-09-07",
+      "customer": "mohawk",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqxmcat2tq7v",
+      "invoiceNo": "#000111",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 30,
+      "note": "Cash"
+    },
+    {
+      "id": "mtqxqzim41ipo",
+      "invoiceNo": "#000112",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 50,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3478,7 +3532,34 @@
       "debitAmt": 190,
       "creditAcc": "Sales",
       "creditAmt": 190
+    },
+    {
+      "id": "mtqxm2c6znp3z",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000110 to mohawk",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
+    },
+    {
+      "id": "mtqxmcata5lke",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000111 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 30,
+      "creditAcc": "Sales",
+      "creditAmt": 30
+    },
+    {
+      "id": "mtqxqzimq36v1",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000112 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 50,
+      "creditAcc": "Sales",
+      "creditAmt": 50
     }
   ],
-  "nextInvoice": 110
+  "nextInvoice": 113
 }
