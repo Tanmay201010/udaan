@@ -151,7 +151,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 75,
+      "qty": 74,
       "price": 40
     },
     {
@@ -1701,6 +1701,24 @@
       ],
       "total": 60,
       "note": "UPI"
+    },
+    {
+      "id": "mtquqo1yx0xj1",
+      "invoiceNo": "#000075",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2405,7 +2423,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtquqo1yusnk4",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000075 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 60,
+      "creditAcc": "Sales",
+      "creditAmt": 60
     }
   ],
-  "nextInvoice": 75
+  "nextInvoice": 76
 }
