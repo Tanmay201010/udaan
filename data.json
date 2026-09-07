@@ -214,7 +214,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 66,
+      "qty": 65,
       "price": 70
     },
     {
@@ -2813,6 +2813,24 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtqyd4modbd5o",
+      "invoiceNo": "#000127",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        }
+      ],
+      "total": 70,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3985,7 +4003,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqyd4mond4ij",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000127 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 70,
+      "creditAcc": "Sales",
+      "creditAmt": 70
     }
   ],
-  "nextInvoice": 127
+  "nextInvoice": 128
 }
