@@ -32,7 +32,7 @@
       "id": "mtq16vd2pgfl0",
       "name": "Crochet keychain",
       "consignor": "",
-      "qty": 10,
+      "qty": 9,
       "price": 300
     },
     {
@@ -2203,6 +2203,24 @@
       ],
       "total": 250,
       "note": "UPI"
+    },
+    {
+      "id": "mtqwy7hpvj06f",
+      "invoiceNo": "#000098",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq16vd2pgfl0",
+          "name": "Crochet keychain",
+          "consignor": "",
+          "costPrice": 300,
+          "salePrice": 300,
+          "qty": 1
+        }
+      ],
+      "total": 300,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -3114,7 +3132,16 @@
       "debitAmt": 250,
       "creditAcc": "Sales",
       "creditAmt": 250
+    },
+    {
+      "id": "mtqwy7hqowssa",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000098 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 300,
+      "creditAcc": "Sales",
+      "creditAmt": 300
     }
   ],
-  "nextInvoice": 98
+  "nextInvoice": 99
 }
