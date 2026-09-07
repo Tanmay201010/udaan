@@ -11,10 +11,10 @@ let journalListenersAttached = false;
 let autoSyncTimer = null;
 
 // --- Account Classifier Engine ---
-const incomeKeywords = ['sales', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission received', 'markup', 'discount received'];
+const incomeKeywords = ['sales', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission received', 'commission paid by consignor', 'markup', 'discount received'];
 const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'expenses', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed', 'rapido', 'zepto', 'swiggy', 'zomato', 'delivery', 'courier', 'travel', 'conveyance', 'transport', 'logistics', 'printing', 'banner', 'banners', 'packaging', 'refreshments', 'food', 'snacks', 'tea', 'coffee', 'supplies', 'maintenance'];
 const equityKeywords = ['capital', 'equity', 'drawing', 'drawings', 'share capital', 'retained earnings'];
-const liabilityKeywords = ['payable', 'creditor', 'creditors', 'loan', 'borrowing', 'overdraft', 'liability', 'liabilities', 'duty', 'duties', 'tax payable', 'outstanding', 'unearned', 'consignor payable'];
+const liabilityKeywords = ['payable', 'consignor payable', 'creditor', 'creditors', 'loan', 'borrowing', 'overdraft', 'liability', 'liabilities', 'duty', 'duties', 'tax payable', 'outstanding', 'unearned'];
 const assetKeywords = ['cash', 'bank', 'receivable', 'debtor', 'debtors', 'inventory', 'stock', 'equipment', 'machinery', 'building', 'land', 'furniture', 'fixtures', 'vehicle', 'asset', 'prepaid', 'investment'];
 
 function classifyAccount(accName) {
@@ -75,6 +75,63 @@ function getSafeNextInvoice() {
     return '#' + String(nextNum).padStart(6, '0');
 }
 
+function calculateBillSplit(bill) {
+    let gross = 0;
+    let comm = 0;
+    let consignor = 0;
+
+    (bill.items || []).forEach(item => {
+        const qty = parseInt(item.qty) || 1;
+        const salePrice = parseFloat(item.salePrice) || 0;
+        let costPrice = item.costPrice !== undefined ? parseFloat(item.costPrice) : null;
+        if (costPrice === null || isNaN(costPrice)) {
+            const inv = appData.inventory.find(i => i.id === item.id || i.name === item.name);
+            costPrice = inv ? parseFloat(inv.price) || 0 : salePrice;
+        }
+
+        const subtotal = salePrice * qty;
+        gross += subtotal;
+
+        if (Math.abs(salePrice - costPrice) < 0.001) {
+            const c = subtotal * 0.20;
+            comm += c;
+            consignor += (subtotal - c);
+        } else {
+            const markup = (salePrice - costPrice) * qty;
+            comm += markup;
+            consignor += (costPrice * qty);
+        }
+    });
+
+    return {
+        gross: Math.round(gross * 100) / 100,
+        consignorShare: Math.round(consignor * 100) / 100,
+        commissionEarned: Math.round(comm * 100) / 100
+    };
+}
+
+function createCompoundSaleJournalEntry(bill) {
+    const { gross, consignorShare, commissionEarned } = calculateBillSplit(bill);
+    const customer = bill.customer || 'Walk-in Customer';
+    const note = bill.note || 'Cash';
+
+    return {
+        id: bill.id + '_j',
+        date: bill.date || today(),
+        desc: `Sale - Invoice ${bill.invoiceNo} to ${customer} [${note}]`,
+        debitAcc: 'Cash',
+        debitAmt: gross,
+        creditAcc: 'Consignor Payable / Commission paid by Consignor',
+        creditAmt: gross,
+        isCompound: true,
+        entries: [
+            { type: 'Dr', account: 'Cash', amount: gross },
+            { type: 'Cr', account: 'Consignor Payable', amount: consignorShare },
+            { type: 'Cr', account: 'Commission paid by Consignor', amount: commissionEarned }
+        ]
+    };
+}
+
 function ensureIds() {
     if (appData.journal) appData.journal.forEach(e => { if (!e.id) e.id = uid(); });
     if (appData.pos) appData.pos.forEach(b => { if (!b.id) b.id = uid(); });
@@ -83,29 +140,20 @@ function ensureIds() {
 
 function reconcileMissingJournalEntries() {
     if (!appData.pos || !appData.journal) return;
-    const existingInvoices = new Set();
+    const posMap = new Map();
+    appData.pos.forEach(b => { if (b.invoiceNo) posMap.set(b.invoiceNo, b); });
+
+    const journalInvoices = new Set();
     appData.journal.forEach(j => {
         const m = (j.desc || '').match(/#(\d+)/);
-        if (m) existingInvoices.add('#' + m[1].padStart(6, '0'));
+        if (m) journalInvoices.add('#' + m[1].padStart(6, '0'));
     });
 
     let added = 0;
     appData.pos.forEach(b => {
-        const invNo = b.invoiceNo;
-        if (invNo && !existingInvoices.has(invNo)) {
-            const total = parseFloat(b.total) || 0;
-            const customer = b.customer || 'Walk-in Customer';
-            const note = b.note || 'Cash';
-            appData.journal.push({
-                id: (b.id || uid()) + '_j',
-                date: b.date || today(),
-                desc: `Sale - Invoice ${invNo} to ${customer} [${note}] (Includes Commission paid by consignor)`,
-                debitAcc: 'Cash',
-                debitAmt: total,
-                creditAcc: 'Sales & Commission paid by consignor',
-                creditAmt: total
-            });
-            existingInvoices.add(invNo);
+        if (b.invoiceNo && !journalInvoices.has(b.invoiceNo)) {
+            appData.journal.push(createCompoundSaleJournalEntry(b));
+            journalInvoices.add(b.invoiceNo);
             added++;
         }
     });
@@ -173,20 +221,39 @@ function mergeAppData(remoteData) {
 // --- Dynamic Reactivity ---
 function refreshDashboardStats() {
     let cashBalance = 0;
-    appData.journal.forEach(e => {
-        const d = (e.debitAcc || '').toLowerCase();
-        const c = (e.creditAcc || '').toLowerCase();
-        if (d.includes('cash') || d.includes('bank')) cashBalance += parseFloat(e.debitAmt) || 0;
-        if (c.includes('cash') || c.includes('bank')) cashBalance -= parseFloat(e.creditAmt) || 0;
+    appData.journal.forEach(j => {
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => {
+                const acc = (e.account || '').toLowerCase();
+                if (acc.includes('cash') || acc.includes('bank')) {
+                    if (e.type === 'Dr') cashBalance += parseFloat(e.amount) || 0;
+                    if (e.type === 'Cr') cashBalance -= parseFloat(e.amount) || 0;
+                }
+            });
+        } else {
+            const d = (j.debitAcc || '').toLowerCase();
+            const c = (j.creditAcc || '').toLowerCase();
+            if (d.includes('cash') || d.includes('bank')) cashBalance += parseFloat(j.debitAmt) || 0;
+            if (c.includes('cash') || c.includes('bank')) cashBalance -= parseFloat(j.creditAmt) || 0;
+        }
     });
 
     const totalBills = appData.pos ? appData.pos.length : 0;
 
     let expenses = 0;
     const accBalances = {};
-    appData.journal.forEach(e => {
-        if (e.debitAcc) accBalances[e.debitAcc] = (accBalances[e.debitAcc] || 0) + (parseFloat(e.debitAmt) || 0);
-        if (e.creditAcc) accBalances[e.creditAcc] = (accBalances[e.creditAcc] || 0) - (parseFloat(e.creditAmt) || 0);
+    appData.journal.forEach(j => {
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => {
+                const acc = e.account;
+                const amt = parseFloat(e.amount) || 0;
+                if (e.type === 'Dr') accBalances[acc] = (accBalances[acc] || 0) + amt;
+                if (e.type === 'Cr') accBalances[acc] = (accBalances[acc] || 0) - amt;
+            });
+        } else {
+            if (j.debitAcc) accBalances[j.debitAcc] = (accBalances[j.debitAcc] || 0) + (parseFloat(j.debitAmt) || 0);
+            if (j.creditAcc) accBalances[j.creditAcc] = (accBalances[j.creditAcc] || 0) - (parseFloat(j.creditAmt) || 0);
+        }
     });
 
     Object.entries(accBalances).forEach(([acc, netDr]) => {
@@ -331,7 +398,6 @@ function startApp() {
 
 function startAutoSyncPolling() {
     if (autoSyncTimer) clearInterval(autoSyncTimer);
-    // Poll every 10 seconds for multi-device sync
     autoSyncTimer = setInterval(() => {
         if (settings.pat && settings.owner && settings.repo) {
             fetchFromGitHub();
@@ -401,14 +467,23 @@ function initDashboard() {
         if (recent.length === 0) {
             tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">No transactions yet.</td></tr>';
         } else {
-            tbody.innerHTML = recent.map(e => `
-                <tr>
-                    <td>${e.date || ''}</td>
-                    <td>${e.desc || ''}</td>
-                    <td>${e.debitAcc || ''} / ${e.creditAcc || ''}</td>
-                    <td>${fmt(e.debitAmt || e.creditAmt)}</td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = recent.map(j => {
+                let accStr = `${j.debitAcc || ''} / ${j.creditAcc || ''}`;
+                if (j.entries && j.entries.length > 0) {
+                    const drs = j.entries.filter(e => e.type === 'Dr').map(e => e.account).join(', ');
+                    const crs = j.entries.filter(e => e.type === 'Cr').map(e => e.account).join(', ');
+                    accStr = `${drs} / ${crs}`;
+                }
+                const amt = j.debitAmt || j.creditAmt || (j.entries && j.entries[0] ? j.entries[0].amount : 0);
+                return `
+                    <tr>
+                        <td>${j.date || ''}</td>
+                        <td>${j.desc || ''}</td>
+                        <td>${accStr}</td>
+                        <td>${fmt(amt)}</td>
+                    </tr>
+                `;
+            }).join('');
         }
     }
 }
@@ -736,16 +811,8 @@ function initPOS() {
             if (inv) inv.qty = Math.max(0, inv.qty - pi.qty);
         });
 
-        const jEntry = {
-            id: bill.id + '_j',
-            date: bill.date,
-            desc: `Sale - Invoice ${bill.invoiceNo} to ${customer} [${note}] (Includes Commission paid by consignor)`,
-            debitAcc: 'Cash',
-            debitAmt: total,
-            creditAcc: 'Sales & Commission paid by consignor',
-            creditAmt: total
-        };
-        appData.journal.push(jEntry);
+        // Add Compound Journal Entry
+        appData.journal.push(createCompoundSaleJournalEntry(bill));
 
         notifyDataChanged();
 
@@ -966,7 +1033,6 @@ function initBillHistory() {
         };
     }
 
-    // Merge Device Sync File handler
     const syncFileBtn = document.getElementById('sync-bills-file-btn');
     const syncFileInput = document.getElementById('sync-file-input');
     if (syncFileBtn && syncFileInput) {
@@ -1088,13 +1154,11 @@ function openEditBillModal(billId) {
         const newCustomer = document.getElementById('edit-bill-customer').value.trim() || 'Walk-in Customer';
         const newNote = document.getElementById('edit-bill-note').value;
 
-        // Restore old stock
         (bill.items || []).forEach(oldItem => {
             const inv = appData.inventory.find(i => String(i.id) === String(oldItem.id) || i.name === oldItem.name);
             if (inv) inv.qty += oldItem.qty;
         });
 
-        // Deduct new stock
         draftItems.forEach(newItem => {
             const inv = appData.inventory.find(i => String(i.id) === String(newItem.id) || i.name === newItem.name);
             if (inv) inv.qty = Math.max(0, inv.qty - newItem.qty);
@@ -1109,14 +1173,12 @@ function openEditBillModal(billId) {
         bill.items = draftItems;
         bill.total = newTotal;
 
-        // Update matching journal entry
+        // Update matching compound journal entry
         const jIdx = appData.journal.findIndex(j => (j.desc || '').includes(bill.invoiceNo) || String(j.id) === String(bill.id + '_j'));
         if (jIdx >= 0) {
-            appData.journal[jIdx].date = newDate;
-            appData.journal[jIdx].desc = `Sale - Invoice ${bill.invoiceNo} to ${newCustomer} [${newNote}] (Includes Commission paid by consignor)`;
-            appData.journal[jIdx].debitAmt = newTotal;
-            appData.journal[jIdx].creditAmt = newTotal;
-            appData.journal[jIdx].creditAcc = 'Sales & Commission paid by consignor';
+            appData.journal[jIdx] = createCompoundSaleJournalEntry(bill);
+        } else {
+            appData.journal.push(createCompoundSaleJournalEntry(bill));
         }
 
         notifyDataChanged();
@@ -1126,7 +1188,7 @@ function openEditBillModal(billId) {
 }
 
 // =============================================
-// JOURNAL
+// JOURNAL VIEW (COMPOUND JOURNAL ENTRIES)
 // =============================================
 function initJournal() {
     const filterSelect = document.getElementById('journal-date-filter');
@@ -1174,19 +1236,31 @@ function initJournal() {
 
             if (e.target.closest('#j-save-btn')) {
                 const editId = document.getElementById('j-edit-id').value;
+                const dAcc = document.getElementById('j-debit-acc').value.trim();
+                const dAmt = parseFloat(document.getElementById('j-debit-amt').value) || 0;
+                const cAcc = document.getElementById('j-credit-acc').value.trim();
+                const cAmt = parseFloat(document.getElementById('j-credit-amt').value) || 0;
+
+                if (!document.getElementById('j-desc').value.trim() || !dAcc || !cAcc) {
+                    alert('Please fill in description, debit account, and credit account.');
+                    return;
+                }
+
                 const entry = {
                     id: editId || uid(),
                     date: document.getElementById('j-date').value || today(),
                     desc: document.getElementById('j-desc').value.trim(),
-                    debitAcc: document.getElementById('j-debit-acc').value.trim(),
-                    debitAmt: parseFloat(document.getElementById('j-debit-amt').value) || 0,
-                    creditAcc: document.getElementById('j-credit-acc').value.trim(),
-                    creditAmt: parseFloat(document.getElementById('j-credit-amt').value) || 0,
+                    debitAcc: dAcc,
+                    debitAmt: dAmt,
+                    creditAcc: cAcc,
+                    creditAmt: cAmt,
+                    isCompound: false,
+                    entries: [
+                        { type: 'Dr', account: dAcc, amount: dAmt },
+                        { type: 'Cr', account: cAcc, amount: cAmt }
+                    ]
                 };
-                if (!entry.desc || !entry.debitAcc || !entry.creditAcc) {
-                    alert('Please fill in description, debit account, and credit account.');
-                    return;
-                }
+
                 if (editId) {
                     const idx = appData.journal.findIndex(j => String(j.id) === String(editId));
                     if (idx >= 0) appData.journal[idx] = entry;
@@ -1211,10 +1285,10 @@ function initJournal() {
                 document.getElementById('j-edit-id').value = entry.id;
                 document.getElementById('j-date').value = entry.date || '';
                 document.getElementById('j-desc').value = entry.desc || '';
-                document.getElementById('j-debit-acc').value = entry.debitAcc || '';
-                document.getElementById('j-debit-amt').value = entry.debitAmt || '';
-                document.getElementById('j-credit-acc').value = entry.creditAcc || '';
-                document.getElementById('j-credit-amt').value = entry.creditAmt || '';
+                document.getElementById('j-debit-acc').value = entry.debitAcc || (entry.entries && entry.entries[0] ? entry.entries[0].account : '');
+                document.getElementById('j-debit-amt').value = entry.debitAmt || (entry.entries && entry.entries[0] ? entry.entries[0].amount : '');
+                document.getElementById('j-credit-acc').value = entry.creditAcc || (entry.entries && entry.entries[1] ? entry.entries[1].account : '');
+                document.getElementById('j-credit-amt').value = entry.creditAmt || (entry.entries && entry.entries[1] ? entry.entries[1].amount : '');
             }
 
             const delBtn = e.target.closest('.j-del-btn');
@@ -1249,25 +1323,62 @@ function renderJournalTable(filterDate = 'all') {
 
     filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
-    tbody.innerHTML = filtered.map(e => `
-        <tr>
-            <td><strong>${e.date || ''}</strong></td>
-            <td><span style="color:var(--accent);">${e.debitAcc || ''}</span> / <span style="color:var(--text-secondary);">${e.creditAcc || ''}</span></td>
-            <td>${e.desc || ''}</td>
-            <td>${e.debitAmt ? fmt(e.debitAmt) : '—'}</td>
-            <td>${e.creditAmt ? fmt(e.creditAmt) : '—'}</td>
-            <td style="display:flex;gap:0.5rem;">
-                <button class="btn btn-sm btn-secondary j-edit-btn" data-id="${e.id}">Edit</button>
-                <button class="btn btn-sm btn-secondary j-del-btn" data-id="${e.id}" style="color:var(--danger);">Del</button>
-            </td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = filtered.map(j => {
+        let accHTML = '';
+        let drTotal = 0;
+        let crTotal = 0;
+
+        if (j.entries && j.entries.length > 0) {
+            accHTML = j.entries.map(e => {
+                if (e.type === 'Dr') {
+                    drTotal += parseFloat(e.amount) || 0;
+                    return `<div style="color:var(--success);font-weight:600;">Dr: ${e.account} (${fmt(e.amount)})</div>`;
+                } else {
+                    crTotal += parseFloat(e.amount) || 0;
+                    return `<div style="padding-left:1.25rem;color:var(--accent);font-size:0.85rem;">Cr: ${e.account} (${fmt(e.amount)})</div>`;
+                }
+            }).join('');
+        } else {
+            drTotal = parseFloat(j.debitAmt) || 0;
+            crTotal = parseFloat(j.creditAmt) || 0;
+            accHTML = `<div style="color:var(--success);font-weight:600;">Dr: ${j.debitAcc}</div><div style="padding-left:1.25rem;color:var(--accent);font-size:0.85rem;">Cr: ${j.creditAcc}</div>`;
+        }
+
+        return `
+            <tr>
+                <td><strong>${j.date || ''}</strong></td>
+                <td>${accHTML}</td>
+                <td>${j.desc || ''}</td>
+                <td><strong>${fmt(drTotal)}</strong></td>
+                <td><strong>${fmt(crTotal)}</strong></td>
+                <td style="display:flex;gap:0.5rem;">
+                    <button class="btn btn-sm btn-secondary j-edit-btn" data-id="${j.id}">Edit</button>
+                    <button class="btn btn-sm btn-secondary j-del-btn" data-id="${j.id}" style="color:var(--danger);">Del</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
 function exportJournalCSV() {
     if (appData.journal.length === 0) { alert('No entries to export.'); return; }
     const header = 'Date,Description,Debit Account,Debit Amount,Credit Account,Credit Amount\n';
-    const rows = appData.journal.map(e => [e.date, `"${e.desc}"`, e.debitAcc, e.debitAmt, e.creditAcc, e.creditAmt].join(',')).join('\n');
+    const rows = appData.journal.map(j => {
+        let dAcc = j.debitAcc || '';
+        let dAmt = j.debitAmt || '';
+        let cAcc = j.creditAcc || '';
+        let cAmt = j.creditAmt || '';
+        if (j.entries && j.entries.length > 0) {
+            const drs = j.entries.filter(e => e.type === 'Dr');
+            const crs = j.entries.filter(e => e.type === 'Cr');
+            dAcc = drs.map(e => e.account + ' (' + e.amount + ')').join(' | ');
+            cAcc = crs.map(e => e.account + ' (' + e.amount + ')').join(' | ');
+            dAmt = drs.reduce((s, e) => s + (parseFloat(e.amount)||0), 0);
+            cAmt = crs.reduce((s, e) => s + (parseFloat(e.amount)||0), 0);
+        }
+        return [j.date, `"${j.desc}"`, `"${dAcc}"`, dAmt, `"${cAcc}"`, cAmt].join(',');
+    }).join('\n');
+
     const blob = new Blob([header + rows], { type: 'text/csv' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -1283,9 +1394,13 @@ function initLedger() {
     if (!select) return;
 
     const accounts = new Set();
-    appData.journal.forEach(e => {
-        if (e.debitAcc) accounts.add(e.debitAcc);
-        if (e.creditAcc) accounts.add(e.creditAcc);
+    appData.journal.forEach(j => {
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => { if (e.account) accounts.add(e.account); });
+        } else {
+            if (j.debitAcc) accounts.add(j.debitAcc);
+            if (j.creditAcc) accounts.add(j.creditAcc);
+        }
     });
 
     select.innerHTML = '<option value="">Select Account...</option>';
@@ -1309,31 +1424,53 @@ function renderLedger(account) {
         return;
     }
 
-    const entries = appData.journal.filter(e => e.debitAcc === account || e.creditAcc === account);
-    entries.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    const matchedEntries = [];
+    appData.journal.forEach(j => {
+        if (j.entries && j.entries.length > 0) {
+            const hasAcc = j.entries.some(e => e.account === account);
+            if (hasAcc) matchedEntries.push(j);
+        } else {
+            if (j.debitAcc === account || j.creditAcc === account) matchedEntries.push(j);
+        }
+    });
 
-    if (entries.length === 0) {
+    matchedEntries.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+
+    if (matchedEntries.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No transactions for this account.</td></tr>';
         return;
     }
 
     let balance = 0;
-    tbody.innerHTML = entries.map(e => {
+    tbody.innerHTML = matchedEntries.map(j => {
         let debit = 0, credit = 0, particulars = '';
-        if (e.debitAcc === account) {
-            debit = parseFloat(e.debitAmt) || 0;
-            particulars = `By ${e.creditAcc}`;
+
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => {
+                if (e.account === account) {
+                    if (e.type === 'Dr') debit += parseFloat(e.amount) || 0;
+                    if (e.type === 'Cr') credit += parseFloat(e.amount) || 0;
+                }
+            });
+            const counterAccs = j.entries.filter(e => e.account !== account).map(e => `${e.type === 'Dr' ? 'By' : 'To'} ${e.account}`).join(', ');
+            particulars = counterAccs;
+        } else {
+            if (j.debitAcc === account) {
+                debit = parseFloat(j.debitAmt) || 0;
+                particulars = `By ${j.creditAcc}`;
+            }
+            if (j.creditAcc === account) {
+                credit = parseFloat(j.creditAmt) || 0;
+                particulars = `To ${j.debitAcc}`;
+            }
         }
-        if (e.creditAcc === account) {
-            credit = parseFloat(e.creditAmt) || 0;
-            particulars = `To ${e.debitAcc}`;
-        }
+
         balance += debit - credit;
         const balStr = (balance >= 0 ? '' : '-') + '₹ ' + Math.abs(balance).toFixed(2) + (balance >= 0 ? ' Dr' : ' Cr');
         return `
             <tr>
-                <td>${e.date || ''}</td>
-                <td>${e.desc || ''}<br><small style="color:var(--text-secondary);">${particulars}</small></td>
+                <td>${j.date || ''}</td>
+                <td>${j.desc || ''}<br><small style="color:var(--text-secondary);">${particulars}</small></td>
                 <td>${debit ? fmt(debit) : '—'}</td>
                 <td>${credit ? fmt(credit) : '—'}</td>
                 <td><strong>${balStr}</strong></td>
@@ -1347,14 +1484,25 @@ function renderLedger(account) {
 // =============================================
 function initTrialBalance() {
     const accounts = {};
-    appData.journal.forEach(e => {
-        if (e.debitAcc) {
-            if (!accounts[e.debitAcc]) accounts[e.debitAcc] = { debit: 0, credit: 0 };
-            accounts[e.debitAcc].debit += parseFloat(e.debitAmt) || 0;
-        }
-        if (e.creditAcc) {
-            if (!accounts[e.creditAcc]) accounts[e.creditAcc] = { debit: 0, credit: 0 };
-            accounts[e.creditAcc].credit += parseFloat(e.creditAmt) || 0;
+
+    appData.journal.forEach(j => {
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => {
+                const acc = e.account;
+                const amt = parseFloat(e.amount) || 0;
+                if (!accounts[acc]) accounts[acc] = { debit: 0, credit: 0 };
+                if (e.type === 'Dr') accounts[acc].debit += amt;
+                if (e.type === 'Cr') accounts[acc].credit += amt;
+            });
+        } else {
+            if (j.debitAcc) {
+                if (!accounts[j.debitAcc]) accounts[j.debitAcc] = { debit: 0, credit: 0 };
+                accounts[j.debitAcc].debit += parseFloat(j.debitAmt) || 0;
+            }
+            if (j.creditAcc) {
+                if (!accounts[j.creditAcc]) accounts[j.creditAcc] = { debit: 0, credit: 0 };
+                accounts[j.creditAcc].credit += parseFloat(j.creditAmt) || 0;
+            }
         }
     });
 
@@ -1398,14 +1546,24 @@ function initTrialBalance() {
 // =============================================
 function initCashBook() {
     const cashEntries = [];
-    appData.journal.forEach(e => {
-        const d = (e.debitAcc || '').toLowerCase();
-        const c = (e.creditAcc || '').toLowerCase();
-        if (d.includes('cash') || d.includes('bank')) {
-            cashEntries.push({ date: e.date, particulars: e.desc + ` (from ${e.creditAcc})`, receipts: parseFloat(e.debitAmt) || 0, payments: 0 });
-        }
-        if (c.includes('cash') || c.includes('bank')) {
-            cashEntries.push({ date: e.date, particulars: e.desc + ` (to ${e.debitAcc})`, receipts: 0, payments: parseFloat(e.creditAmt) || 0 });
+    appData.journal.forEach(j => {
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => {
+                const acc = (e.account || '').toLowerCase();
+                if (acc.includes('cash') || acc.includes('bank')) {
+                    if (e.type === 'Dr') cashEntries.push({ date: j.date, particulars: j.desc, receipts: parseFloat(e.amount) || 0, payments: 0 });
+                    if (e.type === 'Cr') cashEntries.push({ date: j.date, particulars: j.desc, receipts: 0, payments: parseFloat(e.amount) || 0 });
+                }
+            });
+        } else {
+            const d = (j.debitAcc || '').toLowerCase();
+            const c = (j.creditAcc || '').toLowerCase();
+            if (d.includes('cash') || d.includes('bank')) {
+                cashEntries.push({ date: j.date, particulars: j.desc + ` (from ${j.creditAcc})`, receipts: parseFloat(j.debitAmt) || 0, payments: 0 });
+            }
+            if (c.includes('cash') || c.includes('bank')) {
+                cashEntries.push({ date: j.date, particulars: j.desc + ` (to ${j.debitAcc})`, receipts: 0, payments: parseFloat(j.creditAmt) || 0 });
+            }
         }
     });
     cashEntries.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
@@ -1508,8 +1666,17 @@ function renderFinancialStatements(selectedDate = 'all') {
     const accTotals = {};
 
     filteredJournal.forEach(j => {
-        if (j.debitAcc) accTotals[j.debitAcc] = (accTotals[j.debitAcc] || 0) + (parseFloat(j.debitAmt) || 0);
-        if (j.creditAcc) accTotals[j.creditAcc] = (accTotals[j.creditAcc] || 0) - (parseFloat(j.creditAmt) || 0);
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => {
+                const acc = e.account;
+                const amt = parseFloat(e.amount) || 0;
+                if (e.type === 'Dr') accTotals[acc] = (accTotals[acc] || 0) + amt;
+                if (e.type === 'Cr') accTotals[acc] = (accTotals[acc] || 0) - amt;
+            });
+        } else {
+            if (j.debitAcc) accTotals[j.debitAcc] = (accTotals[j.debitAcc] || 0) + (parseFloat(j.debitAmt) || 0);
+            if (j.creditAcc) accTotals[j.creditAcc] = (accTotals[j.creditAcc] || 0) - (parseFloat(j.creditAmt) || 0);
+        }
     });
 
     Object.entries(accTotals).forEach(([acc, netDr]) => {
@@ -1524,7 +1691,7 @@ function renderFinancialStatements(selectedDate = 'all') {
         let html = `
             <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Consignment Revenue & Commission Income</strong></td></tr>
             <tr><td style="padding-left:1.5rem;">Gross Billing Sales</td><td style="text-align:right;">${fmt(grossSales)}</td></tr>
-            <tr><td style="padding-left:1.5rem;color:var(--text-secondary);">Less: Consignor Settlement / Goods Cost</td><td style="text-align:right;color:var(--text-secondary);">- ${fmt(consignorShare)}</td></tr>
+            <tr><td style="padding-left:1.5rem;color:var(--text-secondary);">Less: Consignor Share / Settlement (Consignor Payable)</td><td style="text-align:right;color:var(--text-secondary);">- ${fmt(consignorShare)}</td></tr>
             <tr style="border-top:1px dashed var(--border);"><td style="padding-left:1.5rem;color:var(--success);">Standard 20% Commission (Unchanged Inventory Prices)</td><td style="text-align:right;color:var(--success);">${fmt(standardCommission)}</td></tr>
             <tr><td style="padding-left:1.5rem;color:var(--success);">Price Markup Margin (Commission / Extra paid by Consignor)</td><td style="text-align:right;color:var(--success);">${fmt(customMarkup)}</td></tr>
             <tr style="border-top:1px solid var(--border);"><td><strong>Total Trading Income (Commission + Markup)</strong></td><td style="text-align:right;color:var(--success);"><strong>${fmt(netTradingIncome)}</strong></td></tr>
@@ -1557,14 +1724,24 @@ function renderFinancialStatements(selectedDate = 'all') {
 
 function renderBalanceSheet(netPL = 0) {
     const accounts = {};
-    appData.journal.forEach(e => {
-        if (e.debitAcc) {
-            if (!accounts[e.debitAcc]) accounts[e.debitAcc] = { debit: 0, credit: 0 };
-            accounts[e.debitAcc].debit += parseFloat(e.debitAmt) || 0;
-        }
-        if (e.creditAcc) {
-            if (!accounts[e.creditAcc]) accounts[e.creditAcc] = { debit: 0, credit: 0 };
-            accounts[e.creditAcc].credit += parseFloat(e.creditAmt) || 0;
+    appData.journal.forEach(j => {
+        if (j.entries && j.entries.length > 0) {
+            j.entries.forEach(e => {
+                const acc = e.account;
+                const amt = parseFloat(e.amount) || 0;
+                if (!accounts[acc]) accounts[acc] = { debit: 0, credit: 0 };
+                if (e.type === 'Dr') accounts[acc].debit += amt;
+                if (e.type === 'Cr') accounts[acc].credit += amt;
+            });
+        } else {
+            if (j.debitAcc) {
+                if (!accounts[j.debitAcc]) accounts[j.debitAcc] = { debit: 0, credit: 0 };
+                accounts[j.debitAcc].debit += parseFloat(j.debitAmt) || 0;
+            }
+            if (j.creditAcc) {
+                if (!accounts[j.creditAcc]) accounts[j.creditAcc] = { debit: 0, credit: 0 };
+                accounts[j.creditAcc].credit += parseFloat(j.creditAmt) || 0;
+            }
         }
     });
 

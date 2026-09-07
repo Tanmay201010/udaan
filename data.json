@@ -4789,7 +4789,20 @@
       "debitAcc": "Banner expenses A/c",
       "debitAmt": 2500,
       "creditAcc": "Cash A/c",
-      "creditAmt": 2500
+      "creditAmt": 2500,
+      "isCompound": false,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Banner expenses A/c",
+          "amount": 2500.0
+        },
+        {
+          "type": "Cr",
+          "account": "Cash A/c",
+          "amount": 2500.0
+        }
+      ]
     },
     {
       "id": 1788677657031,
@@ -4798,799 +4811,2396 @@
       "debitAcc": "Cash A/c",
       "debitAmt": 15000,
       "creditAcc": "Capital A/c",
-      "creditAmt": 15000
+      "creditAmt": 15000,
+      "isCompound": false,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 15000.0
+        },
+        {
+          "type": "Cr",
+          "account": "Capital A/c",
+          "amount": 15000.0
+        }
+      ]
     },
     {
       "id": "j_mtqobi0hulssg",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000001 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqod9dn5xvf3",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 25,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 25.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000002 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 25
+      "debitAmt": 25.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 25.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 5.0
+        }
+      ]
     },
     {
       "id": "j_mtqovhafp1ydu",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 200,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 200.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000003 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 200
+      "debitAmt": 200.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 200.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 160.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqpa7rmmgzjs",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 20,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 20.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000004 to Ahad [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 20
+      "debitAmt": 20.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 16.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 4.0
+        }
+      ]
     },
     {
       "id": "j_mtqpb4f9n4w1a",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 20,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 20.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000005 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 20
+      "debitAmt": 20.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 16.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 4.0
+        }
+      ]
     },
     {
       "id": "j_mtqpks9bk9ns8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000006 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 30
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqpp1wqomxqk",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000007 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqppg4y7vv3x",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000008 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "j_mtqpt7tzzbt7u",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000009 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqptxkig51ls",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 49,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 49.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000010 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 49
+      "debitAmt": 49.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 49.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 19.0
+        }
+      ]
     },
     {
       "id": "j_mtqpvi1cwo5pn",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000011 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 58.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 42.0
+        }
+      ]
     },
     {
       "id": "j_mtqpywu45jru6",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000012 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "j_mtqq0kv16u1v9",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 25,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 25.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000013 to Saalim [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 25
+      "debitAmt": 25.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 25.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 5.0
+        }
+      ]
     },
     {
       "id": "j_mtqq2u7fo3rpf",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000014 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 86.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 34.0
+        }
+      ]
     },
     {
       "id": "j_mtqq4ep0e6zq3",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000015 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 50.0
+        }
+      ]
     },
     {
       "id": "j_mtqq80ftg7m46",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000016 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtqq8vgw8lsk4",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 90,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 90.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000017 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 90
+      "debitAmt": 90.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 90.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqq9ntztz8hx",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000018 to Sanajana [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqqc9fkoxc23",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 190,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 190.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000019 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 190
+      "debitAmt": 190.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 190.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 116.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 74.0
+        }
+      ]
     },
     {
       "id": "j_mtqqdgt61oh42",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000020 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtqqdtjbfvpj7",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000021 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqqh2wqfyd4y",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000022 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqqj2q5cgfx4",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000023 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqqj9ne8j0kq",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000024 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqqjtvdlfjqv",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000025 to Sanajana [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqqk9bna1lvd",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000026 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqqqkl47f25b",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000027 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtqqtvihj5dmx",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 180,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 180.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000028 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 180
+      "debitAmt": 180.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 180.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqqvw6uz7m0e",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000029 to Mohak [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 56.0
+        }
+      ]
     },
     {
       "id": "j_mtqqwj1bndvb8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000030 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 30
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqr0oz00hw3u",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 130,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 130.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000031 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 130
+      "debitAmt": 130.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 130.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 86.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 44.0
+        }
+      ]
     },
     {
       "id": "j_mtqr2b3jut3n8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 90,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 90.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000032 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 90
+      "debitAmt": 90.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 90.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqrqzvhmwm83",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000033 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqrrcpqzaq9u",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000034 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqrrndf7imz0",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000035 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 30
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqrs3zsqoa45",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 140,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 140.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000036 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 140
+      "debitAmt": 140.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 140.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 112.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 28.0
+        }
+      ]
     },
     {
       "id": "j_mtqry6q6ba2ac",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000037 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqrzhcygkjwz",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000038 to Sanjana ( irene) [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "j_mtqsf20980cnj",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000039 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqsjz52ib2vs",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000040 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 64.0
+        }
+      ]
     },
     {
       "id": "j_mtqslf7b486i0",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000041 to Sanjana hershini [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqsm37q9rqza",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000042 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqsql15ato89",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 180,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 180.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000043 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 180
+      "debitAmt": 180.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 180.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 84.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 96.0
+        }
+      ]
     },
     {
       "id": "j_mtqssc0gvlwlg",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 300,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 300.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000044 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 300
+      "debitAmt": 300.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 300.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 240.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqssl081atcm",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000045 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqt04ihvwcsp",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000046 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqt0xj1vnf6m",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000047 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqt1z2zgxpl2",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 90,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 90.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000048 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 90
+      "debitAmt": 90.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 90.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqt2qtzohlqg",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 180,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 180.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000049 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 180
+      "debitAmt": 180.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 180.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 80.0
+        }
+      ]
     },
     {
       "id": "j_mtqtbdzimap42",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 600,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 600.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000050 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 600
+      "debitAmt": 600.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 600.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 480.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 120.0
+        }
+      ]
     },
     {
       "id": "j_mtqtbv554bjto",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000051 to Not paid [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqtc4czlqegr",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000052 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqtdqbx5meb8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000053 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqte82qu9g8x",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000054 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqtg0oqypfgm",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000055 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqtm52wqrkwy",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000056 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqtr1bckv6h0",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 240,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 240.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000057 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 240
+      "debitAmt": 240.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 240.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 120.0
+        }
+      ]
     },
     {
       "id": "j_mtqtsw1qprs58",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000058 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqu222awd6de",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000059 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqu3luwl9jbm",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000060 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqu6o1cl28qx",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 140,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 140.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000061 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 140
+      "debitAmt": 140.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 140.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 112.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 28.0
+        }
+      ]
     },
     {
       "id": "j_mtqu74cuv1z2h",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000062 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqu8gp8s4au2",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000063 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 28.0
+        }
+      ]
     },
     {
       "id": "j_mtqubfo8otq85",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000064 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqucvvz51v8d",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 520,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 520.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000065 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 520
+      "debitAmt": 520.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 520.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 416.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 104.0
+        }
+      ]
     },
     {
       "id": "j_mtqud649akjhk",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000066 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqudmevl0yoh",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000067 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtquft97qzybm",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000068 to Saalim [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqug78qpl2hf",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000069 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtquj4def7rx8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 140,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 140.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000070 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 140
+      "debitAmt": 140.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 140.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqujzjwepa9w",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000071 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 90.0
+        }
+      ]
     },
     {
       "id": "j_mtqul8kmj7zax",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 140,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 140.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000072 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 140
+      "debitAmt": 140.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 140.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 112.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 28.0
+        }
+      ]
     },
     {
       "id": "j_mtqumgor9bvt4",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000073 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 62.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 58.0
+        }
+      ]
     },
     {
       "id": "j_mtqupnzsgk10s",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000074 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 28.0
+        }
+      ]
     },
     {
       "id": "j_mtquqo1yx0xj1",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000075 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "j_mtquu7iyr8x6e",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000076 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 30
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqv0a79vahwn",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000077 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 36.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqv2794xdcql",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000078 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqv2nfojw0f2",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 130,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 130.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000079 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 130
+      "debitAmt": 130.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 130.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 86.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 44.0
+        }
+      ]
     },
     {
       "id": "j_mtqv8r9mwnkwm",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000080 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 36.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqvascw5yohb",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000081 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 30
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 36.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": -6.0
+        }
+      ]
     },
     {
       "id": "j_mtqvptjmnnbup",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000082 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 76.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "j_mtqvqgjwni5s6",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000083 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 80.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "j_mtqvr5tmryjzp",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000084 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 96.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "j_mtqvxdi6eg3wr",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000085 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 76.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "j_mtqvyof2smfok",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000086 to Manan [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 64.0
+        }
+      ]
     },
     {
       "id": "j_mtqvzzqveatun",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 300,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 300.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000087 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 300
+      "debitAmt": 300.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 300.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 240.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqw0rb3jzdiw",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 110,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 110.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000088 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 110
+      "debitAmt": 110.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 110.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 76.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 34.0
+        }
+      ]
     },
     {
       "id": "mtqw4kz4215gv_j",
@@ -5598,35 +7208,107 @@
       "desc": "Sale - Invoice #000089 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 601.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 601.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 601.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 601.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 510.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 91.0
+        }
+      ]
     },
     {
       "id": "j_mtqw2r5x8fb07",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 601.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000090 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 601.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 601.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 510.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 91.0
+        }
+      ]
     },
     {
       "id": "j_mtqw4kz4215gv",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 601,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 601.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000091 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 601
+      "debitAmt": 601.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 601.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 510.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 91.0
+        }
+      ]
     },
     {
       "id": "j_mtqw6qcj0tpob",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 59,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 601.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000091 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 59
+      "debitAmt": 601.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 601.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 510.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 91.0
+        }
+      ]
     },
     {
       "id": "mtqwgnx4rwk4a_j",
@@ -5634,17 +7316,53 @@
       "desc": "Sale - Invoice #000092 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 76.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "j_mtqwfodpwwydu",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 200,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000093 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 200
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "mtqwiiduhu8xd_j",
@@ -5652,8 +7370,26 @@
       "desc": "Sale - Invoice #000094 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 70.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "mtqwgnx4rwk4a_j",
@@ -5661,17 +7397,53 @@
       "desc": "Sale - Invoice #000095 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 76.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "j_mtqwip4chryt7",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000096 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "mtqwpddym9jjl_j",
@@ -5679,8 +7451,26 @@
       "desc": "Sale - Invoice #000097 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 36.0
+        }
+      ]
     },
     {
       "id": "mtqwiiduhu8xd_j",
@@ -5688,17 +7478,53 @@
       "desc": "Sale - Invoice #000098 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 70.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqw7qdwb5o72",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000099 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 76.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "mtqwu0xzaet7j_j",
@@ -5706,17 +7532,53 @@
       "desc": "Sale - Invoice #000100 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 310.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 310.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 310.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 310.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 230.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 80.0
+        }
+      ]
     },
     {
       "id": "j_mtqwqq8eoos8x",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 40,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 59.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000101 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 40
+      "debitAmt": 59.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 59.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": -1.0
+        }
+      ]
     },
     {
       "id": "mtqwzcvoj60n9_j",
@@ -5724,8 +7586,26 @@
       "desc": "Sale - Invoice #000102 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 150.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 80.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 70.0
+        }
+      ]
     },
     {
       "id": "mtqwpddym9jjl_j",
@@ -5733,26 +7613,80 @@
       "desc": "Sale - Invoice #000103 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 36.0
+        }
+      ]
     },
     {
       "id": "j_mtqwiiduhu8xd",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000104 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqwt9qobi6bn",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000104 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "mtqwl1d29no8f_j",
@@ -5760,17 +7694,53 @@
       "desc": "Sale - Invoice #000105 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 120.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 56.0
+        }
+      ]
     },
     {
       "id": "j_mtqwu0jc8bwsn",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 310,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 310.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000106 to Nayua (Includes Commission paid by consignor)",
-      "debitAmt": 310
+      "debitAmt": 310.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 310.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 230.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 80.0
+        }
+      ]
     },
     {
       "id": "mtqx7hd45nsqk_j",
@@ -5778,17 +7748,53 @@
       "desc": "Sale - Invoice #000107 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 36.0
+        }
+      ]
     },
     {
       "id": "j_mtqwxger39c5p",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 250,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 200.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000108 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 250
+      "debitAmt": 200.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 200.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 160.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "mtqx7o9klevkj_j",
@@ -5796,26 +7802,80 @@
       "desc": "Sale - Invoice #000109 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 50.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqx393z28jgc",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 110,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000110 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 110
+      "debitAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 80.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 70.0
+        }
+      ]
     },
     {
       "id": "j_mtqwzds71zjs5",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000111 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 36.0
+        }
+      ]
     },
     {
       "id": "mtqwsp6mtjs9h_j",
@@ -5823,8 +7883,26 @@
       "desc": "Sale - Invoice #000112 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 60.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "mtqxbldn06cvf_j",
@@ -5832,35 +7910,107 @@
       "desc": "Sale - Invoice #000113 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 70.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqwl1d29no8f",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 180,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 180.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000114 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 180
+      "debitAmt": 180.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 180.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 92.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 88.0
+        }
+      ]
     },
     {
       "id": "j_mtqx9l4q55gti",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 90,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 310.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000115 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 90
+      "debitAmt": 310.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 310.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 230.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 80.0
+        }
+      ]
     },
     {
       "id": "j_mtqwu0xzaet7j",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 310,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 310.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000115 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 310
+      "debitAmt": 310.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 310.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 230.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 80.0
+        }
+      ]
     },
     {
       "id": "mtqxdi6om6hhy_j",
@@ -5868,8 +8018,26 @@
       "desc": "Sale - Invoice #000116 to sanajana [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 70.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "mtqx7hd45nsqk_j",
@@ -5877,17 +8045,53 @@
       "desc": "Sale - Invoice #000117 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 36.0
+        }
+      ]
     },
     {
       "id": "j_mtqxccect95p9",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000118 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "mtqxhfl3hfedt_j",
@@ -5895,17 +8099,53 @@
       "desc": "Sale - Invoice #000119 to Tanmay [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 60.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqxfsjrlxqu8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000120 to manan (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "mtqxl2m8bofvy_j",
@@ -5913,8 +8153,26 @@
       "desc": "Sale - Invoice #000121 to tanmay [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 190.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 190.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 190.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 190.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 126.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 64.0
+        }
+      ]
     },
     {
       "id": "mtqwzcvoj60n9_j",
@@ -5922,26 +8180,80 @@
       "desc": "Sale - Invoice #000122 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 150.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 80.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 70.0
+        }
+      ]
     },
     {
       "id": "j_mtqwpddym9jjl",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 90,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 90.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000123 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 90
+      "debitAmt": 90.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 90.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 48.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 42.0
+        }
+      ]
     },
     {
       "id": "j_mtqxm2c6vhcd9",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 90.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000123 to mohawk (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 90.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 90.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 48.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 42.0
+        }
+      ]
     },
     {
       "id": "mtqxmcat2tq7v_j",
@@ -5949,467 +8261,1403 @@
       "desc": "Sale - Invoice #000124 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 30.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqxqzim41ipo",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 110.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000125 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 110.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 110.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 62.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 48.0
+        }
+      ]
     },
     {
       "id": "j_mtqxr8upak8la",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000126 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqx6gp3uyv6s",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000127 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 88.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtqxs52w9hdqa",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 420,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000128 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 420
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 70.0
+        }
+      ]
     },
     {
       "id": "j_mtqxu3fucyoz1",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000129 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqxym5ozq78b",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000130 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 64.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 36.0
+        }
+      ]
     },
     {
       "id": "j_mtqy0raf5ag6d",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 130,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 40.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000131 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 130
+      "debitAmt": 40.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 8.0
+        }
+      ]
     },
     {
       "id": "j_mtqy1bkz2vcv5",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 20,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000132 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 20
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqy45ybrmm27",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000133 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqx7o9klevkj",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000133 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqy5sz94n6yr",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 190.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000134 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 190.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 190.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 126.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 64.0
+        }
+      ]
     },
     {
       "id": "j_mtqy6t4zne850",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 90.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000135 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 90.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 90.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 53.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 37.0
+        }
+      ]
     },
     {
       "id": "j_mtqy8dq3ezwed",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000136 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqy8v3eldjil",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000137 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqy9epf3pixl",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000138 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqy9r6kuzxya",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000139 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqxrkolqz7du",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000140 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqydclq4iis1",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 310.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000141 to Suhas (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 310.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 310.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 230.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 80.0
+        }
+      ]
     },
     {
       "id": "j_mtqyee61upiq6",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000142 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqyfitxxl7l8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 220,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000143 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 220
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqygerk07cz5",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 250.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000144 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 250.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 250.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 200.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 50.0
+        }
+      ]
     },
     {
       "id": "j_mtqyij4lck6uh",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000145 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqyk83rliqaz",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 300.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000146 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 300.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 300.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 240.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "j_mtqyknslm86y0",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 190.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000147 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 30
+      "debitAmt": 190.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 190.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 126.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 64.0
+        }
+      ]
     },
     {
       "id": "j_mtqymphaco1eq",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 720,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000148 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 720
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtqyorsy9jvah",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 200,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000149 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 200
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqyqz2ufui1l",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000150 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqyspf3487z8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 270,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000151 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 270
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqytifj9gzy3",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000152 to 100 rs left (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 80.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "j_mtqyd4modbd5o",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 200,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 200.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000153 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 200
+      "debitAmt": 200.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 200.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 160.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqyvrbf9n1z2",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 140,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 420.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000154 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 140
+      "debitAmt": 420.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 420.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 336.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 84.0
+        }
+      ]
     },
     {
       "id": "j_mtqywdpzq41z4",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 130,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000155 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 130
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqyxvbk99qd8",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000156 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 48.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 52.0
+        }
+      ]
     },
     {
       "id": "j_mtqz4wwc6kx9o",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 180,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 130.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000157 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 180
+      "debitAmt": 130.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 130.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 84.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 46.0
+        }
+      ]
     },
     {
       "id": "j_mtqz5s5bjy9zo",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 20.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000158 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 20.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 16.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 4.0
+        }
+      ]
     },
     {
       "id": "j_mtqz98o5m2s3i",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 430,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000159 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 430
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 32.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 18.0
+        }
+      ]
     },
     {
       "id": "j_mtqzaz9pje5t4",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 130,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000160 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 130
+      "debitAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqzfpinx63kj",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000161 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 50.0
+        }
+      ]
     },
     {
       "id": "j_mtqzgotyvcqna",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000162 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 108.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 42.0
+        }
+      ]
     },
     {
       "id": "j_mtqzhe4l7hjtd",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000163 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqzj8polk1is",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 20,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000164 to aksith (Includes Commission paid by consignor)",
-      "debitAmt": 20
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqzoi5xvmw0m",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000165 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "j_mtqyuc7docqdk",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000166 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqzt7b5fpmln",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000167 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqzxupwckw2s",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000168 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtqzyovj1jk2m",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 220.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000169 to HARSHINI CREDIT (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 220.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 220.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 176.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 44.0
+        }
+      ]
     },
     {
       "id": "j_mtr02wev922im",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000170 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 88.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtr04pyyfszq4",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000171 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 92.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 58.0
+        }
+      ]
     },
     {
       "id": "j_mtr07ox07i2na",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000172 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtr0mk6l3yvne",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000173 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtr133vwryl82",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 190,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 720.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000174 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 190
+      "debitAmt": 720.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 720.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 350.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 370.0
+        }
+      ]
     },
     {
       "id": "mtqyorsy9jvah_j",
@@ -6417,26 +9665,80 @@
       "desc": "Sale - Invoice #000175 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 200.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 200.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 200.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 200.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 124.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 76.0
+        }
+      ]
     },
     {
       "id": "j_mtr14cd7qwj6z",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000176 to shrine (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtr1f7ayabj35",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 270.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000177 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 270.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 270.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 216.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 54.0
+        }
+      ]
     },
     {
       "id": "mtqytifj9gzy3_j",
@@ -6444,17 +9746,53 @@
       "desc": "Sale - Invoice #000178 to 100 rs left [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 50.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": -100.0
+        }
+      ]
     },
     {
       "id": "j_mtqzpr3lsvopb",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000179 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 60.0
+        }
+      ]
     },
     {
       "id": "mtqyvrbf9n1z2_j",
@@ -6462,17 +9800,53 @@
       "desc": "Sale - Invoice #000180 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 140.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 140.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 140.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 140.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 112.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 28.0
+        }
+      ]
     },
     {
       "id": "j_mtr1k5ys7m14s",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 130.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000181 to Walk-in Customer (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 130.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 130.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 84.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 46.0
+        }
+      ]
     },
     {
       "id": "mtqyxvbk99qd8_j",
@@ -6480,8 +9854,26 @@
       "desc": "Sale - Invoice #000182 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 50.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "mtqz4wwc6kx9o_j",
@@ -6489,8 +9881,26 @@
       "desc": "Sale - Invoice #000183 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 180.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 180.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 180.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 180.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 88.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 92.0
+        }
+      ]
     },
     {
       "id": "mtqz5s5bjy9zo_j",
@@ -6498,8 +9908,26 @@
       "desc": "Sale - Invoice #000184 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 150.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 80.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 70.0
+        }
+      ]
     },
     {
       "id": "mtqz98o5m2s3i_j",
@@ -6507,8 +9935,26 @@
       "desc": "Sale - Invoice #000185 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 430.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 430.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 430.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 430.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 296.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 134.0
+        }
+      ]
     },
     {
       "id": "mtqzaz9pje5t4_j",
@@ -6516,8 +9962,26 @@
       "desc": "Sale - Invoice #000186 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 130.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 130.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 130.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 130.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 86.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 44.0
+        }
+      ]
     },
     {
       "id": "mtqzfpinx63kj_j",
@@ -6525,8 +9989,26 @@
       "desc": "Sale - Invoice #000187 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 62.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 38.0
+        }
+      ]
     },
     {
       "id": "mtqzgotyvcqna_j",
@@ -6534,8 +10016,26 @@
       "desc": "Sale - Invoice #000188 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 120.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 58.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 62.0
+        }
+      ]
     },
     {
       "id": "mtqzhe4l7hjtd_j",
@@ -6543,8 +10043,26 @@
       "desc": "Sale - Invoice #000189 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 150.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "mtqzj8polk1is_j",
@@ -6552,8 +10070,26 @@
       "desc": "Sale - Invoice #000190 to aksith [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 20.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 20.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 20.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 16.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 4.0
+        }
+      ]
     },
     {
       "id": "mtqzoi5xvmw0m_j",
@@ -6561,8 +10097,26 @@
       "desc": "Sale - Invoice #000191 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 60.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "mtqzpr3lsvopb_j",
@@ -6570,8 +10124,26 @@
       "desc": "Sale - Invoice #000192 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 25.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 25.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 25.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 25.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 5.0
+        }
+      ]
     },
     {
       "id": "mtqzt7b5fpmln_j",
@@ -6579,8 +10151,26 @@
       "desc": "Sale - Invoice #000193 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 150.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "mtqzxupwckw2s_j",
@@ -6588,17 +10178,53 @@
       "desc": "Sale - Invoice #000194 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 150.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 50.0
+        }
+      ]
     },
     {
       "id": "j_mtqx7hd45nsqk",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000195 to HARSHINI CREDIT [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "mtr02wev922im_j",
@@ -6606,8 +10232,26 @@
       "desc": "Sale - Invoice #000196 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 100.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 76.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "mtr04pyyfszq4_j",
@@ -6615,8 +10259,26 @@
       "desc": "Sale - Invoice #000197 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 120.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 58.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 62.0
+        }
+      ]
     },
     {
       "id": "mtr07ox07i2na_j",
@@ -6624,8 +10286,26 @@
       "desc": "Sale - Invoice #000198 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 60.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "mtr0mk6l3yvne_j",
@@ -6633,8 +10313,26 @@
       "desc": "Sale - Invoice #000199 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 60.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "mtr133vwryl82_j",
@@ -6642,8 +10340,26 @@
       "desc": "Sale - Invoice #000200 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 190.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 190.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 190.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 190.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 116.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 74.0
+        }
+      ]
     },
     {
       "id": "mtr1p8zqvy54s_j",
@@ -6651,8 +10367,26 @@
       "desc": "Sale - Invoice #000201 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 120.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 64.0
+        }
+      ]
     },
     {
       "id": "mtr27hp3rfqo0_j",
@@ -6660,8 +10394,26 @@
       "desc": "Sale - Invoice #000202 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 60.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 40.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 20.0
+        }
+      ]
     },
     {
       "id": "mtr2fcsxvzod8_j",
@@ -6669,8 +10421,26 @@
       "desc": "Sale - Invoice #000203 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 150.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "mtr2j5rus44nc_j",
@@ -6678,125 +10448,377 @@
       "desc": "Sale - Invoice #000204 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
       "debitAcc": "Cash",
       "debitAmt": 50.0,
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50.0
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": -20.0
+        }
+      ]
     },
     {
       "id": "j_mtr1fu5dkslnb",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000205 to mohawk [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 44.0
+        }
+      ]
     },
     {
       "id": "j_mtqwng6v2lmnx",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 50,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 50.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000206 to Suhas (credit) [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 50
+      "debitAmt": 50.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 50.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 22.0
+        }
+      ]
     },
     {
       "id": "j_mtqxdi6om6hhy",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 30,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 30.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000207 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 30
+      "debitAmt": 30.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 20.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 10.0
+        }
+      ]
     },
     {
       "id": "j_mtqx110fesggu",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000208 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 28.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 32.0
+        }
+      ]
     },
     {
       "id": "j_mtqwa82xzbl7d",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 180,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 180.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000209 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 180
+      "debitAmt": 180.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 180.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 84.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 96.0
+        }
+      ]
     },
     {
       "id": "j_mtqxhfl3hfedt",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 140,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 140.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000210 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 140
+      "debitAmt": 140.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 140.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 112.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 28.0
+        }
+      ]
     },
     {
       "id": "j_mtqwy7hpvj06f",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000211 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 80.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 40.0
+        }
+      ]
     },
     {
       "id": "j_mtqxl2m8bofvy",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000212 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 64.0
+        }
+      ]
     },
     {
       "id": "j_mtqwzcvoj60n9",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 120,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 120.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000213 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 120
+      "debitAmt": 120.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 96.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 24.0
+        }
+      ]
     },
     {
       "id": "j_mtqxb6ynm1ctu",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 70,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 70.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000214 to shrine [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 70
+      "debitAmt": 70.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 70.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 56.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 14.0
+        }
+      ]
     },
     {
       "id": "j_mtqxmcat2tq7v",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 100,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 100.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000215 to Walk-in Customer [Cash] (Includes Commission paid by consignor)",
-      "debitAmt": 100
+      "debitAmt": 100.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 62.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 38.0
+        }
+      ]
     },
     {
       "id": "j_mtqwsp6mtjs9h",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 60,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 60.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000216 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 60
+      "debitAmt": 60.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 60.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 30.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "j_mtqxbldn06cvf",
-      "creditAcc": "Sales & Commission paid by consignor",
-      "creditAmt": 150,
+      "creditAcc": "Consignor Payable / Commission paid by Consignor",
+      "creditAmt": 150.0,
       "debitAcc": "Cash",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000217 to Walk-in Customer [UPI] (Includes Commission paid by consignor)",
-      "debitAmt": 150
+      "debitAmt": 150.0,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash",
+          "amount": 150.0
+        },
+        {
+          "type": "Cr",
+          "account": "Consignor Payable",
+          "amount": 120.0
+        },
+        {
+          "type": "Cr",
+          "account": "Commission paid by Consignor",
+          "amount": 30.0
+        }
+      ]
     },
     {
       "id": "mtqnhfb76kvnr",
@@ -6805,7 +10827,20 @@
       "debitAcc": "Rapido",
       "debitAmt": 100,
       "creditAcc": "Cash A/c",
-      "creditAmt": 100
+      "creditAmt": 100,
+      "isCompound": false,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Rapido",
+          "amount": 100.0
+        },
+        {
+          "type": "Cr",
+          "account": "Cash A/c",
+          "amount": 100.0
+        }
+      ]
     },
     {
       "id": "mtqt7lm73d576",
@@ -6814,7 +10849,20 @@
       "debitAcc": "Zepto",
       "debitAmt": 200,
       "creditAcc": "Cash",
-      "creditAmt": 200
+      "creditAmt": 200,
+      "isCompound": false,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Zepto",
+          "amount": 200.0
+        },
+        {
+          "type": "Cr",
+          "account": "Cash",
+          "amount": 200.0
+        }
+      ]
     }
   ],
   "nextInvoice": 218
