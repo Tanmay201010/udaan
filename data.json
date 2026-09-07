@@ -165,7 +165,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 60,
+      "qty": 59,
       "price": 20
     },
     {
@@ -265,6 +265,24 @@
       ],
       "total": 200,
       "note": "Cash"
+    },
+    {
+      "id": "mtqpa7rmmgzjs",
+      "invoiceNo": "#000004",
+      "date": "2026-09-07",
+      "customer": "Ahad",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 20,
+          "qty": 1
+        }
+      ],
+      "total": 20,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -321,7 +339,16 @@
       "debitAmt": 200,
       "creditAcc": "Sales",
       "creditAmt": 200
+    },
+    {
+      "id": "mtqpa7rmvwv00",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000004 to Ahad",
+      "debitAcc": "Cash",
+      "debitAmt": 20,
+      "creditAcc": "Sales",
+      "creditAmt": 20
     }
   ],
-  "nextInvoice": 4
+  "nextInvoice": 5
 }
