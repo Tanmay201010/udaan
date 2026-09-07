@@ -245,17 +245,21 @@
             </div>
             
             <h3 style="margin-top: 1rem; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">Add Items</h3>
-            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: flex-end;">
-                <div class="form-group" style="flex: 2; margin-bottom: 0;">
-                    <label>Select Product (Search or Pick)</label>
-                    <input type="text" id="pos-product-input" list="pos-product-datalist" placeholder="Click or type to search item..." class="custom-select" autocomplete="off" style="width: 100%;">
-                    <datalist id="pos-product-datalist"></datalist>
+            <div class="pos-add-row">
+                <div class="form-group" style="flex: 3; margin-bottom: 0; position: relative;">
+                    <label>Search Product</label>
+                    <input type="text" id="pos-product-input" placeholder="Type to search inventory..." autocomplete="off" style="width: 100%;">
+                    <div id="pos-product-dropdown" class="pos-dropdown" style="display:none;"></div>
+                </div>
+                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                    <label>Qty</label>
+                    <input type="number" id="pos-qty" min="1" step="1" value="1" style="width: 100%;">
                 </div>
                 <div class="form-group" style="flex: 1; margin-bottom: 0;">
                     <label>Sale Price</label>
-                    <input type="number" id="pos-sale-price" placeholder="e.g. 600" autocomplete="off" style="padding: 0.5rem; width: 100%;">
+                    <input type="number" id="pos-sale-price" placeholder="Price" autocomplete="off" style="width: 100%;">
                 </div>
-                <button id="pos-add-item-btn" class="btn btn-secondary"><i data-lucide="plus"></i> Add</button>
+                <button id="pos-add-item-btn" class="btn btn-secondary" style="align-self: flex-end;"><i data-lucide="plus"></i> Add</button>
             </div>
 
             <div id="pos-items-container">
@@ -346,7 +350,7 @@
           <thead>
             <tr>
               <th>Invoice No</th>
-              <th>Date</th>
+              <th>Date & Time</th>
               <th>Customer</th>
               <th>Items</th>
               <th>Payment</th>
@@ -366,7 +370,10 @@
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
             <h2>Journal Entries</h2>
-            <div style="display: flex; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <select id="journal-date-filter" class="custom-select" style="max-width: 200px; padding: 0.4rem 0.6rem; font-size: 0.85rem; min-height: 36px;">
+                    <option value="all">All Dates</option>
+                </select>
                 <button id="export-journal-btn" class="btn btn-secondary"><i data-lucide="download"></i> Export Excel</button>
                 <button id="new-journal-btn" class="btn btn-primary"><i data-lucide="plus"></i> New Entry</button>
             </div>
@@ -506,8 +513,13 @@
   <template id="tpl-financial-statements">
     <div class="fs-layout" style="display: flex; flex-direction: column; gap: 2rem;">
         <div class="card">
-            <h2 style="text-align: center;">Income Statement (P&L)</h2>
-            <div class="table-container" style="margin-top: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                <h2 style="text-align: center; flex:1;">Income Statement (P&L) — Commission Model</h2>
+                <select id="fs-date-filter" class="custom-select" style="max-width: 200px; padding: 0.4rem 0.6rem; font-size: 0.85rem; min-height: 36px;">
+                    <option value="all">All Dates</option>
+                </select>
+            </div>
+            <div class="table-container" style="margin-top: 0.5rem;">
                 <table class="data-table fs-table" id="is-table">
                     <tbody></tbody>
                 </table>
@@ -529,7 +541,7 @@
     </div>
   </template>
 
-  <script type="module" src="app.js?v=11"></script>
+  <script type="module" src="app.js?v=20"></script>
 </body>
 </html>
 

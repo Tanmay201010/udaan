@@ -9,6 +9,24 @@ let appData = { inventory: [], pos: [], journal: [], nextInvoice: 1 };
 let currentSha = null;
 let journalListenersAttached = false;
 
+// --- Account Classifier Engine ---
+const incomeKeywords = ['sales', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission received', 'markup', 'discount received'];
+const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'expenses', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed', 'rapido', 'zepto', 'swiggy', 'zomato', 'delivery', 'courier', 'travel', 'conveyance', 'transport', 'logistics', 'printing', 'banner', 'banners', 'packaging', 'refreshments', 'food', 'snacks', 'tea', 'coffee', 'supplies', 'maintenance'];
+const equityKeywords = ['capital', 'equity', 'drawing', 'drawings', 'share capital', 'retained earnings'];
+const liabilityKeywords = ['payable', 'creditor', 'creditors', 'loan', 'borrowing', 'overdraft', 'liability', 'liabilities', 'duty', 'duties', 'tax payable', 'outstanding', 'unearned', 'consignor payable'];
+const assetKeywords = ['cash', 'bank', 'receivable', 'debtor', 'debtors', 'inventory', 'stock', 'equipment', 'machinery', 'building', 'land', 'furniture', 'fixtures', 'vehicle', 'asset', 'prepaid', 'investment'];
+
+function classifyAccount(accName) {
+    if (!accName) return 'unclassified';
+    const lower = accName.toLowerCase().trim();
+    if (equityKeywords.some(k => lower.includes(k))) return 'equity';
+    if (incomeKeywords.some(k => lower.includes(k))) return 'income';
+    if (expenseKeywords.some(k => lower.includes(k))) return 'expense';
+    if (liabilityKeywords.some(k => lower.includes(k))) return 'liability';
+    if (assetKeywords.some(k => lower.includes(k))) return 'asset';
+    return 'unclassified';
+}
+
 // --- Utility ---
 function fmt(n) {
     return '₹ ' + (parseFloat(n) || 0).toFixed(2);
@@ -20,6 +38,24 @@ function today() {
 
 function uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function getBillTime(bill) {
+    if (bill.time) return bill.time;
+    if (bill.createdAt) {
+        try {
+            return new Date(bill.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        } catch(e) {}
+    }
+    if (bill.id && bill.id.length >= 8) {
+        try {
+            const ts = parseInt(bill.id.slice(0, 8), 36);
+            if (ts > 1000000000000 && ts < 2500000000000) {
+                return new Date(ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            }
+        } catch(e) {}
+    }
+    return '—';
 }
 
 function ensureIds() {
@@ -45,11 +81,87 @@ function loadLocal() {
     ensureIds();
 }
 
+async function fetchDefaultData() {
+    try {
+        const res = await fetch('data.json?t=' + Date.now());
+        if (res.ok) {
+            const data = await res.json();
+            if (data && (data.inventory || data.pos || data.journal)) {
+                // If local appData has fewer POS bills than data.json, update appData
+                if (!appData.pos || appData.pos.length < (data.pos ? data.pos.length : 0)) {
+                    appData = {
+                        inventory: data.inventory || [],
+                        pos: data.pos || [],
+                        journal: data.journal || [],
+                        nextInvoice: data.nextInvoice || 1
+                    };
+                    ensureIds();
+                    saveLocal();
+                    refreshDashboardStats();
+                }
+            }
+        }
+    } catch(e) {
+        console.warn('Could not fetch data.json fallback', e);
+    }
+}
+
+// --- Dynamic Reactivity ---
+function refreshDashboardStats() {
+    // 1. Total Cash Balance
+    let cashBalance = 0;
+    appData.journal.forEach(e => {
+        const d = (e.debitAcc || '').toLowerCase();
+        const c = (e.creditAcc || '').toLowerCase();
+        if (d.includes('cash') || d.includes('bank')) cashBalance += parseFloat(e.debitAmt) || 0;
+        if (c.includes('cash') || c.includes('bank')) cashBalance -= parseFloat(e.creditAmt) || 0;
+    });
+
+    // 2. Total Bills Generated
+    const totalBills = appData.pos ? appData.pos.length : 0;
+
+    // 3. Total Expenses (sum net Dr of all expense accounts including Rapido, Zepto)
+    let expenses = 0;
+    const accBalances = {};
+    appData.journal.forEach(e => {
+        if (e.debitAcc) accBalances[e.debitAcc] = (accBalances[e.debitAcc] || 0) + (parseFloat(e.debitAmt) || 0);
+        if (e.creditAcc) accBalances[e.creditAcc] = (accBalances[e.creditAcc] || 0) - (parseFloat(e.creditAmt) || 0);
+    });
+
+    Object.entries(accBalances).forEach(([acc, netDr]) => {
+        if (classifyAccount(acc) === 'expense' && netDr > 0) {
+            expenses += netDr;
+        }
+    });
+
+    // 4. Total Journal Entries
+    const totalJournal = appData.journal ? appData.journal.length : 0;
+
+    const cashEl = document.getElementById('dash-cash-balance');
+    if (cashEl) cashEl.textContent = fmt(cashBalance);
+
+    const billsEl = document.getElementById('dash-bills-count');
+    if (billsEl) billsEl.textContent = totalBills;
+
+    const expEl = document.getElementById('dash-expenses');
+    if (expEl) expEl.textContent = fmt(expenses);
+
+    const jEl = document.getElementById('dash-journal-count');
+    if (jEl) jEl.textContent = totalJournal;
+}
+
+function notifyDataChanged() {
+    saveLocal();
+    syncData();
+    refreshDashboardStats();
+}
+
 // =============================================
 // INIT APP
 // =============================================
 function initApp() {
     loadLocal();
+    fetchDefaultData();
     lucide.createIcons();
 
     if (!currentRole) {
@@ -78,7 +190,6 @@ function handleLogin() {
     const pass = document.getElementById('login-pass').value.trim().toLowerCase();
     const errEl = document.getElementById('login-error');
 
-    // Credentials: username=admin, password=sales or finance
     if (user === 'admin' && (pass === 'sales' || pass === 'finance')) {
         currentRole = pass; // 'sales' or 'finance'
         localStorage.setItem('udaanRole', currentRole);
@@ -98,19 +209,15 @@ function startApp() {
     if (appEl) appEl.style.display = 'flex';
     document.getElementById('logged-in-role').textContent = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
 
-    // Show/hide nav links based on role
     document.querySelectorAll('#app li[data-role]').forEach(li => {
         const role = li.getAttribute('data-role');
-        if (role === 'all') {
-            li.style.display = '';
-        } else if (role === currentRole) {
+        if (role === 'all' || role === currentRole) {
             li.style.display = '';
         } else {
             li.style.display = 'none';
         }
     });
 
-    // Logout
     document.getElementById('logout-btn').addEventListener('click', e => {
         e.preventDefault();
         localStorage.removeItem('udaanRole');
@@ -118,7 +225,6 @@ function startApp() {
         location.reload();
     });
 
-    // Mobile menu
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const sidebar = document.querySelector('.sidebar');
@@ -134,7 +240,6 @@ function startApp() {
         });
     }
 
-    // Navigation
     document.querySelectorAll('.nav-item').forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
@@ -145,23 +250,19 @@ function startApp() {
         });
     });
 
-    // Force sync button
     document.getElementById('force-sync-btn').addEventListener('click', () => {
         syncData();
     });
 
-    // Load from GitHub if configured
     if (settings.pat && settings.owner && settings.repo) {
         fetchFromGitHub();
     } else {
         updateSyncStatus('Not configured', 'warning');
     }
 
-    // Route to default
     const hash = location.hash.replace('#', '') || 'dashboard';
     navigateTo(hash);
 
-    // Handle browser back/forward
     window.addEventListener('popstate', () => {
         const h = location.hash.replace('#', '') || 'dashboard';
         navigateTo(h, false);
@@ -191,7 +292,6 @@ function navigateTo(target, pushState = true) {
         history.pushState({ target }, '', '#' + target);
     }
 
-    // Initialize the view
     switch (target) {
         case 'dashboard':       initDashboard(); break;
         case 'inventory':       initInventory(); break;
@@ -223,42 +323,8 @@ const pageTitles = {
 // DASHBOARD
 // =============================================
 function initDashboard() {
-    const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed'];
+    refreshDashboardStats();
 
-    // Cash balance from journal (Cash and Bank accounts)
-    let cashBalance = 0;
-    appData.journal.forEach(e => {
-        const d = (e.debitAcc || '').toLowerCase();
-        const c = (e.creditAcc || '').toLowerCase();
-        if (d.includes('cash') || d.includes('bank')) cashBalance += parseFloat(e.debitAmt) || 0;
-        if (c.includes('cash') || c.includes('bank')) cashBalance -= parseFloat(e.creditAmt) || 0;
-    });
-
-    const cashEl = document.getElementById('dash-cash-balance');
-    if (cashEl) cashEl.textContent = fmt(cashBalance);
-
-    const billsEl = document.getElementById('dash-bills-count');
-    if (billsEl) billsEl.textContent = appData.pos ? appData.pos.length : 0;
-
-    // Total expenses (debit entries for expense accounts)
-    let expenses = 0;
-    appData.journal.forEach(e => {
-        const d = (e.debitAcc || '').toLowerCase();
-        const c = (e.creditAcc || '').toLowerCase();
-        if (expenseKeywords.some(k => d.includes(k))) {
-            expenses += parseFloat(e.debitAmt) || 0;
-        }
-        if (expenseKeywords.some(k => c.includes(k))) {
-            expenses -= parseFloat(e.creditAmt) || 0;
-        }
-    });
-    const expEl = document.getElementById('dash-expenses');
-    if (expEl) expEl.textContent = fmt(Math.max(0, expenses));
-
-    const jEl = document.getElementById('dash-journal-count');
-    if (jEl) jEl.textContent = appData.journal ? appData.journal.length : 0;
-
-    // Recent transactions table
     const tbody = document.querySelector('#dash-recent-table tbody');
     if (tbody) {
         const recent = [...appData.journal].reverse().slice(0, 10);
@@ -318,8 +384,7 @@ function initInventory() {
             appData.inventory.push({ id: uid(), name, consignor, qty, price });
         }
 
-        saveLocal();
-        syncData();
+        notifyDataChanged();
         document.getElementById('inventory-modal').style.display = 'none';
         renderInventoryTable();
     });
@@ -365,85 +430,143 @@ function renderInventoryTable() {
             const id = btn.getAttribute('data-id');
             if (!confirm('Are you sure you want to delete this product?')) return;
             appData.inventory = appData.inventory.filter(i => String(i.id) !== String(id));
-            saveLocal();
-            syncData();
+            notifyDataChanged();
             renderInventoryTable();
         });
     });
 }
 
 // =============================================
-// POS / BILLING
+// POS / BILLING COUNTER
 // =============================================
 function initPOS() {
     let posItems = [];
 
-    // Set Invoice No and Date
-    const invoiceNo = '#' + String(appData.nextInvoice).padStart(6, '0');
-    document.getElementById('pos-no').value = invoiceNo;
-    document.getElementById('pos-date').value = today();
+    const invoiceNo = '#' + String(appData.nextInvoice || 1).padStart(6, '0');
+    const posNoEl = document.getElementById('pos-no');
+    const posDateEl = document.getElementById('pos-date');
+    if (posNoEl) posNoEl.value = invoiceNo;
+    if (posDateEl) posDateEl.value = today();
 
-    // Populate product datalist for integrated in-selection search
-    populatePosProductDatalist();
-
-    function populatePosProductDatalist() {
-        const datalist = document.getElementById('pos-product-datalist');
-        if (!datalist) return;
-        datalist.innerHTML = '';
-
-        appData.inventory.forEach(item => {
-            if (item.qty > 0) {
-                const opt = document.createElement('option');
-                opt.value = `${item.name}${item.consignor ? ' (' + item.consignor + ')' : ''} [Stock: ${item.qty}] — ₹ ${item.price}`;
-                opt.setAttribute('data-id', item.id);
-                datalist.appendChild(opt);
-            }
-        });
-    }
-
-    function getSelectedInventoryItem(val) {
-        if (!val) return null;
-        const v = val.trim().toLowerCase();
-        // 1. Check exact display match or name match
-        let found = appData.inventory.find(i => {
-            if (i.qty <= 0) return false;
-            const formatted = `${i.name}${i.consignor ? ' (' + i.consignor + ')' : ''} [stock: ${i.qty}] — ₹ ${i.price}`.toLowerCase();
-            return formatted === v || i.name.toLowerCase() === v;
-        });
-        if (found) return found;
-
-        // 2. Match startsWith
-        found = appData.inventory.find(i => i.qty > 0 && (v.startsWith(i.name.toLowerCase()) || i.name.toLowerCase().startsWith(v)));
-        if (found) return found;
-
-        // 3. Match includes
-        found = appData.inventory.find(i => i.qty > 0 && (i.name.toLowerCase().includes(v) || (i.consignor && i.consignor.toLowerCase().includes(v))));
-        return found || null;
-    }
-
-    const prodInput = document.getElementById('pos-product-input');
+    const searchInput = document.getElementById('pos-product-input');
+    const dropdownEl = document.getElementById('pos-product-dropdown');
+    const qtyInput = document.getElementById('pos-qty');
     const priceInput = document.getElementById('pos-sale-price');
+    let selectedInvItem = null;
 
-    if (prodInput) {
-        prodInput.addEventListener('input', () => {
-            const inv = getSelectedInventoryItem(prodInput.value);
-            if (inv && priceInput) {
-                priceInput.value = inv.price || '';
-            }
+    function renderDropdown(filterText = '') {
+        if (!dropdownEl) return;
+        const q = filterText.toLowerCase().trim();
+        const available = appData.inventory.filter(item => {
+            if (item.qty <= 0) return false;
+            if (!q) return true;
+            return item.name.toLowerCase().includes(q) || (item.consignor && item.consignor.toLowerCase().includes(q));
         });
-        prodInput.addEventListener('change', () => {
-            const inv = getSelectedInventoryItem(prodInput.value);
-            if (inv && priceInput) {
-                priceInput.value = inv.price || '';
-            }
+
+        if (available.length === 0) {
+            dropdownEl.innerHTML = '<div style="padding:0.65rem; color:var(--text-secondary); text-align:center;">No matching available products</div>';
+            dropdownEl.style.display = 'block';
+            return;
+        }
+
+        dropdownEl.innerHTML = available.map(item => `
+            <div class="pos-dropdown-item" data-id="${item.id}">
+                <div>
+                    <div class="pos-item-title">${item.name}</div>
+                    <div class="pos-item-sub">${item.consignor ? 'Consignor: ' + item.consignor + ' · ' : ''}Base Price: ${fmt(item.price)}</div>
+                </div>
+                <div style="text-align:right;">
+                    <span class="pos-item-badge ${item.qty <= 5 ? 'low' : ''}">Stock: ${item.qty}</span>
+                </div>
+            </div>
+        `).join('');
+
+        dropdownEl.style.display = 'block';
+
+        dropdownEl.querySelectorAll('.pos-dropdown-item').forEach(itemEl => {
+            itemEl.addEventListener('click', () => {
+                const id = itemEl.getAttribute('data-id');
+                const inv = appData.inventory.find(i => String(i.id) === String(id));
+                if (inv) selectInventoryItem(inv);
+            });
         });
+    }
+
+    function selectInventoryItem(inv) {
+        selectedInvItem = inv;
+        if (searchInput) searchInput.value = inv.name;
+        if (priceInput) priceInput.value = inv.price;
+        if (qtyInput) {
+            qtyInput.value = 1;
+            qtyInput.max = inv.qty;
+        }
+        if (dropdownEl) dropdownEl.style.display = 'none';
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('focus', () => renderDropdown(searchInput.value));
+        searchInput.addEventListener('input', () => renderDropdown(searchInput.value));
+    }
+
+    document.addEventListener('click', (e) => {
+        if (dropdownEl && searchInput && !searchInput.contains(e.target) && !dropdownEl.contains(e.target)) {
+            dropdownEl.style.display = 'none';
+        }
+    });
+
+    const addBtn = document.getElementById('pos-add-item-btn');
+    if (addBtn) {
+        addBtn.onclick = () => {
+            const val = searchInput ? searchInput.value.trim() : '';
+            let inv = selectedInvItem;
+            if (!inv && val) {
+                inv = appData.inventory.find(i => i.qty > 0 && (i.name.toLowerCase() === val.toLowerCase() || i.name.toLowerCase().includes(val.toLowerCase())));
+            }
+
+            if (!inv) {
+                alert('Please select an available product from the inventory list.');
+                return;
+            }
+
+            const qty = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+            const salePrice = parseFloat(priceInput ? priceInput.value : inv.price);
+
+            if (qty <= 0) { alert('Quantity must be at least 1.'); return; }
+            if (qty > inv.qty) { alert(`Only ${inv.qty} units available in stock for ${inv.name}.`); return; }
+            if (isNaN(salePrice) || salePrice <= 0) { alert('Please enter a valid sale price.'); return; }
+
+            const existing = posItems.find(i => String(i.id) === String(inv.id));
+            if (existing) {
+                if (existing.qty + qty > inv.qty) {
+                    alert(`Cannot add more than available stock (${inv.qty}).`);
+                    return;
+                }
+                existing.qty += qty;
+                existing.salePrice = salePrice;
+            } else {
+                posItems.push({
+                    id: inv.id,
+                    name: inv.name,
+                    consignor: inv.consignor || '',
+                    costPrice: inv.price,
+                    salePrice: salePrice,
+                    qty: qty
+                });
+            }
+
+            selectedInvItem = null;
+            if (searchInput) searchInput.value = '';
+            if (priceInput) priceInput.value = '';
+            if (qtyInput) qtyInput.value = '1';
+            renderPosItems();
+        };
     }
 
     function renderPosItems() {
         const container = document.getElementById('pos-items-container');
         if (!container) return;
         if (posItems.length === 0) {
-            container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;">No items added yet.</p>';
+            container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:1rem;">No items added yet.</p>';
             return;
         }
         let total = 0;
@@ -453,8 +576,9 @@ function initPOS() {
                 <thead>
                     <tr>
                         <th>Product</th>
-                        <th style="text-align:right;">Qty</th>
+                        <th style="text-align:right;">Base Price</th>
                         <th style="text-align:right;">Sale Price</th>
+                        <th style="text-align:center;">Qty</th>
                         <th style="text-align:right;">Subtotal</th>
                         <th></th>
                     </tr>
@@ -463,16 +587,49 @@ function initPOS() {
                     ${posItems.map((item, idx) => `
                         <tr>
                             <td>${item.name}</td>
-                            <td style="text-align:right;">${item.qty}</td>
+                            <td style="text-align:right;">${fmt(item.costPrice)}</td>
                             <td style="text-align:right;">${fmt(item.salePrice)}</td>
+                            <td style="text-align:center;">
+                                <div class="qty-control">
+                                    <button class="qty-btn pos-qty-minus" data-idx="${idx}">-</button>
+                                    <span style="font-weight:600;min-width:20px;display:inline-block;">${item.qty}</span>
+                                    <button class="qty-btn pos-qty-plus" data-idx="${idx}">+</button>
+                                </div>
+                            </td>
                             <td style="text-align:right;">${fmt(item.salePrice * item.qty)}</td>
                             <td><button class="btn btn-sm btn-secondary pos-rm-btn" data-idx="${idx}">✕</button></td>
                         </tr>
                     `).join('')}
                 </tbody>
             </table>
-            <p style="text-align:right;font-weight:bold;margin-top:0.5rem;">Total: ${fmt(total)}</p>
+            <p style="text-align:right;font-weight:bold;font-size:1.1rem;margin-top:0.5rem;">Total Amount: ${fmt(total)}</p>
         `;
+
+        container.querySelectorAll('.pos-qty-minus').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.getAttribute('data-idx'));
+                if (posItems[idx].qty > 1) {
+                    posItems[idx].qty -= 1;
+                } else {
+                    posItems.splice(idx, 1);
+                }
+                renderPosItems();
+            });
+        });
+
+        container.querySelectorAll('.pos-qty-plus').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = parseInt(btn.getAttribute('data-idx'));
+                const inv = appData.inventory.find(i => String(i.id) === String(posItems[idx].id));
+                if (inv && posItems[idx].qty >= inv.qty) {
+                    alert(`Maximum stock reached (${inv.qty}).`);
+                    return;
+                }
+                posItems[idx].qty += 1;
+                renderPosItems();
+            });
+        });
+
         container.querySelectorAll('.pos-rm-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 posItems.splice(parseInt(btn.getAttribute('data-idx')), 1);
@@ -481,82 +638,61 @@ function initPOS() {
         });
     }
 
-    document.getElementById('pos-add-item-btn').addEventListener('click', () => {
-        const val = prodInput ? prodInput.value.trim() : '';
-        const inv = getSelectedInventoryItem(val);
-        const salePrice = parseFloat(priceInput ? priceInput.value : 0);
-
-        if (!inv) {
-            alert('Please select or type an available item from inventory.');
-            return;
-        }
-        if (!salePrice || salePrice <= 0) {
-            alert('Please enter a valid sale price.');
-            return;
-        }
-
-        const existing = posItems.find(i => String(i.id) === String(inv.id));
-        if (existing) {
-            existing.qty += 1;
-        } else {
-            posItems.push({ id: inv.id, name: inv.name, consignor: inv.consignor, costPrice: inv.price, salePrice: salePrice, qty: 1 });
-        }
-
-        // Reset item add inputs
-        if (prodInput) {
-            prodInput.value = '';
-            prodInput.focus();
-        }
-        if (priceInput) priceInput.value = '';
-        populatePosProductDatalist();
-        renderPosItems();
-    });
-
     function saveBill(withPrint) {
-        const customer = document.getElementById('pos-customer').value.trim() || 'Walk-in Customer';
+        const customer = (document.getElementById('pos-customer').value || '').trim() || 'Walk-in Customer';
         const note = document.getElementById('pos-note').value;
         if (posItems.length === 0) { alert('Add at least one item.'); return; }
         const total = posItems.reduce((s, i) => s + i.salePrice * i.qty, 0);
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
         const bill = {
             id: uid(),
             invoiceNo: document.getElementById('pos-no').value,
-            date: document.getElementById('pos-date').value,
+            date: document.getElementById('pos-date').value || today(),
+            time: timeStr,
+            createdAt: now.toISOString(),
             customer,
             items: posItems.map(i => ({...i})),
             total,
             note
         };
+
         appData.pos.push(bill);
         appData.nextInvoice = (appData.nextInvoice || 1) + 1;
-        // Deduct from inventory
+
         posItems.forEach(pi => {
-            const inv = appData.inventory.find(i => i.id === pi.id);
-            if (inv) inv.qty -= pi.qty;
+            const inv = appData.inventory.find(i => String(i.id) === String(pi.id));
+            if (inv) inv.qty = Math.max(0, inv.qty - pi.qty);
         });
-        // Auto journal entry for cash/UPI sale
+
         const jEntry = {
             id: uid(),
             date: bill.date,
-            desc: `Sale - Invoice ${bill.invoiceNo} to ${customer}`,
+            desc: `Sale - Invoice ${bill.invoiceNo} to ${customer} [${note}]`,
             debitAcc: 'Cash',
             debitAmt: total,
             creditAcc: 'Sales',
             creditAmt: total
         };
         appData.journal.push(jEntry);
-        saveLocal();
-        syncData();
+
+        notifyDataChanged();
+
         if (withPrint) generateAndPrintBill(bill);
-        // Reset
+
         posItems = [];
         document.getElementById('pos-customer').value = '';
         document.getElementById('pos-no').value = '#' + String(appData.nextInvoice).padStart(6, '0');
         renderPosItems();
-        populatePosProductSelect();
     }
 
-    document.getElementById('generate-bill-btn').addEventListener('click', () => saveBill(true));
-    document.getElementById('save-history-btn').addEventListener('click', () => saveBill(false));
+    const genBtn = document.getElementById('generate-bill-btn');
+    if (genBtn) genBtn.onclick = () => saveBill(true);
+
+    const saveBtn = document.getElementById('save-history-btn');
+    if (saveBtn) saveBtn.onclick = () => saveBill(false);
 }
 
 function generateAndPrintBill(bill) {
@@ -570,6 +706,7 @@ function generateAndPrintBill(bill) {
         </tr>
     `).join('');
 
+    const timeStr = getBillTime(bill);
     const dateStr = bill.date ? new Date(bill.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
     const printHTML = `<!DOCTYPE html>
@@ -606,8 +743,8 @@ function generateAndPrintBill(bill) {
             <p>Delhi Public School Nacharam</p>
         </div>
         <div class="meta-section">
-            <p><strong>Date Issued:</strong></p>
-            <p>${dateStr}</p>
+            <p><strong>Date & Time Issued:</strong></p>
+            <p>${dateStr} ${timeStr !== '—' ? '· ' + timeStr : ''}</p>
         </div>
     </div>
 
@@ -665,7 +802,7 @@ function generateAndPrintBill(bill) {
 // BILL HISTORY
 // =============================================
 function initBillHistory() {
-    let filtered = [...appData.pos].reverse(); // newest first
+    let filtered = [...appData.pos].reverse();
 
     function render(list) {
         const tbody = document.querySelector('#bill-history-table tbody');
@@ -683,10 +820,14 @@ function initBillHistory() {
             const itemSummary = (bill.items || [])
                 .map(i => `${i.name} ×${i.qty}`)
                 .join(', ');
+            const timeStr = getBillTime(bill);
             return `
                 <tr>
                     <td><strong>${bill.invoiceNo || '—'}</strong></td>
-                    <td>${bill.date || '—'}</td>
+                    <td>
+                        <div><strong>${bill.date || '—'}</strong></div>
+                        <div style="font-size:0.75rem;color:var(--text-secondary);">${timeStr}</div>
+                    </td>
                     <td>${bill.customer || 'Walk-in'}</td>
                     <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${itemSummary}">${itemSummary || '—'}</td>
                     <td>${bill.note || 'Cash'}</td>
@@ -705,16 +846,14 @@ function initBillHistory() {
         tbody.querySelectorAll('.reprint-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-id');
-                const bill = appData.pos.find(b => b.id === id);
+                const bill = appData.pos.find(b => String(b.id) === String(id));
                 if (bill) generateAndPrintBill(bill);
             });
         });
     }
 
-    // Initial render
     render(filtered);
 
-    // Search
     const searchInput = document.getElementById('bill-search');
     if (searchInput) {
         searchInput.addEventListener('input', () => {
@@ -731,15 +870,14 @@ function initBillHistory() {
         });
     }
 
-    // Export CSV
     const exportBtn = document.getElementById('export-bills-btn');
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
             if (appData.pos.length === 0) { alert('No bills to export.'); return; }
-            const header = 'Invoice No,Date,Customer,Items,Payment,Total\n';
+            const header = 'Invoice No,Date,Time,Customer,Items,Payment,Total\n';
             const rows = [...appData.pos].reverse().map(b => {
                 const items = (b.items || []).map(i => `${i.name}x${i.qty}`).join(' | ');
-                return [b.invoiceNo, b.date, b.customer, `"${items}"`, b.note, b.total].join(',');
+                return [b.invoiceNo, b.date, getBillTime(b), `"${b.customer}"`, `"${items}"`, b.note, b.total].join(',');
             }).join('\n');
             const blob = new Blob([header + rows], { type: 'text/csv' });
             const a = document.createElement('a');
@@ -754,13 +892,31 @@ function initBillHistory() {
 // JOURNAL
 // =============================================
 function initJournal() {
-    renderJournalTable();
+    // Populate date filter dropdown
+    const filterSelect = document.getElementById('journal-date-filter');
+    const dates = new Set();
+    appData.journal.forEach(j => { if (j.date) dates.add(j.date); });
+    const sortedDates = [...dates].sort().reverse();
+
+    if (filterSelect) {
+        const cur = filterSelect.value || 'all';
+        filterSelect.innerHTML = '<option value="all">All Dates</option>';
+        sortedDates.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d;
+            opt.textContent = d;
+            filterSelect.appendChild(opt);
+        });
+        filterSelect.value = cur;
+        filterSelect.onchange = () => renderJournalTable(filterSelect.value);
+    }
+
+    renderJournalTable(filterSelect ? filterSelect.value : 'all');
 
     if (!journalListenersAttached) {
         journalListenersAttached = true;
 
         document.addEventListener('click', e => {
-            // New entry button
             if (e.target.closest('#new-journal-btn')) {
                 const modal = document.getElementById('journal-modal');
                 if (!modal) return;
@@ -775,18 +931,16 @@ function initJournal() {
                 document.getElementById('j-credit-amt').value = '';
             }
 
-            // Cancel
             if (e.target.closest('#j-cancel-btn')) {
                 const modal = document.getElementById('journal-modal');
                 if (modal) modal.style.display = 'none';
             }
 
-            // Save
             if (e.target.closest('#j-save-btn')) {
                 const editId = document.getElementById('j-edit-id').value;
                 const entry = {
                     id: editId || uid(),
-                    date: document.getElementById('j-date').value,
+                    date: document.getElementById('j-date').value || today(),
                     desc: document.getElementById('j-desc').value.trim(),
                     debitAcc: document.getElementById('j-debit-acc').value.trim(),
                     debitAmt: parseFloat(document.getElementById('j-debit-amt').value) || 0,
@@ -798,19 +952,17 @@ function initJournal() {
                     return;
                 }
                 if (editId) {
-                    const idx = appData.journal.findIndex(j => j.id === editId);
+                    const idx = appData.journal.findIndex(j => String(j.id) === String(editId));
                     if (idx >= 0) appData.journal[idx] = entry;
                 } else {
                     appData.journal.push(entry);
                 }
-                saveLocal();
-                syncData();
+                notifyDataChanged();
                 const modal = document.getElementById('journal-modal');
                 if (modal) modal.style.display = 'none';
-                renderJournalTable();
+                initJournal();
             }
 
-            // Edit
             const editBtn = e.target.closest('.j-edit-btn');
             if (editBtn) {
                 const id = editBtn.getAttribute('data-id');
@@ -829,37 +981,43 @@ function initJournal() {
                 document.getElementById('j-credit-amt').value = entry.creditAmt || '';
             }
 
-            // Delete
             const delBtn = e.target.closest('.j-del-btn');
             if (delBtn) {
                 const id = delBtn.getAttribute('data-id');
                 if (!confirm('Delete this entry?')) return;
                 appData.journal = appData.journal.filter(j => String(j.id) !== String(id));
-                saveLocal();
-                syncData();
-                renderJournalTable();
+                notifyDataChanged();
+                initJournal();
             }
         });
     }
 
-    // Export button
     const exportBtn = document.getElementById('export-journal-btn');
     if (exportBtn) {
-        exportBtn.addEventListener('click', exportJournalCSV);
+        exportBtn.onclick = exportJournalCSV;
     }
 }
 
-function renderJournalTable() {
+function renderJournalTable(filterDate = 'all') {
     const tbody = document.querySelector('#journal-table tbody');
     if (!tbody) return;
-    if (appData.journal.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">No journal entries yet.</td></tr>';
+
+    const filtered = filterDate === 'all'
+        ? [...appData.journal]
+        : appData.journal.filter(j => j.date === filterDate);
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">No journal entries found for selected period.</td></tr>';
         return;
     }
-    tbody.innerHTML = [...appData.journal].reverse().map(e => `
+
+    // Sort by date descending
+    filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    tbody.innerHTML = filtered.map(e => `
         <tr>
-            <td>${e.date || ''}</td>
-            <td>${e.debitAcc || ''} / ${e.creditAcc || ''}</td>
+            <td><strong>${e.date || ''}</strong></td>
+            <td><span style="color:var(--accent);">${e.debitAcc || ''}</span> / <span style="color:var(--text-secondary);">${e.creditAcc || ''}</span></td>
             <td>${e.desc || ''}</td>
             <td>${e.debitAmt ? fmt(e.debitAmt) : '—'}</td>
             <td>${e.creditAmt ? fmt(e.creditAmt) : '—'}</td>
@@ -874,7 +1032,7 @@ function renderJournalTable() {
 function exportJournalCSV() {
     if (appData.journal.length === 0) { alert('No entries to export.'); return; }
     const header = 'Date,Description,Debit Account,Debit Amount,Credit Account,Credit Amount\n';
-    const rows = appData.journal.map(e => [e.date, e.desc, e.debitAcc, e.debitAmt, e.creditAcc, e.creditAmt].join(',')).join('\n');
+    const rows = appData.journal.map(e => [e.date, `"${e.desc}"`, e.debitAcc, e.debitAmt, e.creditAcc, e.creditAmt].join(',')).join('\n');
     const blob = new Blob([header + rows], { type: 'text/csv' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -889,7 +1047,6 @@ function initLedger() {
     const select = document.getElementById('ledger-acc-select');
     if (!select) return;
 
-    // Get all unique accounts from journal
     const accounts = new Set();
     appData.journal.forEach(e => {
         if (e.debitAcc) accounts.add(e.debitAcc);
@@ -898,15 +1055,14 @@ function initLedger() {
 
     select.innerHTML = '<option value="">Select Account...</option>';
     [...accounts].sort().forEach(acc => {
+        const type = classifyAccount(acc);
         const opt = document.createElement('option');
         opt.value = acc;
-        opt.textContent = acc;
+        opt.textContent = `${acc} (${type.toUpperCase()})`;
         select.appendChild(opt);
     });
 
-    select.addEventListener('change', () => {
-        renderLedger(select.value);
-    });
+    select.onchange = () => renderLedger(select.value);
 }
 
 function renderLedger(account) {
@@ -945,7 +1101,7 @@ function renderLedger(account) {
                 <td>${e.desc || ''}<br><small style="color:var(--text-secondary);">${particulars}</small></td>
                 <td>${debit ? fmt(debit) : '—'}</td>
                 <td>${credit ? fmt(credit) : '—'}</td>
-                <td>${balStr}</td>
+                <td><strong>${balStr}</strong></td>
             </tr>
         `;
     }).join('');
@@ -978,14 +1134,17 @@ function initTrialBalance() {
     } else {
         tbody.innerHTML = names.map(acc => {
             const { debit, credit } = accounts[acc];
-            // Net: show debit balance or credit balance
+            const type = classifyAccount(acc);
             const netDebit = Math.max(0, debit - credit);
             const netCredit = Math.max(0, credit - debit);
             totalDebit += netDebit;
             totalCredit += netCredit;
             return `
                 <tr>
-                    <td>${acc}</td>
+                    <td>
+                        <strong>${acc}</strong>
+                        <span style="margin-left:0.5rem;font-size:0.75rem;padding:0.15rem 0.4rem;border-radius:4px;background:var(--bg-tertiary);color:var(--text-secondary);">${type.toUpperCase()}</span>
+                    </td>
                     <td style="text-align:right;">${netDebit > 0 ? fmt(netDebit) : '—'}</td>
                     <td style="text-align:right;">${netCredit > 0 ? fmt(netCredit) : '—'}</td>
                 </tr>
@@ -1007,10 +1166,10 @@ function initCashBook() {
     appData.journal.forEach(e => {
         const d = (e.debitAcc || '').toLowerCase();
         const c = (e.creditAcc || '').toLowerCase();
-        if (d.includes('cash')) {
+        if (d.includes('cash') || d.includes('bank')) {
             cashEntries.push({ date: e.date, particulars: e.desc + ` (from ${e.creditAcc})`, receipts: parseFloat(e.debitAmt) || 0, payments: 0 });
         }
-        if (c.includes('cash')) {
+        if (c.includes('cash') || c.includes('bank')) {
             cashEntries.push({ date: e.date, particulars: e.desc + ` (to ${e.debitAcc})`, receipts: 0, payments: parseFloat(e.creditAmt) || 0 });
         }
     });
@@ -1034,17 +1193,140 @@ function initCashBook() {
                 <td>${entry.particulars}</td>
                 <td style="color:var(--success);">${entry.receipts ? fmt(entry.receipts) : '—'}</td>
                 <td style="color:var(--danger);">${entry.payments ? fmt(entry.payments) : '—'}</td>
-                <td>${balStr}</td>
+                <td><strong>${balStr}</strong></td>
             </tr>
         `;
     }).join('');
 }
 
 // =============================================
-// FINANCIAL STATEMENTS
+// FINANCIAL STATEMENTS (P&L + BALANCE SHEET)
 // =============================================
 function initFinancialStatements() {
-    // 1. Calculate trial balances for all accounts
+    const filterSelect = document.getElementById('fs-date-filter');
+    const dates = new Set();
+    appData.pos.forEach(b => { if (b.date) dates.add(b.date); });
+    appData.journal.forEach(j => { if (j.date) dates.add(j.date); });
+    const sortedDates = [...dates].sort().reverse();
+
+    if (filterSelect) {
+        const cur = filterSelect.value || 'all';
+        filterSelect.innerHTML = '<option value="all">All Dates (Cumulative)</option>';
+        sortedDates.forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = d;
+            opt.textContent = d;
+            filterSelect.appendChild(opt);
+        });
+        filterSelect.value = cur;
+        filterSelect.onchange = () => renderFinancialStatements(filterSelect.value);
+    }
+
+    renderFinancialStatements(filterSelect ? filterSelect.value : 'all');
+}
+
+function renderFinancialStatements(selectedDate = 'all') {
+    const filteredBills = selectedDate === 'all' 
+        ? appData.pos 
+        : appData.pos.filter(b => b.date === selectedDate);
+
+    const filteredJournal = selectedDate === 'all'
+        ? appData.journal
+        : appData.journal.filter(j => j.date === selectedDate);
+
+    // Consignment Commission Model Calculations
+    let grossSales = 0;
+    let standardSales = 0;
+    let standardCommission = 0;
+    let customMarkup = 0;
+    let consignorShare = 0;
+
+    filteredBills.forEach(bill => {
+        (bill.items || []).forEach(item => {
+            const qty = parseInt(item.qty) || 1;
+            const salePrice = parseFloat(item.salePrice) || 0;
+            let costPrice = item.costPrice !== undefined ? parseFloat(item.costPrice) : null;
+            if (costPrice === null || isNaN(costPrice)) {
+                const inv = appData.inventory.find(i => i.id === item.id || i.name === item.name);
+                costPrice = inv ? parseFloat(inv.price) || 0 : salePrice;
+            }
+
+            const subtotal = salePrice * qty;
+            grossSales += subtotal;
+
+            if (Math.abs(salePrice - costPrice) < 0.001) {
+                // 20% commission on unchanged price
+                const comm = subtotal * 0.20;
+                standardSales += subtotal;
+                standardCommission += comm;
+                consignorShare += (subtotal - comm);
+            } else {
+                // Markup profit on changed price: (salePrice - costPrice) * qty
+                const markup = (salePrice - costPrice) * qty;
+                customMarkup += markup;
+                consignorShare += (costPrice * qty);
+            }
+        });
+    });
+
+    const netTradingIncome = standardCommission + customMarkup;
+
+    // Expenses from Journal for the period (Rapido, Zepto, Banner expenses)
+    const expenseRows = [];
+    let totalExpenses = 0;
+    const accTotals = {};
+
+    filteredJournal.forEach(j => {
+        if (j.debitAcc) accTotals[j.debitAcc] = (accTotals[j.debitAcc] || 0) + (parseFloat(j.debitAmt) || 0);
+        if (j.creditAcc) accTotals[j.creditAcc] = (accTotals[j.creditAcc] || 0) - (parseFloat(j.creditAmt) || 0);
+    });
+
+    Object.entries(accTotals).forEach(([acc, netDr]) => {
+        if (classifyAccount(acc) === 'expense' && netDr > 0) {
+            totalExpenses += netDr;
+            expenseRows.push({ label: acc, amount: netDr });
+        }
+    });
+
+    // Income Statement Table
+    const isTbody = document.querySelector('#is-table tbody');
+    if (isTbody) {
+        let html = `
+            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Consignment Revenue & Commission Income</strong></td></tr>
+            <tr><td style="padding-left:1.5rem;">Gross Billing Sales</td><td style="text-align:right;">${fmt(grossSales)}</td></tr>
+            <tr><td style="padding-left:1.5rem;color:var(--text-secondary);">Less: Consignor Settlement / Goods Cost</td><td style="text-align:right;color:var(--text-secondary);">- ${fmt(consignorShare)}</td></tr>
+            <tr style="border-top:1px dashed var(--border);"><td style="padding-left:1.5rem;color:var(--success);">Standard 20% Commission (Unchanged Inventory Prices)</td><td style="text-align:right;color:var(--success);">${fmt(standardCommission)}</td></tr>
+            <tr><td style="padding-left:1.5rem;color:var(--success);">Price Markup Margin (Custom Sold Price - Inventory Price)</td><td style="text-align:right;color:var(--success);">${fmt(customMarkup)}</td></tr>
+            <tr style="border-top:1px solid var(--border);"><td><strong>Total Operating Income (Commission + Markup)</strong></td><td style="text-align:right;color:var(--success);"><strong>${fmt(netTradingIncome)}</strong></td></tr>
+            
+            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Operating Expenses</strong></td></tr>
+        `;
+
+        if (expenseRows.length === 0) {
+            html += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No operating expense entries for this period</td></tr>`;
+        } else {
+            expenseRows.forEach(r => {
+                html += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;color:var(--danger);">${fmt(r.amount)}</td></tr>`;
+            });
+        }
+        html += `<tr style="border-top:1px solid var(--border);"><td><strong>Total Operating Expenses</strong></td><td style="text-align:right;color:var(--danger);"><strong>${fmt(totalExpenses)}</strong></td></tr>`;
+
+        isTbody.innerHTML = html;
+    }
+
+    const netPL = netTradingIncome - totalExpenses;
+    const isResult = document.getElementById('is-result');
+    if (isResult) {
+        isResult.style.background = netPL >= 0 ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)';
+        isResult.style.color = netPL >= 0 ? 'var(--success)' : 'var(--danger)';
+        isResult.textContent = `Net ${netPL >= 0 ? 'Profit' : 'Loss'}: ${fmt(Math.abs(netPL))}`;
+    }
+
+    // Balance Sheet
+    renderBalanceSheet(netPL);
+}
+
+function renderBalanceSheet(netPL = 0) {
     const accounts = {};
     appData.journal.forEach(e => {
         if (e.debitAcc) {
@@ -1056,28 +1338,6 @@ function initFinancialStatements() {
             accounts[e.creditAcc].credit += parseFloat(e.creditAmt) || 0;
         }
     });
-
-    // Account Keyword Dictionaries
-    const incomeKeywords = ['sales', 'revenue', 'income', 'gain', 'interest received', 'commission received', 'discount received'];
-    const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed'];
-    const equityKeywords = ['capital', 'equity', 'drawing', 'drawings', 'share capital', 'retained earnings'];
-    const liabilityKeywords = ['payable', 'creditor', 'creditors', 'loan', 'borrowing', 'overdraft', 'liability', 'liabilities', 'duty', 'duties', 'tax payable', 'outstanding', 'unearned'];
-    const assetKeywords = ['cash', 'bank', 'receivable', 'debtor', 'debtors', 'inventory', 'stock', 'equipment', 'machinery', 'building', 'land', 'furniture', 'fixtures', 'vehicle', 'asset', 'prepaid', 'investment'];
-
-    function classifyAccount(accName) {
-        const lower = accName.toLowerCase();
-        if (equityKeywords.some(k => lower.includes(k))) return 'equity';
-        if (incomeKeywords.some(k => lower.includes(k))) return 'income';
-        if (expenseKeywords.some(k => lower.includes(k))) return 'expense';
-        if (liabilityKeywords.some(k => lower.includes(k))) return 'liability';
-        if (assetKeywords.some(k => lower.includes(k))) return 'asset';
-        return 'unclassified';
-    }
-
-    let totalIncome = 0;
-    let totalExpenses = 0;
-    const isIncomeRows = [];
-    const isExpenseRows = [];
 
     const bsAssetRows = [];
     const bsLiabilityRows = [];
@@ -1091,15 +1351,7 @@ function initFinancialStatements() {
         const netDebit = debit - credit;
         const netCredit = credit - debit;
 
-        if (type === 'income') {
-            const amt = netCredit > 0 ? netCredit : -netDebit;
-            totalIncome += amt;
-            isIncomeRows.push({ label: acc, amount: amt });
-        } else if (type === 'expense') {
-            const amt = netDebit > 0 ? netDebit : -netCredit;
-            totalExpenses += amt;
-            isExpenseRows.push({ label: acc, amount: amt });
-        } else if (type === 'equity') {
+        if (type === 'equity') {
             const isDrawing = acc.toLowerCase().includes('drawing');
             const amt = isDrawing ? (netDebit > 0 ? -netDebit : netCredit) : (netCredit > 0 ? netCredit : -netDebit);
             totalEquity += amt;
@@ -1116,57 +1368,9 @@ function initFinancialStatements() {
                 totalAssets += amt;
                 bsAssetRows.push({ label: acc, amount: amt });
             }
-        } else {
-            // Unclassified: default based on normal balance
-            if (netDebit > 0) {
-                totalAssets += netDebit;
-                bsAssetRows.push({ label: acc, amount: netDebit });
-            } else if (netCredit > 0) {
-                totalLiabilities += netCredit;
-                bsLiabilityRows.push({ label: acc, amount: netCredit });
-            }
         }
     });
 
-    // 2. Render Income Statement
-    const isTbody = document.querySelector('#is-table tbody');
-    if (isTbody) {
-        let isHtml = `
-            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Revenues / Income</strong></td></tr>
-        `;
-        if (isIncomeRows.length === 0) {
-            isHtml += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No revenue entries</td></tr>`;
-        } else {
-            isIncomeRows.forEach(r => {
-                isHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
-            });
-        }
-        isHtml += `<tr><td><strong>Total Revenue</strong></td><td style="text-align:right;"><strong>${fmt(totalIncome)}</strong></td></tr>`;
-
-        isHtml += `
-            <tr style="background:var(--bg-tertiary);"><td colspan="2"><strong>Operating Expenses</strong></td></tr>
-        `;
-        if (isExpenseRows.length === 0) {
-            isHtml += `<tr><td colspan="2" style="text-align:center;color:var(--text-secondary);">No expense entries</td></tr>`;
-        } else {
-            isExpenseRows.forEach(r => {
-                isHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
-            });
-        }
-        isHtml += `<tr><td><strong>Total Expenses</strong></td><td style="text-align:right;"><strong>${fmt(totalExpenses)}</strong></td></tr>`;
-
-        isTbody.innerHTML = isHtml;
-    }
-
-    const netPL = totalIncome - totalExpenses;
-    const isResult = document.getElementById('is-result');
-    if (isResult) {
-        isResult.style.background = netPL >= 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)';
-        isResult.style.color = netPL >= 0 ? 'var(--success)' : 'var(--danger)';
-        isResult.textContent = `Net ${netPL >= 0 ? 'Profit' : 'Loss'}: ${fmt(Math.abs(netPL))}`;
-    }
-
-    // 3. Render Balance Sheet
     const bsTbody = document.querySelector('#bs-table tbody');
     if (bsTbody) {
         let bsHtml = `
@@ -1202,8 +1406,9 @@ function initFinancialStatements() {
             bsEquityRows.forEach(r => {
                 bsHtml += `<tr><td style="padding-left:1.5rem;">${r.label}</td><td style="text-align:right;">${fmt(r.amount)}</td></tr>`;
             });
-            bsHtml += `<tr><td style="padding-left:1.5rem;">Retained Earnings (Net Income)</td><td style="text-align:right;">${fmt(netPL)}</td></tr>`;
+            bsHtml += `<tr><td style="padding-left:1.5rem;">Retained Earnings (Net Profit)</td><td style="text-align:right;">${fmt(netPL)}</td></tr>`;
         }
+
         const totalEquityAndEarnings = totalEquity + netPL;
         bsHtml += `<tr style="border-top:1px solid var(--border);"><td><strong>Total Equity</strong></td><td style="text-align:right;"><strong>${fmt(totalEquityAndEarnings)}</strong></td></tr>`;
 
@@ -1225,7 +1430,7 @@ function initFinancialStatements() {
         bsResult.style.display = 'flex';
         bsResult.style.justifyContent = 'space-between';
         bsResult.style.alignItems = 'center';
-        bsResult.style.background = isBalanced ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)';
+        bsResult.style.background = isBalanced ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)';
         bsResult.style.color = isBalanced ? 'var(--success)' : 'var(--danger)';
         bsResult.innerHTML = `
             <span>Total Assets: <strong>${fmt(totalAssets)}</strong></span>
@@ -1297,7 +1502,7 @@ async function fetchFromGitHub() {
         ensureIds();
         saveLocal();
         updateSyncStatus('Synced from GitHub', 'ok');
-        // Refresh current view
+        refreshDashboardStats();
         const hash = location.hash.replace('#', '') || 'dashboard';
         navigateTo(hash, false);
     } catch (err) {
@@ -1324,7 +1529,6 @@ async function syncData() {
             body: JSON.stringify(body)
         });
 
-        // If 409 Conflict, re-fetch the latest sha and retry once
         if (res.status === 409) {
             const getRes = await fetch(url, { headers: { Authorization: `token ${settings.pat}`, Accept: 'application/vnd.github.v3+json' } });
             if (getRes.ok) {
