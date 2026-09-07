@@ -207,14 +207,14 @@
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 31,
+      "qty": 30,
       "price": 32
     },
     {
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 64,
+      "qty": 63,
       "price": 70
     },
     {
@@ -2893,6 +2893,32 @@
       ],
       "total": 220,
       "note": "Cash"
+    },
+    {
+      "id": "mtqygerk07cz5",
+      "invoiceNo": "#000131",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 50,
+          "qty": 1
+        },
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 70,
+          "qty": 1
+        }
+      ],
+      "total": 120,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -4101,7 +4127,16 @@
       "debitAmt": 220,
       "creditAcc": "Sales",
       "creditAmt": 220
+    },
+    {
+      "id": "mtqygerknp8av",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000131 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 131
+  "nextInvoice": 132
 }
