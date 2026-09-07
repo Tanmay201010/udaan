@@ -186,7 +186,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 33,
+      "qty": 32,
       "price": 28
     },
     {
@@ -207,7 +207,7 @@
       "id": "mtq1yl0l0n2me",
       "name": "Millionaire brownie",
       "consignor": "",
-      "qty": 30,
+      "qty": 28,
       "price": 32
     },
     {
@@ -2919,6 +2919,32 @@
       ],
       "total": 120,
       "note": "UPI"
+    },
+    {
+      "id": "mtqyij4lck6uh",
+      "invoiceNo": "#000132",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 50,
+          "qty": 2
+        },
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 150,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4136,7 +4162,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtqyij4lgwdo1",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000132 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 150,
+      "creditAcc": "Sales",
+      "creditAmt": 150
     }
   ],
-  "nextInvoice": 132
+  "nextInvoice": 133
 }
