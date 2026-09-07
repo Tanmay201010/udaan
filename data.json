@@ -123,7 +123,7 @@
       "id": "mtq18imn0rxm0",
       "name": "Heart bag charm",
       "consignor": "",
-      "qty": 3,
+      "qty": 2,
       "price": 100
     },
     {
@@ -144,7 +144,7 @@
       "id": "mtq18vlikd8w7",
       "name": "4 flowers keychain",
       "consignor": "",
-      "qty": 8,
+      "qty": 7,
       "price": 120
     },
     {
@@ -2867,6 +2867,32 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtqyfitxxl7l8",
+      "invoiceNo": "#000130",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq18vlikd8w7",
+          "name": "4 flowers keychain",
+          "consignor": "",
+          "costPrice": 120,
+          "salePrice": 120,
+          "qty": 1
+        },
+        {
+          "id": "mtq18imn0rxm0",
+          "name": "Heart bag charm",
+          "consignor": "",
+          "costPrice": 100,
+          "salePrice": 100,
+          "qty": 1
+        }
+      ],
+      "total": 220,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -4066,7 +4092,16 @@
       "debitAmt": 60,
       "creditAcc": "Sales",
       "creditAmt": 60
+    },
+    {
+      "id": "mtqyfitxj0l48",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000130 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 220,
+      "creditAcc": "Sales",
+      "creditAmt": 220
     }
   ],
-  "nextInvoice": 130
+  "nextInvoice": 131
 }
