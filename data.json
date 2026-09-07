@@ -244,6 +244,15 @@
       "debitAmt": 2500,
       "creditAcc": "Cash A/c",
       "creditAmt": 2500
+    },
+    {
+      "id": "mtqnhfb76kvnr",
+      "date": "2026-09-07",
+      "desc": "Mehul paid for rapido",
+      "debitAcc": "Rapido",
+      "debitAmt": 100,
+      "creditAcc": "Cash",
+      "creditAmt": 100
     }
   ],
   "nextInvoice": 1
