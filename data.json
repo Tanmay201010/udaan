@@ -123,7 +123,7 @@
       "id": "mtq18imn0rxm0",
       "name": "Heart bag charm",
       "consignor": "",
-      "qty": 4,
+      "qty": 3,
       "price": 100
     },
     {
@@ -1885,6 +1885,24 @@
       ],
       "total": 100,
       "note": "Cash"
+    },
+    {
+      "id": "mtqvqgjwni5s6",
+      "invoiceNo": "#000083",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq18imn0rxm0",
+          "name": "Heart bag charm",
+          "consignor": "",
+          "costPrice": 100,
+          "salePrice": 100,
+          "qty": 1
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -2661,7 +2679,16 @@
       "debitAmt": 100,
       "creditAcc": "Sales",
       "creditAmt": 100
+    },
+    {
+      "id": "mtqvqgjxw10b1",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000083 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 100,
+      "creditAcc": "Sales",
+      "creditAmt": 100
     }
   ],
-  "nextInvoice": 83
+  "nextInvoice": 84
 }
