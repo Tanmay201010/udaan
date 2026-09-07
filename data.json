@@ -165,7 +165,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 31,
+      "qty": 33,
       "price": 20
     },
     {
@@ -186,14 +186,14 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 19,
+      "qty": 17,
       "price": 28
     },
     {
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 11,
+      "qty": 13,
       "price": 30
     },
     {
@@ -214,14 +214,14 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 55,
+      "qty": 56,
       "price": 70
     },
     {
       "id": "mtqszf7mn99lk",
       "name": "Silicon bracelet",
       "consignor": "",
-      "qty": 2,
+      "qty": 3,
       "price": 150
     }
   ],
@@ -3613,83 +3613,21 @@
       "note": "UPI"
     },
     {
-      "id": "mtr14cd7qwj6z",
+      "id": "mtr1p8zqvy54s",
       "invoiceNo": "#000162",
-      "date": "2026-09-07",
-      "customer": "shrine",
-      "items": [
-        {
-          "id": "mtqq259ypk0ec",
-          "name": "Cookie",
-          "consignor": "",
-          "costPrice": 70,
-          "salePrice": 70,
-          "qty": 1
-        }
-      ],
-      "total": 70,
-      "note": "Cash"
-    },
-    {
-      "id": "mtr1f7ayabj35",
-      "invoiceNo": "#000163",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq1xe47x4ww6",
-          "name": "Triple chocolate brownies",
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
           "consignor": "",
-          "costPrice": 30,
+          "costPrice": 28,
           "salePrice": 60,
-          "qty": 1
-        },
-        {
-          "id": "mtq19ugpvlus2",
-          "name": "Hazelnut Chocolates",
-          "consignor": "",
-          "costPrice": 20,
-          "salePrice": 20,
           "qty": 2
         }
       ],
-      "total": 100,
-      "note": "Cash"
-    },
-    {
-      "id": "mtr1fu5dkslnb",
-      "invoiceNo": "#000164",
-      "date": "2026-09-07",
-      "customer": "Walk-in Customer",
-      "items": [
-        {
-          "id": "mtq1xe47x4ww6",
-          "name": "Triple chocolate brownies",
-          "consignor": "",
-          "costPrice": 30,
-          "salePrice": 60,
-          "qty": 1
-        }
-      ],
-      "total": 60,
-      "note": "UPI"
-    },
-    {
-      "id": "mtr1k5ys7m14s",
-      "invoiceNo": "#000165",
-      "date": "2026-09-07",
-      "customer": "Walk-in Customer",
-      "items": [
-        {
-          "id": "mtqszf7mn99lk",
-          "name": "Silicon bracelet",
-          "consignor": "",
-          "costPrice": 150,
-          "salePrice": 150,
-          "qty": 1
-        }
-      ],
-      "total": 150,
+      "total": 120,
       "note": "UPI"
     }
   ],
@@ -5180,41 +5118,14 @@
       "creditAmt": 190
     },
     {
-      "id": "mtr14cd7p1ozh",
+      "id": "mtr1p8zrh2keo",
       "date": "2026-09-07",
-      "desc": "Sale - Invoice #000162 to shrine",
+      "desc": "Sale - Invoice #000162 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 70,
+      "debitAmt": 120,
       "creditAcc": "Sales",
-      "creditAmt": 70
-    },
-    {
-      "id": "mtr1f7ay9247p",
-      "date": "2026-09-07",
-      "desc": "Sale - Invoice #000163 to Walk-in Customer",
-      "debitAcc": "Cash",
-      "debitAmt": 100,
-      "creditAcc": "Sales",
-      "creditAmt": 100
-    },
-    {
-      "id": "mtr1fu5dcye2q",
-      "date": "2026-09-07",
-      "desc": "Sale - Invoice #000164 to Walk-in Customer",
-      "debitAcc": "Cash",
-      "debitAmt": 60,
-      "creditAcc": "Sales",
-      "creditAmt": 60
-    },
-    {
-      "id": "mtr1k5ysx2f8w",
-      "date": "2026-09-07",
-      "desc": "Sale - Invoice #000165 to Walk-in Customer",
-      "debitAcc": "Cash",
-      "debitAmt": 150,
-      "creditAcc": "Sales",
-      "creditAmt": 150
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 166
+  "nextInvoice": 163
 }
