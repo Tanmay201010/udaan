@@ -158,7 +158,7 @@
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 75,
+      "qty": 74,
       "price": 40
     },
     {
@@ -193,7 +193,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 49,
+      "qty": 48,
       "price": 30
     },
     {
@@ -486,6 +486,32 @@
       ],
       "total": 120,
       "note": "Cash"
+    },
+    {
+      "id": "mtqq4ep0e6zq3",
+      "invoiceNo": "#000015",
+      "date": "2026-09-07",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19fk1wt78d",
+          "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 120,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -641,7 +667,16 @@
       "debitAmt": 120,
       "creditAcc": "Sales",
       "creditAmt": 120
+    },
+    {
+      "id": "mtqq4ep0pr04t",
+      "date": "2026-09-07",
+      "desc": "Sale - Invoice #000015 to Walk-in Customer",
+      "debitAcc": "Cash",
+      "debitAmt": 120,
+      "creditAcc": "Sales",
+      "creditAmt": 120
     }
   ],
-  "nextInvoice": 15
+  "nextInvoice": 16
 }
