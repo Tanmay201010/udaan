@@ -102,7 +102,7 @@
       "id": "mtq183d1uus8v",
       "name": "Multicolor phone lanyard",
       "consignor": "",
-      "qty": 24,
+      "qty": 22,
       "price": 150
     },
     {
@@ -172,7 +172,7 @@
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 37,
+      "qty": 38,
       "price": 20
     },
     {
@@ -186,7 +186,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 38,
+      "qty": 39,
       "price": 28
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 16,
+      "qty": 15,
       "price": 30
     },
     {
@@ -214,14 +214,14 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 75,
+      "qty": 76,
       "price": 70
     },
     {
       "id": "mtqszf7mn99lk",
       "name": "Silicon bracelet",
       "consignor": "",
-      "qty": 8,
+      "qty": 4,
       "price": 150
     }
   ],
@@ -1967,47 +1967,47 @@
       "note": "Cash"
     },
     {
-      "id": "mtqw0rb3jzdiw",
+      "id": "mtqvzzqveatun",
       "invoiceNo": "#000087",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtqq259ypk0ec",
-          "name": "Cookie",
+          "id": "mtq183d1uus8v",
+          "name": "Multicolor phone lanyard",
           "consignor": "",
-          "costPrice": 70,
-          "salePrice": 70,
-          "qty": 1
-        },
-        {
-          "id": "mtq1a4u9oz9g4",
-          "name": "Milk Chocolates",
-          "consignor": "",
-          "costPrice": 20,
-          "salePrice": 40,
-          "qty": 1
+          "costPrice": 150,
+          "salePrice": 150,
+          "qty": 2
         }
       ],
-      "total": 110,
-      "note": "Cash"
+      "total": 300,
+      "note": "UPI"
     },
     {
-      "id": "mtqw2r5x8fb07",
+      "id": "mtqw4kz4215gv",
       "invoiceNo": "#000088",
       "date": "2026-09-07",
       "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq1wti4urrp6",
-          "name": "Life-changing brownies",
+          "id": "mtqszf7mn99lk",
+          "name": "Silicon bracelet",
           "consignor": "",
-          "costPrice": 28,
-          "salePrice": 60,
+          "costPrice": 150,
+          "salePrice": 150,
+          "qty": 4
+        },
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 1,
           "qty": 1
         }
       ],
-      "total": 60,
+      "total": 601,
       "note": "UPI"
     }
   ],
@@ -2823,22 +2823,22 @@
       "creditAmt": 120
     },
     {
-      "id": "mtqw0rb3fyyt7",
+      "id": "mtqvzzqwo7io7",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000087 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 110,
+      "debitAmt": 300,
       "creditAcc": "Sales",
-      "creditAmt": 110
+      "creditAmt": 300
     },
     {
-      "id": "mtqw2r5xhwmet",
+      "id": "mtqw4kz4pyp0q",
       "date": "2026-09-07",
       "desc": "Sale - Invoice #000088 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 60,
+      "debitAmt": 601,
       "creditAcc": "Sales",
-      "creditAmt": 60
+      "creditAmt": 601
     }
   ],
   "nextInvoice": 89
