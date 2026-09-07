@@ -4,7 +4,7 @@
       "id": "mtq15fqr6t6s7",
       "name": "Gym keychain",
       "consignor": "",
-      "qty": 15,
+      "qty": 16,
       "price": 250
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 44,
+      "qty": 43,
       "price": 30
     },
     {
@@ -419,22 +419,22 @@
       "note": "UPI"
     },
     {
-      "id": "mtqpy4cmakoq3",
+      "id": "mtqpywu45jru6",
       "invoiceNo": "#000012",
       "date": "2026-09-07",
-      "customer": "Matilda",
+      "customer": "Walk-in Customer",
       "items": [
         {
-          "id": "mtq15fqr6t6s7",
-          "name": "Gym keychain",
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
           "consignor": "",
-          "costPrice": 250,
-          "salePrice": 250,
+          "costPrice": 30,
+          "salePrice": 50,
           "qty": 1
         }
       ],
-      "total": 250,
-      "note": "Cash"
+      "total": 50,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -565,13 +565,13 @@
       "creditAmt": 100
     },
     {
-      "id": "mtqpy4cmtqir3",
+      "id": "mtqpywu47ao23",
       "date": "2026-09-07",
-      "desc": "Sale - Invoice #000012 to Matilda",
+      "desc": "Sale - Invoice #000012 to Walk-in Customer",
       "debitAcc": "Cash",
-      "debitAmt": 250,
+      "debitAmt": 50,
       "creditAcc": "Sales",
-      "creditAmt": 250
+      "creditAmt": 50
     }
   ],
   "nextInvoice": 13
