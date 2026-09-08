@@ -4371,6 +4371,26 @@
       ],
       "total": 70,
       "note": "Cash"
+    },
+    {
+      "id": "mts1ahbreej3m",
+      "invoiceNo": "#000225",
+      "date": "2026-09-08",
+      "time": "07:41 AM",
+      "createdAt": "2026-09-08T02:11:59.414Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 40,
+          "qty": 1
+        }
+      ],
+      "total": 40,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -10702,7 +10722,34 @@
           "amount": 14
         }
       ]
+    },
+    {
+      "id": "mts1ahbreej3m_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000225 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 40,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 40,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 40
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 70
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": -30
+        }
+      ]
     }
   ],
-  "nextInvoice": 224
+  "nextInvoice": 225
 }
