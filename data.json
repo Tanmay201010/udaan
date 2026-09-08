@@ -144,7 +144,7 @@
       "id": "mtq17hw4p6qor",
       "name": "Glitter keychain",
       "consignor": "",
-      "qty": 10,
+      "qty": 9,
       "price": 200
     },
     {
@@ -4330,6 +4330,26 @@
         }
       ],
       "total": 90,
+      "note": "Cash"
+    },
+    {
+      "id": "mts19hd7v6c74",
+      "invoiceNo": "#000223",
+      "date": "2026-09-08",
+      "time": "07:41 AM",
+      "createdAt": "2026-09-08T02:11:12.810Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq17hw4p6qor",
+          "name": "Glitter keychain",
+          "consignor": "",
+          "costPrice": 200,
+          "salePrice": 200,
+          "qty": 1
+        }
+      ],
+      "total": 200,
       "note": "Cash"
     }
   ],
@@ -10608,7 +10628,34 @@
           "amount": 42
         }
       ]
+    },
+    {
+      "id": "mts19hd7v6c74_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000223 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 200,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 200,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 200
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 160
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 40
+        }
+      ]
     }
   ],
-  "nextInvoice": 222
+  "nextInvoice": 223
 }
