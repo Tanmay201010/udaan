@@ -102,7 +102,7 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 30,
+      "qty": 29,
       "price": 20
     },
     {
@@ -172,7 +172,7 @@
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 31,
+      "qty": 30,
       "price": 20
     },
     {
@@ -4390,6 +4390,34 @@
         }
       ],
       "total": 40,
+      "note": "Cash"
+    },
+    {
+      "id": "mts1bch97gzt8",
+      "invoiceNo": "#000226",
+      "date": "2026-09-08",
+      "time": "07:42 AM",
+      "createdAt": "2026-09-08T02:12:39.788Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        },
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 60,
       "note": "Cash"
     }
   ],
@@ -10749,7 +10777,34 @@
           "amount": -30
         }
       ]
+    },
+    {
+      "id": "mts1bch97gzt8_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000226 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 40
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 20
+        }
+      ]
     }
   ],
-  "nextInvoice": 225
+  "nextInvoice": 226
 }
