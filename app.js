@@ -1890,6 +1890,38 @@ function updateSyncStatus(msg, type) {
     }
 }
 
+function isUserEditingOrBusy() {
+    // 1. Is any modal popup open/visible?
+    const modals = document.querySelectorAll('.modal');
+    for (let m of modals) {
+        if (m.style.display !== 'none' && m.style.display !== '') {
+            return true;
+        }
+    }
+
+    // 2. Is user actively typing or focused inside an input, textarea, or select field?
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT')) {
+        return true;
+    }
+
+    // 3. In POS (billing): check if items are added in cart or customer details are filled
+    const posContainer = document.getElementById('pos-items-container');
+    if (posContainer && !posContainer.textContent.includes('No items added yet.') && posContainer.querySelectorAll('tr').length > 0) {
+        return true;
+    }
+    const posCustomer = document.getElementById('pos-customer-name');
+    if (posCustomer && posCustomer.value.trim() !== '') {
+        return true;
+    }
+    const posProductInput = document.getElementById('pos-product-input');
+    if (posProductInput && posProductInput.value.trim() !== '') {
+        return true;
+    }
+
+    return false;
+}
+
 async function fetchFromGitHub() {
     if (!settings.pat || !settings.owner || !settings.repo) return;
     updateSyncStatus('Syncing...', 'warning');
@@ -1904,6 +1936,13 @@ async function fetchFromGitHub() {
             throw new Error(`HTTP ${res.status}`);
         }
         const json = await res.json();
+
+        // 1. If remote SHA matches currentSha, data has not changed on GitHub
+        if (currentSha && currentSha === json.sha) {
+            updateSyncStatus('Synced from GitHub', 'ok');
+            return;
+        }
+
         currentSha = json.sha;
         const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
         const data = JSON.parse(decoded);
@@ -1912,6 +1951,13 @@ async function fetchFromGitHub() {
         saveLocal();
         updateSyncStatus('Synced from GitHub', 'ok');
         refreshDashboardStats();
+
+        // 2. Do not re-render or refresh DOM if user is actively editing, in a modal, or building a bill
+        if (isUserEditingOrBusy()) {
+            console.log('[AutoSync] Remote data updated in background, postponing view refresh while user is editing.');
+            return;
+        }
+
         const hash = location.hash.replace('#', '') || 'dashboard';
         navigateTo(hash, false);
     } catch (err) {
