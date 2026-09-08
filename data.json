@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 33,
+      "qty": 30,
       "price": 40
     },
     {
@@ -67,7 +67,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 57,
+      "qty": 52,
       "price": 30
     },
     {
@@ -102,7 +102,7 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 22,
+      "qty": 21,
       "price": 20
     },
     {
@@ -6794,6 +6794,126 @@
         }
       ],
       "total": 50,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsa74sqmah3k",
+      "invoiceNo": "#000337",
+      "date": "2026-09-08",
+      "time": "11:51 AM",
+      "createdAt": "2026-09-08T06:21:19.753Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 30,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsa7f0b71i1k",
+      "invoiceNo": "#000338",
+      "date": "2026-09-08",
+      "time": "11:51 AM",
+      "createdAt": "2026-09-08T06:21:32.987Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 2
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsa7kz4ornuv",
+      "invoiceNo": "#000339",
+      "date": "2026-09-08",
+      "time": "11:51 AM",
+      "createdAt": "2026-09-08T06:21:40.720Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsa83ntvn6do",
+      "invoiceNo": "#000340",
+      "date": "2026-09-08",
+      "time": "11:52 AM",
+      "createdAt": "2026-09-08T06:22:04.936Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 3
+        }
+      ],
+      "total": 180,
+      "note": "UPI"
+    },
+    {
+      "id": "mtsa8e00u8o3l",
+      "invoiceNo": "#000341",
+      "date": "2026-09-08",
+      "time": "11:52 AM",
+      "createdAt": "2026-09-08T06:22:18.336Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 50,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsa8u7trc6ox",
+      "invoiceNo": "#000342",
+      "date": "2026-09-08",
+      "time": "11:52 AM",
+      "createdAt": "2026-09-08T06:22:39.352Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
       "note": "Cash"
     }
   ],
@@ -16204,7 +16324,169 @@
           "amount": 10
         }
       ]
+    },
+    {
+      "id": "mtsa74sqmah3k_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000337 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 30,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 30,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 20
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "mtsa7f0b71i1k_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000338 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 100,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 100,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 100
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 80
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 20
+        }
+      ]
+    },
+    {
+      "id": "mtsa7kz4ornuv_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000339 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 30
+        }
+      ]
+    },
+    {
+      "id": "mtsa83ntvn6do_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000340 to Walk-in Customer [UPI]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 180,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 180,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 180
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 90
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 90
+        }
+      ]
+    },
+    {
+      "id": "mtsa8e00u8o3l_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000341 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 50,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 50,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 50
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 40
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "mtsa8u7trc6ox_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000342 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 30
+        }
+      ]
     }
   ],
-  "nextInvoice": 336
+  "nextInvoice": 342
 }
