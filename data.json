@@ -4730,9 +4730,9 @@
       "items": [
         {
           "id": "mtq1a4u9oz9g4",
-          "name": "Milk Chocolates",
+          "name": "Dipped cookies Milk chocolate",
           "consignor": "",
-          "costPrice": 20,
+          "costPrice": 40,
           "salePrice": 50,
           "qty": 2
         }
@@ -4750,9 +4750,9 @@
       "items": [
         {
           "id": "mtq1aqgdvrw7c",
-          "name": "Dark chocolate",
+          "name": "Dipped cookies Dark chocolate",
           "consignor": "",
-          "costPrice": 20,
+          "costPrice": 40,
           "salePrice": 50,
           "qty": 2
         }
