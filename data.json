@@ -200,7 +200,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 40,
+      "qty": 39,
       "price": 28
     },
     {
@@ -7651,6 +7651,26 @@
       ],
       "total": 120,
       "note": "Cash"
+    },
+    {
+      "id": "mtsbo1hpafi4a",
+      "invoiceNo": "#000377",
+      "date": "2026-09-08",
+      "time": "12:32 PM",
+      "createdAt": "2026-09-08T07:02:28.237Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -18140,7 +18160,34 @@
           "amount": 60
         }
       ]
+    },
+    {
+      "id": "mtsbo1hpafi4a_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000377 to Walk-in Customer [UPI]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 28
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 32
+        }
+      ]
     }
   ],
-  "nextInvoice": 376
+  "nextInvoice": 377
 }
