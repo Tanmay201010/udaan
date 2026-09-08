@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 37,
+      "qty": 35,
       "price": 40
     },
     {
@@ -6274,6 +6274,46 @@
         }
       ],
       "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mts9trmd36imp",
+      "invoiceNo": "#000311",
+      "date": "2026-09-08",
+      "time": "11:40 AM",
+      "createdAt": "2026-09-08T06:10:56.148Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1a4u9oz9g4",
+          "name": "Milk Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 30,
+      "note": "Cash"
+    },
+    {
+      "id": "mts9u65yyzpbp",
+      "invoiceNo": "#000312",
+      "date": "2026-09-08",
+      "time": "11:41 AM",
+      "createdAt": "2026-09-08T06:11:14.998Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 2
+        }
+      ],
+      "total": 100,
       "note": "Cash"
     }
   ],
@@ -14982,7 +15022,61 @@
           "amount": 30
         }
       ]
+    },
+    {
+      "id": "mts9trmd36imp_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000311 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 30,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 30,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 20
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "mts9u65yyzpbp_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000312 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 100,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 100,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 100
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 80
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 20
+        }
+      ]
     }
   ],
-  "nextInvoice": 310
+  "nextInvoice": 312
 }
