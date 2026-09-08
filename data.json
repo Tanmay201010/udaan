@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 26,
+      "qty": 25,
       "price": 40
     },
     {
@@ -60,7 +60,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 22,
+      "qty": 21,
       "price": 30
     },
     {
@@ -7603,6 +7603,34 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mtsblz2lmdyfh",
+      "invoiceNo": "#000375",
+      "date": "2026-09-08",
+      "time": "12:30 PM",
+      "createdAt": "2026-09-08T07:00:51.789Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 110,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -18036,6 +18064,33 @@
           "type": "Cr",
           "account": "Commission A/c",
           "amount": 30
+        }
+      ]
+    },
+    {
+      "id": "mtsblz2lmdyfh_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000375 to Walk-in Customer [UPI]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 110,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 110,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 110
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 70
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 40
         }
       ]
     }
