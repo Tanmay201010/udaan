@@ -200,7 +200,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 44,
+      "qty": 43,
       "price": 28
     },
     {
@@ -7419,6 +7419,26 @@
       ],
       "total": 60,
       "note": "UPI"
+    },
+    {
+      "id": "mtsaylioiagmd",
+      "invoiceNo": "#000367",
+      "date": "2026-09-08",
+      "time": "12:12 PM",
+      "createdAt": "2026-09-08T06:42:41.135Z",
+      "customer": "shreni",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -17638,7 +17658,34 @@
           "amount": 30
         }
       ]
+    },
+    {
+      "id": "mtsaylioiagmd_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000367 to shreni [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 28
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 32
+        }
+      ]
     }
   ],
-  "nextInvoice": 366
+  "nextInvoice": 367
 }
