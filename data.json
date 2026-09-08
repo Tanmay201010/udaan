@@ -6147,6 +6147,46 @@
       ],
       "total": 60,
       "note": "Cash"
+    },
+    {
+      "id": "mts9l1nbjictb",
+      "invoiceNo": "#000305",
+      "date": "2026-09-08",
+      "time": "11:34 AM",
+      "createdAt": "2026-09-08T06:04:09.238Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 120,
+      "note": "Cash"
+    },
+    {
+      "id": "mts9lbzllxykm",
+      "invoiceNo": "#000306",
+      "date": "2026-09-08",
+      "time": "11:34 AM",
+      "createdAt": "2026-09-08T06:04:22.640Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 30,
+          "qty": 2
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -14692,7 +14732,61 @@
           "amount": 30
         }
       ]
+    },
+    {
+      "id": "mts9l1nbjictb_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000305 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 120,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 120,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 120
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 60
+        }
+      ]
+    },
+    {
+      "id": "mts9lbzllxykm_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000306 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 48
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 12
+        }
+      ]
     }
   ],
-  "nextInvoice": 304
+  "nextInvoice": 307
 }
