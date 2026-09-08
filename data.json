@@ -67,7 +67,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 61,
+      "qty": 60,
       "price": 30
     },
     {
@@ -5878,6 +5878,26 @@
       "date": "2026-09-08",
       "time": "11:21 AM",
       "createdAt": "2026-09-08T05:51:16.374Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mts95dv2duttn",
+      "invoiceNo": "#000293",
+      "date": "2026-09-08",
+      "time": "11:21 AM",
+      "createdAt": "2026-09-08T05:51:58.574Z",
       "customer": "Walk-in Customer",
       "items": [
         {
@@ -14112,7 +14132,34 @@
           "amount": 30
         }
       ]
+    },
+    {
+      "id": "mts95dv2duttn_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000293 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 30
+        }
+      ]
     }
   ],
-  "nextInvoice": 292
+  "nextInvoice": 293
 }
