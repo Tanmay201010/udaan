@@ -165,7 +165,7 @@
       "id": "mtq178hsqa31k",
       "name": "Glitter bracelet",
       "consignor": "",
-      "qty": 8,
+      "qty": 6,
       "price": 200
     },
     {
@@ -4458,6 +4458,26 @@
         }
       ],
       "total": 100,
+      "note": "Cash"
+    },
+    {
+      "id": "mts1cuc82lfo1",
+      "invoiceNo": "#000229",
+      "date": "2026-09-08",
+      "time": "07:43 AM",
+      "createdAt": "2026-09-08T02:13:49.591Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq178hsqa31k",
+          "name": "Glitter bracelet",
+          "consignor": "",
+          "costPrice": 200,
+          "salePrice": 200,
+          "qty": 2
+        }
+      ],
+      "total": 400,
       "note": "Cash"
     }
   ],
@@ -10898,7 +10918,34 @@
           "amount": -40
         }
       ]
+    },
+    {
+      "id": "mts1cuc82lfo1_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000229 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 400,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 400,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 400
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 320
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 80
+        }
+      ]
     }
   ],
-  "nextInvoice": 228
+  "nextInvoice": 229
 }
