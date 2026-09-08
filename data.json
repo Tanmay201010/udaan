@@ -11,7 +11,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 33,
+      "qty": 32,
       "price": 20
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 4,
+      "qty": 3,
       "price": 28
     },
     {
@@ -4302,6 +4302,34 @@
         }
       ],
       "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mts18vvuel5w0",
+      "invoiceNo": "#000222",
+      "date": "2026-09-08",
+      "time": "07:40 AM",
+      "createdAt": "2026-09-08T02:10:44.969Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 90,
       "note": "Cash"
     }
   ],
@@ -10553,7 +10581,34 @@
           "amount": 32
         }
       ]
+    },
+    {
+      "id": "mts18vvuel5w0_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000222 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 90,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 90,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 90
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 48
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 42
+        }
+      ]
     }
   ],
-  "nextInvoice": 221
+  "nextInvoice": 222
 }
