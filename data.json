@@ -4478,7 +4478,7 @@
         }
       ],
       "total": 400,
-      "note": "Cash"
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -10922,7 +10922,7 @@
     {
       "id": "mts1cuc82lfo1_j",
       "date": "2026-09-08",
-      "desc": "Sale - Invoice #000229 to Walk-in Customer [Cash]",
+      "desc": "Sale - Invoice #000229 to Walk-in Customer [UPI]",
       "debitAcc": "Cash A/c",
       "debitAmt": 400,
       "creditAcc": "Sales A/c / Commission A/c",
@@ -10947,5 +10947,5 @@
       ]
     }
   ],
-  "nextInvoice": 229
+  "nextInvoice": 230
 }
