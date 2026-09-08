@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 58,
+      "qty": 57,
       "price": 40
     },
     {
@@ -4867,6 +4867,26 @@
         {
           "id": "mtq19fk1wt78d",
           "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 50,
+      "note": "Cash"
+    },
+    {
+      "id": "mts5zwvzyem3d",
+      "invoiceNo": "#000245",
+      "date": "2026-09-08",
+      "time": "09:53 AM",
+      "createdAt": "2026-09-08T04:23:44.447Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
           "consignor": "",
           "costPrice": 40,
           "salePrice": 50,
@@ -11800,7 +11820,34 @@
           "amount": 10
         }
       ]
+    },
+    {
+      "id": "mts5zwvzyem3d_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000245 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 50,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 50,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 50
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 40
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 10
+        }
+      ]
     }
   ],
-  "nextInvoice": 244
+  "nextInvoice": 245
 }
