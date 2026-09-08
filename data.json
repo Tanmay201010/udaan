@@ -67,7 +67,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 25,
+      "qty": 24,
       "price": 30
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 39,
+      "qty": 38,
       "price": 28
     },
     {
@@ -7730,6 +7730,34 @@
         }
       ],
       "total": 100,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsbr9iiqe534",
+      "invoiceNo": "#000381",
+      "date": "2026-09-08",
+      "time": "12:34 PM",
+      "createdAt": "2026-09-08T07:04:58.601Z",
+      "customer": "shaid 20 rs paid",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 120,
       "note": "Cash"
     }
   ],
@@ -18328,7 +18356,34 @@
           "amount": 20
         }
       ]
+    },
+    {
+      "id": "mtsbr9iiqe534_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000381 to shaid 20 rs paid [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 120,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 120,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 120
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 58
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 62
+        }
+      ]
     }
   ],
-  "nextInvoice": 380
+  "nextInvoice": 381
 }
