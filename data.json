@@ -60,7 +60,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 8,
+      "qty": 7,
       "price": 30
     },
     {
@@ -6214,6 +6214,26 @@
         }
       ],
       "total": 360,
+      "note": "Cash"
+    },
+    {
+      "id": "mts9sjmlepkth",
+      "invoiceNo": "#000308",
+      "date": "2026-09-08",
+      "time": "11:39 AM",
+      "createdAt": "2026-09-08T06:09:59.133Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
       "note": "Cash"
     }
   ],
@@ -14841,7 +14861,34 @@
           "amount": 180
         }
       ]
+    },
+    {
+      "id": "mts9sjmlepkth_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000308 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 30
+        }
+      ]
     }
   ],
-  "nextInvoice": 307
+  "nextInvoice": 308
 }
