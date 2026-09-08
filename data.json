@@ -60,14 +60,14 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 18,
+      "qty": 17,
       "price": 30
     },
     {
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 24,
+      "qty": 23,
       "price": 30
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 38,
+      "qty": 37,
       "price": 28
     },
     {
@@ -7779,6 +7779,42 @@
       ],
       "total": 50,
       "note": "Cash"
+    },
+    {
+      "id": "mtsbtbhvfpuwf",
+      "invoiceNo": "#000383",
+      "date": "2026-09-08",
+      "time": "12:36 PM",
+      "createdAt": "2026-09-08T07:06:34.483Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        },
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 180,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -18430,7 +18466,34 @@
           "amount": 10
         }
       ]
+    },
+    {
+      "id": "mtsbtbhvfpuwf_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000383 to Walk-in Customer [UPI]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 180,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 180,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 180
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 88
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 92
+        }
+      ]
     }
   ],
-  "nextInvoice": 382
+  "nextInvoice": 383
 }
