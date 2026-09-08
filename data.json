@@ -207,7 +207,7 @@
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 54,
+      "qty": 52,
       "price": 40
     },
     {
@@ -7691,6 +7691,46 @@
       ],
       "total": 60,
       "note": "UPI"
+    },
+    {
+      "id": "mtsbpo20rix9y",
+      "invoiceNo": "#000379",
+      "date": "2026-09-08",
+      "time": "12:33 PM",
+      "createdAt": "2026-09-08T07:03:44.136Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19fk1wt78d",
+          "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 1
+        }
+      ],
+      "total": 50,
+      "note": "UPI"
+    },
+    {
+      "id": "mtsbqagy2fi9j",
+      "invoiceNo": "#000380",
+      "date": "2026-09-08",
+      "time": "12:34 PM",
+      "createdAt": "2026-09-08T07:04:13.185Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19fk1wt78d",
+          "name": "Dipped cookies Dark chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 2
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
     }
   ],
   "journal": [
@@ -18234,7 +18274,61 @@
           "amount": 30
         }
       ]
+    },
+    {
+      "id": "mtsbpo20rix9y_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000379 to Walk-in Customer [UPI]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 50,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 50,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 50
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 40
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "mtsbqagy2fi9j_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000380 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 100,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 100,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 100
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 80
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 20
+        }
+      ]
     }
   ],
-  "nextInvoice": 378
+  "nextInvoice": 380
 }
