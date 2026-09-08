@@ -60,7 +60,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 27,
+      "qty": 26,
       "price": 30
     },
     {
@@ -7473,6 +7473,26 @@
           "name": "Life-changing brownies",
           "consignor": "",
           "costPrice": 28,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsb34dnhhhnp",
+      "invoiceNo": "#000370",
+      "date": "2026-09-08",
+      "time": "12:16 PM",
+      "createdAt": "2026-09-08T06:46:12.203Z",
+      "customer": "mohak credit",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
           "salePrice": 60,
           "qty": 1
         }
@@ -17779,7 +17799,34 @@
           "amount": 32
         }
       ]
+    },
+    {
+      "id": "mtsb34dnhhhnp_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000370 to mohak credit [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 30
+        }
+      ]
     }
   ],
-  "nextInvoice": 369
+  "nextInvoice": 370
 }
