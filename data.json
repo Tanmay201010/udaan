@@ -60,7 +60,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 13,
+      "qty": 12,
       "price": 30
     },
     {
@@ -6046,6 +6046,46 @@
         }
       ],
       "total": 90,
+      "note": "Cash"
+    },
+    {
+      "id": "mts9cgx7sa63l",
+      "invoiceNo": "#000300",
+      "date": "2026-09-08",
+      "time": "11:27 AM",
+      "createdAt": "2026-09-08T05:57:29.131Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 30,
+      "note": "Cash"
+    },
+    {
+      "id": "mts9e8by2n0b6",
+      "invoiceNo": "#000301",
+      "date": "2026-09-08",
+      "time": "11:28 AM",
+      "createdAt": "2026-09-08T05:58:51.310Z",
+      "customer": "manan",
+      "items": [
+        {
+          "id": "mtq1xe47x4ww6",
+          "name": "Triple chocolate brownies",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
       "note": "Cash"
     }
   ],
@@ -14457,7 +14497,61 @@
           "amount": 30
         }
       ]
+    },
+    {
+      "id": "mts9cgx7sa63l_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000300 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 30,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 30,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 20
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "mts9e8by2n0b6_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000301 to manan [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 30
+        }
+      ]
     }
   ],
-  "nextInvoice": 299
+  "nextInvoice": 301
 }
