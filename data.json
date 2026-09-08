@@ -67,7 +67,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 0,
+      "qty": 75,
       "price": 30
     },
     {
@@ -13119,5 +13119,5 @@
       ]
     }
   ],
-  "nextInvoice": 271
+  "nextInvoice": 272
 }
