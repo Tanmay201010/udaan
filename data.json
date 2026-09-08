@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 26,
+      "qty": 28,
       "price": 40
     },
     {
@@ -172,7 +172,7 @@
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 12,
+      "qty": 13,
       "price": 20
     },
     {
@@ -200,7 +200,7 @@
       "id": "mtq1wti4urrp6",
       "name": "Life-changing brownies",
       "consignor": "",
-      "qty": 40,
+      "qty": 38,
       "price": 28
     },
     {
@@ -7562,6 +7562,26 @@
         }
       ],
       "total": 100,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsb9vfix2z98",
+      "invoiceNo": "#000373",
+      "date": "2026-09-08",
+      "time": "12:21 PM",
+      "createdAt": "2026-09-08T06:51:27.198Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1wti4urrp6",
+          "name": "Life-changing brownies",
+          "consignor": "",
+          "costPrice": 28,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 120,
       "note": "Cash"
     }
   ],
@@ -17944,7 +17964,34 @@
           "amount": 20
         }
       ]
+    },
+    {
+      "id": "mtsb9vfix2z98_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000373 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 120,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 120,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 120
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 56
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 64
+        }
+      ]
     }
   ],
-  "nextInvoice": 372
+  "nextInvoice": 373
 }
