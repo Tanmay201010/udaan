@@ -11,7 +11,7 @@
       "id": "mtq19ugpvlus2",
       "name": "Hazelnut Chocolates",
       "consignor": "",
-      "qty": 21,
+      "qty": 20,
       "price": 20
     },
     {
@@ -7158,6 +7158,26 @@
         }
       ],
       "total": 180,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsam7nvwf9ci",
+      "invoiceNo": "#000354",
+      "date": "2026-09-08",
+      "time": "12:03 PM",
+      "createdAt": "2026-09-08T06:33:03.307Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq19ugpvlus2",
+          "name": "Hazelnut Chocolates",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 30,
+          "qty": 1
+        }
+      ],
+      "total": 30,
       "note": "Cash"
     }
   ],
@@ -17027,7 +17047,34 @@
           "amount": 94
         }
       ]
+    },
+    {
+      "id": "mtsam7nvwf9ci_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000354 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 30,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 30,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 20
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 10
+        }
+      ]
     }
   ],
-  "nextInvoice": 353
+  "nextInvoice": 354
 }
