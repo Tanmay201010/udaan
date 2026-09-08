@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 39,
+      "qty": 37,
       "price": 40
     },
     {
@@ -67,7 +67,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 64,
+      "qty": 63,
       "price": 30
     },
     {
@@ -207,7 +207,7 @@
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 57,
+      "qty": 56,
       "price": 40
     },
     {
@@ -5802,6 +5802,34 @@
         }
       ],
       "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mts92wt379d8i",
+      "invoiceNo": "#000289",
+      "date": "2026-09-08",
+      "time": "11:20 AM",
+      "createdAt": "2026-09-08T05:50:03.158Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
+          "salePrice": 50,
+          "qty": 2
+        },
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 160,
       "note": "Cash"
     }
   ],
@@ -13916,7 +13944,34 @@
           "amount": 30
         }
       ]
+    },
+    {
+      "id": "mts92wt379d8i_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000289 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 160,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 160,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 160
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 110
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 50
+        }
+      ]
     }
   ],
-  "nextInvoice": 288
+  "nextInvoice": 289
 }
