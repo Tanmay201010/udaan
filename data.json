@@ -60,7 +60,7 @@
       "id": "mtq1xe47x4ww6",
       "name": "Triple chocolate brownies",
       "consignor": "",
-      "qty": 4,
+      "qty": 35,
       "price": 30
     },
     {
@@ -4525,26 +4525,6 @@
       "note": "Cash"
     },
     {
-      "id": "mts53cjgue76r",
-      "invoiceNo": "#000231",
-      "date": "2026-09-08",
-      "time": "09:28 AM",
-      "createdAt": "2026-09-08T03:58:25.084Z",
-      "customer": "Walk-in Customer",
-      "items": [
-        {
-          "id": "mtq1yl0l0n2me",
-          "name": "Millionaire brownie",
-          "consignor": "",
-          "costPrice": 32,
-          "salePrice": 15,
-          "qty": 23
-        }
-      ],
-      "total": 345,
-      "note": "Cash"
-    },
-    {
       "id": "mts4e8k0y7vvf",
       "invoiceNo": "#000231",
       "date": "2026-09-08",
@@ -4622,6 +4602,26 @@
         }
       ],
       "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mts53cjgue76r",
+      "invoiceNo": "#000231",
+      "date": "2026-09-08",
+      "time": "09:28 AM",
+      "createdAt": "2026-09-08T03:58:25.084Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1yl0l0n2me",
+          "name": "Millionaire brownie",
+          "consignor": "",
+          "costPrice": 32,
+          "salePrice": 15,
+          "qty": 23
+        }
+      ],
+      "total": 345,
       "note": "Cash"
     },
     {
@@ -12850,33 +12850,6 @@
       ]
     },
     {
-      "id": "mts53cjgue76r_j",
-      "date": "2026-09-08",
-      "desc": "Sale - Invoice #000231 to Walk-in Customer [Cash]",
-      "debitAcc": "Cash A/c",
-      "debitAmt": 345,
-      "creditAcc": "Sales A/c / Commission A/c",
-      "creditAmt": 345,
-      "isCompound": true,
-      "entries": [
-        {
-          "type": "Dr",
-          "account": "Cash A/c",
-          "amount": 345
-        },
-        {
-          "type": "Cr",
-          "account": "Sales A/c",
-          "amount": 736
-        },
-        {
-          "type": "Cr",
-          "account": "Commission A/c",
-          "amount": -391
-        }
-      ]
-    },
-    {
       "id": "mts4e8k0y7vvf_j",
       "date": "2026-09-08",
       "desc": "Sale - Invoice #000231 to Walk-in Customer [Cash]",
@@ -12981,6 +12954,33 @@
           "type": "Cr",
           "account": "Commission A/c",
           "amount": 20
+        }
+      ]
+    },
+    {
+      "id": "mts53cjgue76r_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000231 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 345,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 345,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 345
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 736
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": -391
         }
       ]
     },
