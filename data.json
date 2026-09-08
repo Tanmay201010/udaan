@@ -102,7 +102,7 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 21,
+      "qty": 20,
       "price": 20
     },
     {
@@ -7010,6 +7010,26 @@
         }
       ],
       "total": 120,
+      "note": "Cash"
+    },
+    {
+      "id": "mtsagto5cx0m0",
+      "invoiceNo": "#000347",
+      "date": "2026-09-08",
+      "time": "11:58 AM",
+      "createdAt": "2026-09-08T06:28:51.892Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1aqgdvrw7c",
+          "name": "Dark chocolate",
+          "consignor": "",
+          "costPrice": 20,
+          "salePrice": 40,
+          "qty": 1
+        }
+      ],
+      "total": 40,
       "note": "Cash"
     }
   ],
@@ -16688,6 +16708,33 @@
           "type": "Cr",
           "account": "Commission A/c",
           "amount": 62
+        }
+      ]
+    },
+    {
+      "id": "mtsagto5cx0m0_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000347 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 40,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 40,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 40
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 20
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 20
         }
       ]
     }
