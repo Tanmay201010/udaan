@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 61,
+      "qty": 59,
       "price": 40
     },
     {
@@ -102,7 +102,7 @@
       "id": "mtq1aqgdvrw7c",
       "name": "Dark chocolate",
       "consignor": "",
-      "qty": 24,
+      "qty": 26,
       "price": 20
     },
     {
@@ -172,7 +172,7 @@
       "id": "mtq1a4u9oz9g4",
       "name": "Milk Chocolates",
       "consignor": "",
-      "qty": 25,
+      "qty": 23,
       "price": 20
     },
     {
@@ -4753,6 +4753,26 @@
           "name": "Dark chocolate",
           "consignor": "",
           "costPrice": 20,
+          "salePrice": 50,
+          "qty": 2
+        }
+      ],
+      "total": 100,
+      "note": "Cash"
+    },
+    {
+      "id": "mts5rag36i9kt",
+      "invoiceNo": "#000240",
+      "date": "2026-09-08",
+      "time": "09:47 AM",
+      "createdAt": "2026-09-08T04:17:02.114Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq196aapwie0",
+          "name": "Dipped cookies Milk chocolate",
+          "consignor": "",
+          "costPrice": 40,
           "salePrice": 50,
           "qty": 2
         }
@@ -11549,7 +11569,34 @@
           "amount": 60
         }
       ]
+    },
+    {
+      "id": "mts5rag36i9kt_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000240 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 100,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 100,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 100
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 80
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 20
+        }
+      ]
     }
   ],
-  "nextInvoice": 239
+  "nextInvoice": 240
 }
