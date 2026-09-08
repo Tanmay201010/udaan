@@ -18,7 +18,7 @@
       "id": "mtqq259ypk0ec",
       "name": "Cookie",
       "consignor": "",
-      "qty": 51,
+      "qty": 49,
       "price": 70
     },
     {
@@ -4438,6 +4438,26 @@
         }
       ],
       "total": 60,
+      "note": "Cash"
+    },
+    {
+      "id": "mts1chzyaqgek",
+      "invoiceNo": "#000228",
+      "date": "2026-09-08",
+      "time": "07:43 AM",
+      "createdAt": "2026-09-08T02:13:33.597Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtqq259ypk0ec",
+          "name": "Cookie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 50,
+          "qty": 2
+        }
+      ],
+      "total": 100,
       "note": "Cash"
     }
   ],
@@ -10851,7 +10871,34 @@
           "amount": -10
         }
       ]
+    },
+    {
+      "id": "mts1chzyaqgek_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000228 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 100,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 100,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 100
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 140
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": -40
+        }
+      ]
     }
   ],
-  "nextInvoice": 227
+  "nextInvoice": 228
 }
