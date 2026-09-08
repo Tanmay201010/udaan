@@ -46,7 +46,7 @@
       "id": "mtq196aapwie0",
       "name": "Dipped cookies Milk chocolate",
       "consignor": "",
-      "qty": 37,
+      "qty": 39,
       "price": 40
     },
     {
@@ -67,7 +67,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 63,
+      "qty": 62,
       "price": 30
     },
     {
@@ -207,7 +207,7 @@
       "id": "mtq19fk1wt78d",
       "name": "Dipped cookies Dark chocolate",
       "consignor": "",
-      "qty": 56,
+      "qty": 57,
       "price": 40
     },
     {
@@ -5831,6 +5831,26 @@
       ],
       "total": 160,
       "note": "Cash"
+    },
+    {
+      "id": "mts93egqqx4ok",
+      "invoiceNo": "#000290",
+      "date": "2026-09-08",
+      "time": "11:20 AM",
+      "createdAt": "2026-09-08T05:50:26.041Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 2
+        }
+      ],
+      "total": 120,
+      "note": "UPI"
     }
   ],
   "journal": [
@@ -13971,7 +13991,34 @@
           "amount": 50
         }
       ]
+    },
+    {
+      "id": "mts93egqqx4ok_j",
+      "date": "2026-09-08",
+      "desc": "Sale - Invoice #000290 to Walk-in Customer [UPI]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 120,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 120,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 120
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 60
+        }
+      ]
     }
   ],
-  "nextInvoice": 289
+  "nextInvoice": 290
 }
