@@ -8742,7 +8742,7 @@
         }
       ],
       "total": 60,
-      "note": "Cash"
+      "note": "Credit"
     }
   ],
   "journal": [
@@ -20532,7 +20532,7 @@
     {
       "id": "mttn8rtm2de70_j",
       "date": "2026-09-09",
-      "desc": "Sale - Invoice #000424 to akshith [Cash]",
+      "desc": "Sale - Invoice #000424 to akshith [Credit]",
       "debitAcc": "Cash A/c",
       "debitAmt": 60,
       "creditAcc": "Sales A/c / Commission A/c",
@@ -20557,5 +20557,5 @@
       ]
     }
   ],
-  "nextInvoice": 424
+  "nextInvoice": 425
 }
