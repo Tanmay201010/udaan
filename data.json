@@ -8558,7 +8558,7 @@
         }
       ],
       "total": 50,
-      "note": "Cash"
+      "note": "UPI"
     },
     {
       "id": "mttmdmkiolzoz",
@@ -20152,7 +20152,7 @@
     {
       "id": "mttmd6i99gq7i_j",
       "date": "2026-09-09",
-      "desc": "Sale - Invoice #000416 to Walk-in Customer [Cash]",
+      "desc": "Sale - Invoice #000416 to Walk-in Customer [UPI]",
       "debitAcc": "Cash A/c",
       "debitAmt": 50,
       "creditAcc": "Sales A/c / Commission A/c",
@@ -20204,5 +20204,5 @@
       ]
     }
   ],
-  "nextInvoice": 417
+  "nextInvoice": 418
 }
