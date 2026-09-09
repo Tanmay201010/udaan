@@ -67,7 +67,7 @@
       "id": "mtq1xww8d0w3z",
       "name": "Nutella brownie",
       "consignor": "",
-      "qty": 146,
+      "qty": 145,
       "price": 30
     },
     {
@@ -8578,6 +8578,26 @@
         }
       ],
       "total": 30,
+      "note": "Cash"
+    },
+    {
+      "id": "mttmf6g2tybve",
+      "invoiceNo": "#000418",
+      "date": "2026-09-09",
+      "time": "10:21 AM",
+      "createdAt": "2026-09-09T04:51:16.705Z",
+      "customer": "sanjana",
+      "items": [
+        {
+          "id": "mtq1xww8d0w3z",
+          "name": "Nutella brownie",
+          "consignor": "",
+          "costPrice": 30,
+          "salePrice": 60,
+          "qty": 1
+        }
+      ],
+      "total": 60,
       "note": "Cash"
     }
   ],
@@ -20200,6 +20220,33 @@
           "type": "Cr",
           "account": "Commission A/c",
           "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "mttmf6g2tybve_j",
+      "date": "2026-09-09",
+      "desc": "Sale - Invoice #000418 to sanjana [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 60,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 60,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 60
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 30
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": 30
         }
       ]
     }
