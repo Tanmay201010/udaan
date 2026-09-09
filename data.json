@@ -8598,7 +8598,7 @@
         }
       ],
       "total": 60,
-      "note": "Cash"
+      "note": "Credit"
     }
   ],
   "journal": [
@@ -20226,7 +20226,7 @@
     {
       "id": "mttmf6g2tybve_j",
       "date": "2026-09-09",
-      "desc": "Sale - Invoice #000418 to sanjana [Cash]",
+      "desc": "Sale - Invoice #000418 to sanjana [Credit]",
       "debitAcc": "Cash A/c",
       "debitAmt": 60,
       "creditAcc": "Sales A/c / Commission A/c",
@@ -20251,5 +20251,5 @@
       ]
     }
   ],
-  "nextInvoice": 418
+  "nextInvoice": 419
 }
