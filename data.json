@@ -8234,7 +8234,7 @@
         }
       ],
       "total": 120,
-      "note": "Cash"
+      "note": "Credit"
     }
   ],
   "journal": [
@@ -19403,7 +19403,7 @@
     {
       "id": "mttl10r8fm6ft_j",
       "date": "2026-09-09",
-      "desc": "Sale - Invoice #000401 to shahid [Cash]",
+      "desc": "Sale - Invoice #000401 to shahid [Credit]",
       "debitAcc": "Cash A/c",
       "debitAmt": 120,
       "creditAcc": "Sales A/c / Commission A/c",
@@ -19428,5 +19428,5 @@
       ]
     }
   ],
-  "nextInvoice": 401
+  "nextInvoice": 402
 }
