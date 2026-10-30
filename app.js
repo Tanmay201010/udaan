@@ -4,11 +4,25 @@
 
 // --- State ---
 let currentRole = localStorage.getItem('udaanRole') || null;
+if (currentRole && currentRole !== 'sales' && currentRole !== 'finance') {
+    currentRole = null;
+    localStorage.removeItem('udaanRole');
+}
 let settings = JSON.parse(localStorage.getItem('udaanSettings') || '{}');
 let appData = { inventory: [], pos: [], journal: [], nextInvoice: 1 };
 let currentSha = null;
 let journalListenersAttached = false;
 let autoSyncTimer = null;
+
+function safeLucide() {
+    try {
+        if (typeof lucide !== 'undefined' && lucide && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+        }
+    } catch (e) {
+        console.warn('Lucide icon rendering skipped:', e);
+    }
+}
 
 // --- Account Normalizer & Classifier Engine ---
 const incomeKeywords = ['sales', 'sales a/c', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission a/c', 'commission received', 'commission paid by consignor', 'markup', 'discount received'];
@@ -431,7 +445,7 @@ function notifyDataChanged() {
 function initApp() {
     loadLocal();
     fetchDefaultData();
-    lucide.createIcons();
+    safeLucide();
 
     if (!currentRole) {
         const overlay = document.getElementById('login-overlay');
@@ -444,28 +458,63 @@ function initApp() {
         startApp();
     }
 
-    document.getElementById('login-btn').addEventListener('click', handleLogin);
-    document.getElementById('login-user').addEventListener('keydown', function(e) {
+    const loginBtn = document.getElementById('login-btn');
+    if (loginBtn) loginBtn.addEventListener('click', handleLogin);
+
+    const userInp = document.getElementById('login-user');
+    if (userInp) userInp.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') handleLogin();
     });
-    document.getElementById('login-pass').addEventListener('keydown', function(e) {
+
+    const passInp = document.getElementById('login-pass');
+    if (passInp) passInp.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') handleLogin();
     });
+
+    const quickSales = document.getElementById('quick-sales-btn');
+    if (quickSales) quickSales.addEventListener('click', () => doLogin('sales'));
+
+    const quickFinance = document.getElementById('quick-finance-btn');
+    if (quickFinance) quickFinance.addEventListener('click', () => doLogin('finance'));
+}
+
+function doLogin(role) {
+    currentRole = role;
+    localStorage.setItem('udaanRole', currentRole);
+    const overlay = document.getElementById('login-overlay');
+    if (overlay) overlay.style.display = 'none';
+    const errEl = document.getElementById('login-error');
+    if (errEl) errEl.style.display = 'none';
+    startApp();
 }
 
 function handleLogin() {
-    const user = document.getElementById('login-user').value.trim().toLowerCase();
-    const pass = document.getElementById('login-pass').value.trim().toLowerCase();
+    const userInp = document.getElementById('login-user');
+    const passInp = document.getElementById('login-pass');
+    const user = (userInp ? userInp.value : '').trim().toLowerCase();
+    const pass = (passInp ? passInp.value : '').trim().toLowerCase();
     const errEl = document.getElementById('login-error');
 
-    if (user === 'admin' && (pass === 'sales' || pass === 'finance')) {
-        currentRole = pass;
-        localStorage.setItem('udaanRole', currentRole);
-        document.getElementById('login-overlay').style.display = 'none';
-        errEl.style.display = 'none';
-        startApp();
+    let matchedRole = null;
+    if (pass === 'sales' || user === 'sales') {
+        matchedRole = 'sales';
+    } else if (pass === 'finance' || user === 'finance') {
+        matchedRole = 'finance';
+    } else if (user === 'admin') {
+        if (pass === 'sales' || pass === 'finance') {
+            matchedRole = pass;
+        } else {
+            matchedRole = 'sales';
+        }
+    }
+
+    if (matchedRole) {
+        doLogin(matchedRole);
     } else {
-        errEl.style.display = 'block';
+        if (errEl) {
+            errEl.textContent = 'Invalid credentials. Use admin / sales or admin / finance.';
+            errEl.style.display = 'block';
+        }
     }
 }
 
@@ -558,7 +607,7 @@ function navigateTo(target, pushState = true) {
     container.innerHTML = '';
     const clone = tpl.content.cloneNode(true);
     container.appendChild(clone);
-    lucide.createIcons();
+    safeLucide();
 
     document.getElementById('page-title').textContent = pageTitles[target] || target;
 
@@ -1122,7 +1171,7 @@ function initBillHistory() {
             `;
         }).join('');
 
-        lucide.createIcons();
+        safeLucide();
 
         tbody.querySelectorAll('.reprint-btn').forEach(btn => {
             btn.onclick = () => {

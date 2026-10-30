@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -30,7 +30,14 @@
             <input type="password" id="login-pass" placeholder="sales or finance">
         </div>
         <button id="login-btn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
-        <p id="login-error" style="color: var(--danger); text-align: center; margin-top: 1rem; display: none;">Invalid credentials.</p>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+            <button id="quick-sales-btn" type="button" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem;">Sales Team</button>
+            <button id="quick-finance-btn" type="button" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem;">Finance Team</button>
+        </div>
+        <p class="text-muted" style="text-align: center; margin-top: 0.75rem; font-size: 0.8rem;">
+            Username: <strong>admin</strong> | Password: <strong>sales</strong> or <strong>finance</strong>
+        </p>
+        <p id="login-error" style="color: var(--danger); text-align: center; margin-top: 0.75rem; display: none;">Invalid credentials.</p>
     </div>
   </div>
 
@@ -595,7 +602,7 @@
     </div>
   </template>
 
-  <script type="module" src="app.js?v=25"></script>
+  <script src="app.js?v=26"></script>
 </body>
 </html>
 
