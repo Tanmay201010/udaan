@@ -10,22 +10,142 @@ let currentSha = null;
 let journalListenersAttached = false;
 let autoSyncTimer = null;
 
-// --- Account Classifier Engine ---
+// --- Account Normalizer & Classifier Engine ---
 const incomeKeywords = ['sales', 'sales a/c', 'revenue', 'income', 'gain', 'interest received', 'commission', 'commission a/c', 'commission received', 'commission paid by consignor', 'markup', 'discount received'];
 const expenseKeywords = ['rent', 'salary', 'salaries', 'wages', 'expense', 'expenses', 'utilities', 'electricity', 'purchase', 'purchases', 'cost', 'loss', 'depreciation', 'freight', 'carriage', 'advertising', 'stationery', 'telephone', 'water', 'tax', 'discount allowed', 'rapido', 'zepto', 'swiggy', 'zomato', 'delivery', 'courier', 'travel', 'conveyance', 'transport', 'logistics', 'printing', 'banner', 'banners', 'packaging', 'refreshments', 'food', 'snacks', 'tea', 'coffee', 'supplies', 'maintenance'];
 const equityKeywords = ['capital', 'equity', 'drawing', 'drawings', 'share capital', 'retained earnings'];
 const liabilityKeywords = ['payable', 'consignor payable', 'creditor', 'creditors', 'loan', 'borrowing', 'overdraft', 'liability', 'liabilities', 'duty', 'duties', 'tax payable', 'outstanding', 'unearned'];
 const assetKeywords = ['cash', 'cash a/c', 'bank', 'receivable', 'debtor', 'debtors', 'inventory', 'stock', 'equipment', 'machinery', 'building', 'land', 'furniture', 'fixtures', 'vehicle', 'asset', 'prepaid', 'investment'];
 
+function normalizeAccountName(acc) {
+    if (!acc) return '';
+    const clean = String(acc).trim();
+    const lower = clean.toLowerCase();
+
+    if (lower === 'cash' || lower === 'cash a/c' || lower === 'cash account' || lower === 'cash in hand') return 'Cash A/c';
+    if (lower === 'bank' || lower === 'bank a/c' || lower === 'bank account' || lower === 'upi' || lower === 'bank/upi') return 'Bank A/c';
+    if (lower === 'sales' || lower === 'sales a/c' || lower === 'sales account') return 'Sales A/c';
+    if (lower === 'capital' || lower === 'capital a/c' || lower === 'capital account') return 'Capital A/c';
+    if (lower === 'commission' || lower === 'commission a/c' || lower === 'commission account' || lower.includes('commission paid by consignor')) return 'Commission A/c';
+
+    return clean;
+}
+
 function classifyAccount(accName) {
     if (!accName) return 'unclassified';
-    const lower = accName.toLowerCase().trim();
+    const norm = normalizeAccountName(accName);
+    const lower = norm.toLowerCase().trim();
     if (equityKeywords.some(k => lower.includes(k))) return 'equity';
     if (incomeKeywords.some(k => lower.includes(k))) return 'income';
-    if (expenseKeywords.some(k => lower.includes(k))) return 'expense';
-    if (liabilityKeywords.some(k => lower.includes(k))) return 'liability';
     if (assetKeywords.some(k => lower.includes(k))) return 'asset';
-    return 'unclassified';
+    if (liabilityKeywords.some(k => lower.includes(k))) return 'liability';
+    if (expenseKeywords.some(k => lower.includes(k))) return 'expense';
+    // Default any unrecognized debit or expense account (e.g. Rapido, Zepto, Banner, Swiggy) to 'expense'
+    return 'expense';
+}
+
+// --- Invoice & Sorting Utilities ---
+function parseInvoiceNumber(inv) {
+    if (!inv) return 0;
+    const m = String(inv).match(/\d+/);
+    return m ? parseInt(m[0], 10) : 0;
+}
+
+function sortPOSBills(bills, descending = true) {
+    if (!Array.isArray(bills)) return [];
+    return [...bills].sort((a, b) => {
+        const numA = parseInvoiceNumber(a.invoiceNo || a.id);
+        const numB = parseInvoiceNumber(b.invoiceNo || b.id);
+        if (numA !== numB) {
+            return descending ? numB - numA : numA - numB;
+        }
+        const timeA = (a.date || '') + ' ' + (a.time || a.createdAt || '');
+        const timeB = (b.date || '') + ' ' + (b.time || b.createdAt || '');
+        return descending ? timeB.localeCompare(timeA) : timeA.localeCompare(timeB);
+    });
+}
+
+function sortJournalEntries(entries, descending = true) {
+    if (!Array.isArray(entries)) return [];
+    return [...entries].sort((a, b) => {
+        const numA = parseInvoiceNumber(a.desc || a.id);
+        const numB = parseInvoiceNumber(b.desc || b.id);
+        if (numA > 0 && numB > 0 && numA !== numB) {
+            return descending ? numB - numA : numA - numB;
+        }
+        if (numA > 0 && numB === 0) return descending ? -1 : 1;
+        if (numA === 0 && numB > 0) return descending ? 1 : -1;
+
+        const dateA = (a.date || '') + ' ' + (a.time || a.createdAt || '');
+        const dateB = (b.date || '') + ' ' + (b.time || b.createdAt || '');
+        if (dateA !== dateB) {
+            return descending ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB);
+        }
+        return descending ? (b.id || '').localeCompare(a.id || '') : (a.id || '').localeCompare(b.id || '');
+    });
+}
+
+function deduplicatePOS(posList) {
+    if (!Array.isArray(posList)) return [];
+    const seen = new Map();
+
+    posList.forEach(b => {
+        if (!b) return;
+        const invNum = parseInvoiceNumber(b.invoiceNo);
+        let key;
+        if (invNum > 0) {
+            key = `inv_${invNum}`;
+        } else if (b.id) {
+            key = `id_${b.id}`;
+        } else {
+            key = `bill_${b.date}_${b.total}_${(b.customer || '').trim().toLowerCase()}`;
+        }
+
+        if (!seen.has(key)) {
+            if (!b.id) b.id = uid();
+            seen.set(key, b);
+        } else {
+            const existing = seen.get(key);
+            if ((!existing.items || existing.items.length === 0) && (b.items && b.items.length > 0)) {
+                seen.set(key, b);
+            }
+        }
+    });
+
+    return Array.from(seen.values());
+}
+
+function deduplicateJournal(journalList) {
+    if (!Array.isArray(journalList)) return [];
+    const seen = new Map();
+
+    journalList.forEach(j => {
+        if (!j) return;
+        const invNum = parseInvoiceNumber(j.desc);
+        let key;
+        if (invNum > 0) {
+            key = `sale_inv_${invNum}`;
+        } else if (j.id && !j.id.startsWith('j_')) {
+            key = `manual_id_${j.id}`;
+        } else {
+            const d = normalizeAccountName(j.debitAcc || '');
+            const c = normalizeAccountName(j.creditAcc || '');
+            const amt = j.debitAmt || j.creditAmt || 0;
+            key = `manual_${j.date || ''}_${(j.desc || '').trim().toLowerCase()}_${amt}_${d}_${c}`;
+        }
+
+        if (!seen.has(key)) {
+            if (!j.id) j.id = uid();
+            seen.set(key, j);
+        } else {
+            const existing = seen.get(key);
+            if (j.isCompound && !existing.isCompound) {
+                seen.set(key, j);
+            }
+        }
+    });
+
+    return Array.from(seen.values());
 }
 
 // --- Utility ---
@@ -63,11 +183,8 @@ function getSafeNextInvoice() {
     let maxNum = 0;
     if (appData.pos) {
         appData.pos.forEach(b => {
-            const m = (b.invoiceNo || '').match(/#(\d+)/);
-            if (m) {
-                const num = parseInt(m[1]);
-                if (num > maxNum) maxNum = num;
-            }
+            const num = parseInvoiceNumber(b.invoiceNo);
+            if (num > maxNum) maxNum = num;
         });
     }
     const nextNum = Math.max(maxNum + 1, appData.nextInvoice || 1);
@@ -142,25 +259,24 @@ function ensureIds() {
 
 function reconcileMissingJournalEntries() {
     if (!appData.pos || !appData.journal) return;
-    const posMap = new Map();
-    appData.pos.forEach(b => { if (b.invoiceNo) posMap.set(b.invoiceNo, b); });
-
     const journalInvoices = new Set();
     appData.journal.forEach(j => {
-        const m = (j.desc || '').match(/#(\d+)/);
-        if (m) journalInvoices.add('#' + m[1].padStart(6, '0'));
+        const num = parseInvoiceNumber(j.desc);
+        if (num > 0) journalInvoices.add(num);
     });
 
     let added = 0;
     appData.pos.forEach(b => {
-        if (b.invoiceNo && !journalInvoices.has(b.invoiceNo)) {
+        const num = parseInvoiceNumber(b.invoiceNo);
+        if (num > 0 && !journalInvoices.has(num)) {
             appData.journal.push(createCompoundSaleJournalEntry(b));
-            journalInvoices.add(b.invoiceNo);
+            journalInvoices.add(num);
             added++;
         }
     });
 
     if (added > 0) {
+        appData.journal = sortJournalEntries(deduplicateJournal(appData.journal), false);
         saveLocal();
     }
 }
@@ -179,6 +295,9 @@ function loadLocal() {
     if (!appData.pos) appData.pos = [];
     if (!appData.journal) appData.journal = [];
     if (!appData.nextInvoice) appData.nextInvoice = 1;
+
+    appData.pos = sortPOSBills(deduplicatePOS(appData.pos), false);
+    appData.journal = sortJournalEntries(deduplicateJournal(appData.journal), false);
     ensureIds();
     reconcileMissingJournalEntries();
 }
@@ -189,11 +308,14 @@ async function fetchDefaultData() {
         if (res.ok) {
             const data = await res.json();
             if (data && (data.inventory || data.pos || data.journal)) {
-                if (!appData.pos || appData.pos.length < (data.pos ? data.pos.length : 0)) {
-                    appData = mergeAppData(data);
-                    ensureIds();
-                    saveLocal();
-                    refreshDashboardStats();
+                appData = mergeAppData(data);
+                ensureIds();
+                saveLocal();
+                refreshDashboardStats();
+
+                const hash = location.hash.replace('#', '') || 'dashboard';
+                if (hash === 'dashboard') {
+                    initDashboard();
                 }
             }
         }
@@ -203,40 +325,56 @@ async function fetchDefaultData() {
 }
 
 function mergeAppData(remoteData) {
-    const posMap = new Map();
-    (appData.pos || []).forEach(b => posMap.set(b.id || b.invoiceNo, b));
-    (remoteData.pos || []).forEach(b => posMap.set(b.id || b.invoiceNo, b));
+    if (!remoteData) return appData;
 
-    const jMap = new Map();
-    (appData.journal || []).forEach(j => jMap.set(j.id, j));
-    (remoteData.journal || []).forEach(j => jMap.set(j.id, j));
+    const localBills = appData.pos || [];
+    const remoteBills = remoteData.pos || [];
+    const mergedBills = deduplicatePOS([...remoteBills, ...localBills]);
+    const sortedBills = sortPOSBills(mergedBills, false);
 
-    const merged = {
-        inventory: remoteData.inventory || appData.inventory || [],
-        pos: Array.from(posMap.values()),
-        journal: Array.from(jMap.values()),
-        nextInvoice: Math.max(appData.nextInvoice || 1, remoteData.nextInvoice || 1)
+    const localJournal = appData.journal || [];
+    const remoteJournal = remoteData.journal || [];
+    const mergedJournal = deduplicateJournal([...remoteJournal, ...localJournal]);
+    const sortedJournal = sortJournalEntries(mergedJournal, false);
+
+    const inventory = (remoteData.inventory && remoteData.inventory.length > 0)
+        ? remoteData.inventory
+        : (appData.inventory || []);
+
+    let maxInv = Math.max(appData.nextInvoice || 1, remoteData.nextInvoice || 1);
+    sortedBills.forEach(b => {
+        const num = parseInvoiceNumber(b.invoiceNo);
+        if (num >= maxInv) maxInv = num + 1;
+    });
+
+    return {
+        inventory: inventory,
+        pos: sortedBills,
+        journal: sortedJournal,
+        nextInvoice: maxInv
     };
-    return merged;
 }
 
 // --- Dynamic Reactivity ---
 function refreshDashboardStats() {
+    if (appData.pos) appData.pos = deduplicatePOS(appData.pos);
+    if (appData.journal) appData.journal = deduplicateJournal(appData.journal);
+
     let cashBalance = 0;
     appData.journal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
             j.entries.forEach(e => {
-                const acc = (e.account || '').toLowerCase();
-                if (acc.includes('cash') || acc.includes('bank')) {
+                const acc = normalizeAccountName(e.account);
+                if (acc === 'Cash A/c' || acc === 'Bank A/c') {
                     if (e.type === 'Dr') cashBalance += parseFloat(e.amount) || 0;
                     if (e.type === 'Cr') cashBalance -= parseFloat(e.amount) || 0;
                 }
             });
         } else {
-            const d = (j.debitAcc || '').toLowerCase();
-            const c = (j.creditAcc || '').toLowerCase();
-            if (d.includes('cash') || d.includes('bank')) cashBalance += parseFloat(j.debitAmt) || 0;
-            if (c.includes('cash') || c.includes('bank')) cashBalance -= parseFloat(j.creditAmt) || 0;
+            const d = normalizeAccountName(j.debitAcc);
+            const c = normalizeAccountName(j.creditAcc);
+            if (d === 'Cash A/c' || d === 'Bank A/c') cashBalance += parseFloat(j.debitAmt) || 0;
+            if (c === 'Cash A/c' || c === 'Bank A/c') cashBalance -= parseFloat(j.creditAmt) || 0;
         }
     });
 
@@ -247,14 +385,16 @@ function refreshDashboardStats() {
     appData.journal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
             j.entries.forEach(e => {
-                const acc = e.account;
+                const acc = normalizeAccountName(e.account);
                 const amt = parseFloat(e.amount) || 0;
                 if (e.type === 'Dr') accBalances[acc] = (accBalances[acc] || 0) + amt;
                 if (e.type === 'Cr') accBalances[acc] = (accBalances[acc] || 0) - amt;
             });
         } else {
-            if (j.debitAcc) accBalances[j.debitAcc] = (accBalances[j.debitAcc] || 0) + (parseFloat(j.debitAmt) || 0);
-            if (j.creditAcc) accBalances[j.creditAcc] = (accBalances[j.creditAcc] || 0) - (parseFloat(j.creditAmt) || 0);
+            const d = normalizeAccountName(j.debitAcc);
+            const c = normalizeAccountName(j.creditAcc);
+            if (d) accBalances[d] = (accBalances[d] || 0) + (parseFloat(j.debitAmt) || 0);
+            if (c) accBalances[c] = (accBalances[c] || 0) - (parseFloat(j.creditAmt) || 0);
         }
     });
 
@@ -465,15 +605,15 @@ function initDashboard() {
 
     const tbody = document.querySelector('#dash-recent-table tbody');
     if (tbody) {
-        const recent = [...appData.journal].reverse().slice(0, 10);
+        const recent = sortJournalEntries(appData.journal, true).slice(0, 10);
         if (recent.length === 0) {
             tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">No transactions yet.</td></tr>';
         } else {
             tbody.innerHTML = recent.map(j => {
-                let accStr = `${j.debitAcc || ''} / ${j.creditAcc || ''}`;
+                let accStr = `${normalizeAccountName(j.debitAcc)} / ${normalizeAccountName(j.creditAcc)}`;
                 if (j.entries && j.entries.length > 0) {
-                    const drs = j.entries.filter(e => e.type === 'Dr').map(e => e.account).join(', ');
-                    const crs = j.entries.filter(e => e.type === 'Cr').map(e => e.account).join(', ');
+                    const drs = j.entries.filter(e => e.type === 'Dr').map(e => normalizeAccountName(e.account)).join(', ');
+                    const crs = j.entries.filter(e => e.type === 'Cr').map(e => normalizeAccountName(e.account)).join(', ');
                     accStr = `${drs} / ${crs}`;
                 }
                 const amt = j.debitAmt || j.creditAmt || (j.entries && j.entries[0] ? j.entries[0].amount : 0);
@@ -940,7 +1080,7 @@ function generateAndPrintBill(bill) {
 // BILL HISTORY & EDIT BILL
 // =============================================
 function initBillHistory() {
-    let filtered = [...appData.pos].reverse();
+    let filtered = sortPOSBills(appData.pos, true);
 
     function render(list) {
         const tbody = document.querySelector('#bill-history-table tbody');
@@ -1323,7 +1463,7 @@ function renderJournalTable(filterDate = 'all') {
         return;
     }
 
-    filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    filtered = sortJournalEntries(filtered, true);
 
     tbody.innerHTML = filtered.map(j => {
         let accHTML = '';
@@ -1332,19 +1472,22 @@ function renderJournalTable(filterDate = 'all') {
 
         if (j.entries && j.entries.length > 0) {
             accHTML = j.entries.map(e => {
+                const normAcc = normalizeAccountName(e.account);
                 if (e.type === 'Dr') {
                     drTotal += parseFloat(e.amount) || 0;
-                    return `<div style="color:var(--success);font-weight:600;">Dr: ${e.account} (${fmt(e.amount)})</div>`;
+                    return `<div style="color:var(--success);font-weight:600;">Dr: ${normAcc} (${fmt(e.amount)})</div>`;
                 } else {
                     crTotal += parseFloat(e.amount) || 0;
-                    const isComm = e.account.toLowerCase().includes('commission');
-                    return `<div style="padding-left:1.25rem;color:${isComm ? 'var(--success)' : 'var(--accent)'};font-size:0.85rem;">To ${e.account} (${fmt(e.amount)})</div>`;
+                    const isComm = normAcc.toLowerCase().includes('commission');
+                    return `<div style="padding-left:1.25rem;color:${isComm ? 'var(--success)' : 'var(--accent)'};font-size:0.85rem;">To ${normAcc} (${fmt(e.amount)})</div>`;
                 }
             }).join('');
         } else {
             drTotal = parseFloat(j.debitAmt) || 0;
             crTotal = parseFloat(j.creditAmt) || 0;
-            accHTML = `<div style="color:var(--success);font-weight:600;">Dr: ${j.debitAcc}</div><div style="padding-left:1.25rem;color:var(--accent);font-size:0.85rem;">To ${j.creditAcc}</div>`;
+            const normDr = normalizeAccountName(j.debitAcc);
+            const normCr = normalizeAccountName(j.creditAcc);
+            accHTML = `<div style="color:var(--success);font-weight:600;">Dr: ${normDr}</div><div style="padding-left:1.25rem;color:var(--accent);font-size:0.85rem;">To ${normCr}</div>`;
         }
 
         return `
@@ -1399,10 +1542,10 @@ function initLedger() {
     const accounts = new Set();
     appData.journal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
-            j.entries.forEach(e => { if (e.account) accounts.add(e.account); });
+            j.entries.forEach(e => { if (e.account) accounts.add(normalizeAccountName(e.account)); });
         } else {
-            if (j.debitAcc) accounts.add(j.debitAcc);
-            if (j.creditAcc) accounts.add(j.creditAcc);
+            if (j.debitAcc) accounts.add(normalizeAccountName(j.debitAcc));
+            if (j.creditAcc) accounts.add(normalizeAccountName(j.creditAcc));
         }
     });
 
@@ -1430,14 +1573,19 @@ function renderLedger(account) {
     const matchedEntries = [];
     appData.journal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
-            const hasAcc = j.entries.some(e => e.account === account);
+            const hasAcc = j.entries.some(e => normalizeAccountName(e.account) === account);
             if (hasAcc) matchedEntries.push(j);
         } else {
-            if (j.debitAcc === account || j.creditAcc === account) matchedEntries.push(j);
+            if (normalizeAccountName(j.debitAcc) === account || normalizeAccountName(j.creditAcc) === account) matchedEntries.push(j);
         }
     });
 
-    matchedEntries.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    matchedEntries.sort((a, b) => {
+        const dateA = a.date || '';
+        const dateB = b.date || '';
+        if (dateA !== dateB) return dateA.localeCompare(dateB);
+        return parseInvoiceNumber(a.desc) - parseInvoiceNumber(b.desc);
+    });
 
     if (matchedEntries.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No transactions for this account.</td></tr>';
@@ -1450,21 +1598,22 @@ function renderLedger(account) {
 
         if (j.entries && j.entries.length > 0) {
             j.entries.forEach(e => {
-                if (e.account === account) {
+                if (normalizeAccountName(e.account) === account) {
                     if (e.type === 'Dr') debit += parseFloat(e.amount) || 0;
                     if (e.type === 'Cr') credit += parseFloat(e.amount) || 0;
                 }
             });
-            const counterAccs = j.entries.filter(e => e.account !== account).map(e => `${e.type === 'Dr' ? 'By' : 'To'} ${e.account}`).join(', ');
+            const counterAccs = j.entries.filter(e => normalizeAccountName(e.account) !== account)
+                .map(e => `${e.type === 'Dr' ? 'By' : 'To'} ${normalizeAccountName(e.account)}`).join(', ');
             particulars = counterAccs;
         } else {
-            if (j.debitAcc === account) {
+            if (normalizeAccountName(j.debitAcc) === account) {
                 debit = parseFloat(j.debitAmt) || 0;
-                particulars = `By ${j.creditAcc}`;
+                particulars = `By ${normalizeAccountName(j.creditAcc)}`;
             }
-            if (j.creditAcc === account) {
+            if (normalizeAccountName(j.creditAcc) === account) {
                 credit = parseFloat(j.creditAmt) || 0;
-                particulars = `To ${j.debitAcc}`;
+                particulars = `To ${normalizeAccountName(j.debitAcc)}`;
             }
         }
 
@@ -1491,20 +1640,22 @@ function initTrialBalance() {
     appData.journal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
             j.entries.forEach(e => {
-                const acc = e.account;
+                const acc = normalizeAccountName(e.account);
                 const amt = parseFloat(e.amount) || 0;
                 if (!accounts[acc]) accounts[acc] = { debit: 0, credit: 0 };
                 if (e.type === 'Dr') accounts[acc].debit += amt;
                 if (e.type === 'Cr') accounts[acc].credit += amt;
             });
         } else {
-            if (j.debitAcc) {
-                if (!accounts[j.debitAcc]) accounts[j.debitAcc] = { debit: 0, credit: 0 };
-                accounts[j.debitAcc].debit += parseFloat(j.debitAmt) || 0;
+            const d = normalizeAccountName(j.debitAcc);
+            const c = normalizeAccountName(j.creditAcc);
+            if (d) {
+                if (!accounts[d]) accounts[d] = { debit: 0, credit: 0 };
+                accounts[d].debit += parseFloat(j.debitAmt) || 0;
             }
-            if (j.creditAcc) {
-                if (!accounts[j.creditAcc]) accounts[j.creditAcc] = { debit: 0, credit: 0 };
-                accounts[j.creditAcc].credit += parseFloat(j.creditAmt) || 0;
+            if (c) {
+                if (!accounts[c]) accounts[c] = { debit: 0, credit: 0 };
+                accounts[c].credit += parseFloat(j.creditAmt) || 0;
             }
         }
     });
@@ -1552,24 +1703,29 @@ function initCashBook() {
     appData.journal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
             j.entries.forEach(e => {
-                const acc = (e.account || '').toLowerCase();
-                if (acc.includes('cash') || acc.includes('bank')) {
+                const acc = normalizeAccountName(e.account);
+                if (acc === 'Cash A/c' || acc === 'Bank A/c') {
                     if (e.type === 'Dr') cashEntries.push({ date: j.date, particulars: j.desc, receipts: parseFloat(e.amount) || 0, payments: 0 });
                     if (e.type === 'Cr') cashEntries.push({ date: j.date, particulars: j.desc, receipts: 0, payments: parseFloat(e.amount) || 0 });
                 }
             });
         } else {
-            const d = (j.debitAcc || '').toLowerCase();
-            const c = (j.creditAcc || '').toLowerCase();
-            if (d.includes('cash') || d.includes('bank')) {
-                cashEntries.push({ date: j.date, particulars: j.desc + ` (from ${j.creditAcc})`, receipts: parseFloat(j.debitAmt) || 0, payments: 0 });
+            const d = normalizeAccountName(j.debitAcc);
+            const c = normalizeAccountName(j.creditAcc);
+            if (d === 'Cash A/c' || d === 'Bank A/c') {
+                cashEntries.push({ date: j.date, particulars: j.desc + ` (from ${c})`, receipts: parseFloat(j.debitAmt) || 0, payments: 0 });
             }
-            if (c.includes('cash') || c.includes('bank')) {
-                cashEntries.push({ date: j.date, particulars: j.desc + ` (to ${j.debitAcc})`, receipts: 0, payments: parseFloat(j.creditAmt) || 0 });
+            if (c === 'Cash A/c' || c === 'Bank A/c') {
+                cashEntries.push({ date: j.date, particulars: j.desc + ` (to ${d})`, receipts: 0, payments: parseFloat(j.creditAmt) || 0 });
             }
         }
     });
-    cashEntries.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    cashEntries.sort((a, b) => {
+        const dateA = a.date || '';
+        const dateB = b.date || '';
+        if (dateA !== dateB) return dateA.localeCompare(dateB);
+        return parseInvoiceNumber(a.particulars) - parseInvoiceNumber(b.particulars);
+    });
 
     const tbody = document.querySelector('#cash-book-table tbody');
     if (!tbody) return;
@@ -1671,14 +1827,16 @@ function renderFinancialStatements(selectedDate = 'all') {
     filteredJournal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
             j.entries.forEach(e => {
-                const acc = e.account;
+                const acc = normalizeAccountName(e.account);
                 const amt = parseFloat(e.amount) || 0;
                 if (e.type === 'Dr') accTotals[acc] = (accTotals[acc] || 0) + amt;
                 if (e.type === 'Cr') accTotals[acc] = (accTotals[acc] || 0) - amt;
             });
         } else {
-            if (j.debitAcc) accTotals[j.debitAcc] = (accTotals[j.debitAcc] || 0) + (parseFloat(j.debitAmt) || 0);
-            if (j.creditAcc) accTotals[j.creditAcc] = (accTotals[j.creditAcc] || 0) - (parseFloat(j.creditAmt) || 0);
+            const d = normalizeAccountName(j.debitAcc);
+            const c = normalizeAccountName(j.creditAcc);
+            if (d) accTotals[d] = (accTotals[d] || 0) + (parseFloat(j.debitAmt) || 0);
+            if (c) accTotals[c] = (accTotals[c] || 0) - (parseFloat(j.creditAmt) || 0);
         }
     });
 
@@ -1730,20 +1888,22 @@ function renderBalanceSheet(netPL = 0) {
     appData.journal.forEach(j => {
         if (j.entries && j.entries.length > 0) {
             j.entries.forEach(e => {
-                const acc = e.account;
+                const acc = normalizeAccountName(e.account);
                 const amt = parseFloat(e.amount) || 0;
                 if (!accounts[acc]) accounts[acc] = { debit: 0, credit: 0 };
                 if (e.type === 'Dr') accounts[acc].debit += amt;
                 if (e.type === 'Cr') accounts[acc].credit += amt;
             });
         } else {
-            if (j.debitAcc) {
-                if (!accounts[j.debitAcc]) accounts[j.debitAcc] = { debit: 0, credit: 0 };
-                accounts[j.debitAcc].debit += parseFloat(j.debitAmt) || 0;
+            const d = normalizeAccountName(j.debitAcc);
+            const c = normalizeAccountName(j.creditAcc);
+            if (d) {
+                if (!accounts[d]) accounts[d] = { debit: 0, credit: 0 };
+                accounts[d].debit += parseFloat(j.debitAmt) || 0;
             }
-            if (j.creditAcc) {
-                if (!accounts[j.creditAcc]) accounts[j.creditAcc] = { debit: 0, credit: 0 };
-                accounts[j.creditAcc].credit += parseFloat(j.creditAmt) || 0;
+            if (c) {
+                if (!accounts[c]) accounts[c] = { debit: 0, credit: 0 };
+                accounts[c].credit += parseFloat(j.creditAmt) || 0;
             }
         }
     });
@@ -1910,7 +2070,7 @@ function isUserEditingOrBusy() {
     if (posContainer && !posContainer.textContent.includes('No items added yet.') && posContainer.querySelectorAll('tr').length > 0) {
         return true;
     }
-    const posCustomer = document.getElementById('pos-customer-name');
+    const posCustomer = document.getElementById('pos-customer') || document.getElementById('pos-customer-name');
     if (posCustomer && posCustomer.value.trim() !== '') {
         return true;
     }
