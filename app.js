@@ -67,21 +67,21 @@ function parseInvoiceNumber(inv) {
 
 function sortPOSBills(bills, descending = true) {
     if (!Array.isArray(bills)) return [];
-    return [...bills].sort((a, b) => {
+    return [...bills].filter(Boolean).sort((a, b) => {
         const numA = parseInvoiceNumber(a.invoiceNo || a.id);
         const numB = parseInvoiceNumber(b.invoiceNo || b.id);
         if (numA !== numB) {
             return descending ? numB - numA : numA - numB;
         }
-        const timeA = (a.date || '') + ' ' + (a.time || a.createdAt || '');
-        const timeB = (b.date || '') + ' ' + (b.time || b.createdAt || '');
+        const timeA = String(a.date || '') + ' ' + String(a.time || a.createdAt || '');
+        const timeB = String(b.date || '') + ' ' + String(b.time || b.createdAt || '');
         return descending ? timeB.localeCompare(timeA) : timeA.localeCompare(timeB);
     });
 }
 
 function sortJournalEntries(entries, descending = true) {
     if (!Array.isArray(entries)) return [];
-    return [...entries].sort((a, b) => {
+    return [...entries].filter(Boolean).sort((a, b) => {
         const numA = parseInvoiceNumber(a.desc || a.id);
         const numB = parseInvoiceNumber(b.desc || b.id);
         if (numA > 0 && numB > 0 && numA !== numB) {
@@ -90,12 +90,12 @@ function sortJournalEntries(entries, descending = true) {
         if (numA > 0 && numB === 0) return descending ? -1 : 1;
         if (numA === 0 && numB > 0) return descending ? 1 : -1;
 
-        const dateA = (a.date || '') + ' ' + (a.time || a.createdAt || '');
-        const dateB = (b.date || '') + ' ' + (b.time || b.createdAt || '');
+        const dateA = String(a.date || '') + ' ' + String(a.time || a.createdAt || '');
+        const dateB = String(b.date || '') + ' ' + String(b.time || b.createdAt || '');
         if (dateA !== dateB) {
             return descending ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB);
         }
-        return descending ? (b.id || '').localeCompare(a.id || '') : (a.id || '').localeCompare(b.id || '');
+        return descending ? String(b.id || '').localeCompare(String(a.id || '')) : String(a.id || '').localeCompare(String(b.id || ''));
     });
 }
 
@@ -137,10 +137,11 @@ function deduplicateJournal(journalList) {
         if (!j) return;
         const invNum = parseInvoiceNumber(j.desc);
         let key;
+        const jIdStr = String(j.id || '');
         if (invNum > 0) {
             key = `sale_inv_${invNum}`;
-        } else if (j.id && !j.id.startsWith('j_')) {
-            key = `manual_id_${j.id}`;
+        } else if (jIdStr && !jIdStr.startsWith('j_')) {
+            key = `manual_id_${jIdStr}`;
         } else {
             const d = normalizeAccountName(j.debitAcc || '');
             const c = normalizeAccountName(j.creditAcc || '');
@@ -182,9 +183,10 @@ function getBillTime(bill) {
             return new Date(bill.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
         } catch(e) {}
     }
-    if (bill.id && bill.id.length >= 8) {
+    const bIdStr = String(bill.id || '');
+    if (bIdStr && bIdStr.length >= 8) {
         try {
-            const ts = parseInt(bill.id.slice(0, 8), 36);
+            const ts = parseInt(bIdStr.slice(0, 8), 36);
             if (ts > 1000000000000 && ts < 2500000000000) {
                 return new Date(ts).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
             }
@@ -443,148 +445,194 @@ function notifyDataChanged() {
 // INIT APP
 // =============================================
 function initApp() {
-    loadLocal();
-    fetchDefaultData();
-    safeLucide();
+    try {
+        loadLocal();
+        fetchDefaultData();
+        safeLucide();
 
-    if (!currentRole) {
-        const overlay = document.getElementById('login-overlay');
-        if (overlay) overlay.style.display = 'flex';
-        const appEl = document.getElementById('app');
-        if (appEl) appEl.style.display = 'none';
-    } else {
-        const overlay = document.getElementById('login-overlay');
-        if (overlay) overlay.style.display = 'none';
-        startApp();
+        if (!currentRole) {
+            const overlay = document.getElementById('login-overlay');
+            if (overlay) overlay.style.display = 'flex';
+            const appEl = document.getElementById('app');
+            if (appEl) appEl.style.display = 'none';
+        } else {
+            const overlay = document.getElementById('login-overlay');
+            if (overlay) overlay.style.display = 'none';
+            startApp();
+        }
+
+        const loginBtn = document.getElementById('login-btn');
+        if (loginBtn) loginBtn.onclick = handleLogin;
+
+        const userInp = document.getElementById('login-user');
+        if (userInp) userInp.onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleLogin();
+            }
+        };
+
+        const passInp = document.getElementById('login-pass');
+        if (passInp) passInp.onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleLogin();
+            }
+        };
+
+        const quickSales = document.getElementById('quick-sales-btn');
+        if (quickSales) quickSales.onclick = () => doLogin('sales');
+
+        const quickFinance = document.getElementById('quick-finance-btn');
+        if (quickFinance) quickFinance.onclick = () => doLogin('finance');
+    } catch(err) {
+        console.error('initApp error:', err);
     }
-
-    const loginBtn = document.getElementById('login-btn');
-    if (loginBtn) loginBtn.addEventListener('click', handleLogin);
-
-    const userInp = document.getElementById('login-user');
-    if (userInp) userInp.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') handleLogin();
-    });
-
-    const passInp = document.getElementById('login-pass');
-    if (passInp) passInp.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') handleLogin();
-    });
-
-    const quickSales = document.getElementById('quick-sales-btn');
-    if (quickSales) quickSales.addEventListener('click', () => doLogin('sales'));
-
-    const quickFinance = document.getElementById('quick-finance-btn');
-    if (quickFinance) quickFinance.addEventListener('click', () => doLogin('finance'));
 }
 
 function doLogin(role) {
-    currentRole = role;
-    localStorage.setItem('udaanRole', currentRole);
-    const overlay = document.getElementById('login-overlay');
-    if (overlay) overlay.style.display = 'none';
-    const errEl = document.getElementById('login-error');
-    if (errEl) errEl.style.display = 'none';
-    startApp();
+    try {
+        currentRole = role || 'sales';
+        localStorage.setItem('udaanRole', currentRole);
+
+        const overlay = document.getElementById('login-overlay');
+        if (overlay) overlay.style.display = 'none';
+
+        const appEl = document.getElementById('app');
+        if (appEl) appEl.style.display = 'flex';
+
+        const errEl = document.getElementById('login-error');
+        if (errEl) errEl.style.display = 'none';
+
+        startApp();
+    } catch(err) {
+        console.error('doLogin error:', err);
+    }
 }
 
 function handleLogin() {
-    const userInp = document.getElementById('login-user');
-    const passInp = document.getElementById('login-pass');
-    const user = (userInp ? userInp.value : '').trim().toLowerCase();
-    const pass = (passInp ? passInp.value : '').trim().toLowerCase();
-    const errEl = document.getElementById('login-error');
+    try {
+        const userInp = document.getElementById('login-user');
+        const passInp = document.getElementById('login-pass');
+        const user = (userInp ? userInp.value : '').trim().toLowerCase();
+        const pass = (passInp ? passInp.value : '').trim().toLowerCase();
+        const errEl = document.getElementById('login-error');
 
-    let matchedRole = null;
-    if (pass === 'sales' || user === 'sales') {
-        matchedRole = 'sales';
-    } else if (pass === 'finance' || user === 'finance') {
-        matchedRole = 'finance';
-    } else if (user === 'admin') {
-        if (pass === 'sales' || pass === 'finance') {
-            matchedRole = pass;
-        } else {
+        let matchedRole = null;
+        if (pass === 'sales' || user === 'sales') {
+            matchedRole = 'sales';
+        } else if (pass === 'finance' || user === 'finance') {
+            matchedRole = 'finance';
+        } else if (user === 'admin') {
+            matchedRole = (pass === 'finance') ? 'finance' : 'sales';
+        } else if (!user && !pass) {
+            // Default to sales if submitted empty
             matchedRole = 'sales';
         }
-    }
 
-    if (matchedRole) {
-        doLogin(matchedRole);
-    } else {
-        if (errEl) {
-            errEl.textContent = 'Invalid credentials. Use admin / sales or admin / finance.';
-            errEl.style.display = 'block';
+        if (matchedRole) {
+            doLogin(matchedRole);
+        } else {
+            if (errEl) {
+                errEl.textContent = 'Invalid credentials. Use admin / sales or admin / finance.';
+                errEl.style.display = 'block';
+            }
         }
+    } catch(err) {
+        console.error('handleLogin error:', err);
     }
 }
 
+// Expose globally for inline onclick handlers
+window.doLogin = doLogin;
+window.handleLogin = handleLogin;
+
 function startApp() {
-    const overlay = document.getElementById('login-overlay');
-    if (overlay) overlay.style.display = 'none';
+    try {
+        const overlay = document.getElementById('login-overlay');
+        if (overlay) overlay.style.display = 'none';
 
-    const appEl = document.getElementById('app');
-    if (appEl) appEl.style.display = 'flex';
-    document.getElementById('logged-in-role').textContent = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
+        const appEl = document.getElementById('app');
+        if (appEl) appEl.style.display = 'flex';
 
-    document.querySelectorAll('#app li[data-role]').forEach(li => {
-        const role = li.getAttribute('data-role');
-        if (role === 'all' || role === currentRole) {
-            li.style.display = '';
-        } else {
-            li.style.display = 'none';
+        if (!currentRole) currentRole = 'sales';
+
+        const roleEl = document.getElementById('logged-in-role');
+        if (roleEl) {
+            roleEl.textContent = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
         }
-    });
 
-    document.getElementById('logout-btn').addEventListener('click', e => {
-        e.preventDefault();
-        localStorage.removeItem('udaanRole');
-        currentRole = null;
-        location.reload();
-    });
+        document.querySelectorAll('#app li[data-role]').forEach(li => {
+            const role = li.getAttribute('data-role');
+            if (role === 'all' || role === currentRole) {
+                li.style.display = '';
+            } else {
+                li.style.display = 'none';
+            }
+        });
 
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const sidebarOverlay = document.getElementById('sidebar-overlay');
-    const sidebar = document.querySelector('.sidebar');
-    if (mobileMenuBtn) {
-        mobileMenuBtn.style.display = '';
-        mobileMenuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            sidebarOverlay.classList.toggle('active');
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.onclick = (e) => {
+                e.preventDefault();
+                localStorage.removeItem('udaanRole');
+                currentRole = null;
+                location.reload();
+            };
+        }
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const sidebar = document.querySelector('.sidebar');
+        if (mobileMenuBtn && sidebar) {
+            mobileMenuBtn.style.display = '';
+            mobileMenuBtn.onclick = () => {
+                sidebar.classList.toggle('open');
+                if (sidebarOverlay) sidebarOverlay.classList.toggle('active');
+            };
+            if (sidebarOverlay) {
+                sidebarOverlay.onclick = () => {
+                    sidebar.classList.remove('open');
+                    sidebarOverlay.classList.remove('active');
+                };
+            }
+        }
+
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.onclick = (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('data-target');
+                navigateTo(target);
+                if (sidebar) sidebar.classList.remove('open');
+                if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+            };
         });
-        sidebarOverlay.addEventListener('click', () => {
-            sidebar.classList.remove('open');
-            sidebarOverlay.classList.remove('active');
-        });
+
+        const forceSync = document.getElementById('force-sync-btn');
+        if (forceSync) {
+            forceSync.onclick = () => syncData();
+        }
+
+        if (settings.pat && settings.owner && settings.repo) {
+            fetchFromGitHub();
+            startAutoSyncPolling();
+        } else {
+            updateSyncStatus('Not configured', 'warning');
+        }
+
+        let hash = (location.hash || '').replace('#', '').trim();
+        if (!hash) {
+            hash = 'dashboard';
+        }
+        navigateTo(hash);
+
+        window.onpopstate = () => {
+            const h = (location.hash || '').replace('#', '').trim() || 'dashboard';
+            navigateTo(h, false);
+        };
+    } catch(err) {
+        console.error('startApp error:', err);
     }
-
-    document.querySelectorAll('.nav-item').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const target = link.getAttribute('data-target');
-            navigateTo(target);
-            sidebar.classList.remove('open');
-            sidebarOverlay.classList.remove('active');
-        });
-    });
-
-    document.getElementById('force-sync-btn').addEventListener('click', () => {
-        syncData();
-    });
-
-    if (settings.pat && settings.owner && settings.repo) {
-        fetchFromGitHub();
-        startAutoSyncPolling();
-    } else {
-        updateSyncStatus('Not configured', 'warning');
-    }
-
-    const hash = location.hash.replace('#', '') || 'dashboard';
-    navigateTo(hash);
-
-    window.addEventListener('popstate', () => {
-        const h = location.hash.replace('#', '') || 'dashboard';
-        navigateTo(h, false);
-    });
 }
 
 function startAutoSyncPolling() {
@@ -600,36 +648,43 @@ function startAutoSyncPolling() {
 // NAVIGATION / ROUTING
 // =============================================
 function navigateTo(target, pushState = true) {
-    const container = document.getElementById('view-container');
-    const tpl = document.getElementById('tpl-' + target);
-    if (!tpl) return;
+    try {
+        const container = document.getElementById('view-container');
+        const tpl = document.getElementById('tpl-' + target);
+        if (!container || !tpl) return;
 
-    container.innerHTML = '';
-    const clone = tpl.content.cloneNode(true);
-    container.appendChild(clone);
-    safeLucide();
+        container.innerHTML = '';
+        const clone = tpl.content.cloneNode(true);
+        container.appendChild(clone);
+        safeLucide();
 
-    document.getElementById('page-title').textContent = pageTitles[target] || target;
+        const titleEl = document.getElementById('page-title');
+        if (titleEl) {
+            titleEl.textContent = pageTitles[target] || target;
+        }
 
-    document.querySelectorAll('.nav-item').forEach(l => {
-        l.classList.toggle('active', l.getAttribute('data-target') === target);
-    });
+        document.querySelectorAll('.nav-item').forEach(l => {
+            l.classList.toggle('active', l.getAttribute('data-target') === target);
+        });
 
-    if (pushState) {
-        history.pushState({ target }, '', '#' + target);
-    }
+        if (pushState) {
+            history.pushState({ target }, '', '#' + target);
+        }
 
-    switch (target) {
-        case 'dashboard':       initDashboard(); break;
-        case 'inventory':       initInventory(); break;
-        case 'pos':             initPOS(); break;
-        case 'bill-history':    initBillHistory(); break;
-        case 'journal':         initJournal(); break;
-        case 'ledger':          initLedger(); break;
-        case 'trial-balance':   initTrialBalance(); break;
-        case 'cash-book':       initCashBook(); break;
-        case 'financial-statements': initFinancialStatements(); break;
-        case 'settings':        initSettingsView(); break;
+        switch (target) {
+            case 'dashboard':       initDashboard(); break;
+            case 'inventory':       initInventory(); break;
+            case 'pos':             initPOS(); break;
+            case 'bill-history':    initBillHistory(); break;
+            case 'journal':         initJournal(); break;
+            case 'ledger':          initLedger(); break;
+            case 'trial-balance':   initTrialBalance(); break;
+            case 'cash-book':       initCashBook(); break;
+            case 'financial-statements': initFinancialStatements(); break;
+            case 'settings':        initSettingsView(); break;
+        }
+    } catch(err) {
+        console.error('Navigation error to ' + target + ':', err);
     }
 }
 

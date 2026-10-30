@@ -21,18 +21,20 @@
             <h2>UdaanPro Login</h2>
             <p class="text-muted">Enter your team credentials</p>
         </div>
-        <div class="form-group">
-            <label>Username</label>
-            <input type="text" id="login-user" placeholder="admin">
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="login-pass" placeholder="sales or finance">
-        </div>
-        <button id="login-btn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
+        <form onsubmit="event.preventDefault(); handleLogin();">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="login-user" placeholder="admin">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="login-pass" placeholder="sales or finance">
+            </div>
+            <button id="login-btn" type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="handleLogin()">Login</button>
+        </form>
         <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-            <button id="quick-sales-btn" type="button" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem;">Sales Team</button>
-            <button id="quick-finance-btn" type="button" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem;">Finance Team</button>
+            <button id="quick-sales-btn" type="button" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem;" onclick="doLogin('sales')">Sales Team</button>
+            <button id="quick-finance-btn" type="button" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem;" onclick="doLogin('finance')">Finance Team</button>
         </div>
         <p class="text-muted" style="text-align: center; margin-top: 0.75rem; font-size: 0.8rem;">
             Username: <strong>admin</strong> | Password: <strong>sales</strong> or <strong>finance</strong>
@@ -602,7 +604,7 @@
     </div>
   </template>
 
-  <script src="app.js?v=26"></script>
+  <script src="app.js?v=27"></script>
 </body>
 </html>
 
