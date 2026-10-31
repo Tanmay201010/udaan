@@ -200,7 +200,7 @@
       "id": "mvw4p8hiq8ypd",
       "name": "Life changing brownie",
       "consignor": "",
-      "qty": 60,
+      "qty": 59,
       "price": 70
     }
   ],
@@ -8701,6 +8701,26 @@
         }
       ],
       "total": 1050,
+      "note": "Cash"
+    },
+    {
+      "id": "mvw4qa4ae5wid",
+      "invoiceNo": "#000427",
+      "date": "2026-10-31",
+      "time": "01:48 PM",
+      "createdAt": "2026-10-31T08:18:44.793Z",
+      "customer": "Walk-in Customer",
+      "items": [
+        {
+          "id": "mvw4p8hiq8ypd",
+          "name": "Life changing brownie",
+          "consignor": "",
+          "costPrice": 70,
+          "salePrice": 1,
+          "qty": 1
+        }
+      ],
+      "total": 1,
       "note": "Cash"
     }
   ],
@@ -20190,7 +20210,34 @@
           "amount": 210
         }
       ]
+    },
+    {
+      "id": "mvw4qa4ae5wid_j",
+      "date": "2026-10-31",
+      "desc": "Sale - Invoice #000427 to Walk-in Customer [Cash]",
+      "debitAcc": "Cash A/c",
+      "debitAmt": 1,
+      "creditAcc": "Sales A/c / Commission A/c",
+      "creditAmt": 1,
+      "isCompound": true,
+      "entries": [
+        {
+          "type": "Dr",
+          "account": "Cash A/c",
+          "amount": 1
+        },
+        {
+          "type": "Cr",
+          "account": "Sales A/c",
+          "amount": 70
+        },
+        {
+          "type": "Cr",
+          "account": "Commission A/c",
+          "amount": -69
+        }
+      ]
     }
   ],
-  "nextInvoice": 426
+  "nextInvoice": 427
 }
